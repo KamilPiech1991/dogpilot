@@ -5,7 +5,7 @@ interface Props { lang: Lang; variant?: 'a' | 'b' }
 const { lang, variant = 'a' } = Astro.props;
 const c = t(lang);
 ---
-<section class={`hl ${variant}`}>
+<section id="przekazanie" class={`hl ${variant}`}>
   {variant === 'a' && <svg class="w top" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 L1440 0 L1440 20 C 1200 90, 900 0, 720 40 S 240 90, 0 30 Z" fill="var(--surface)"></path></svg>}
   <div class={`wrap ${variant === 'b' ? 'box' : 'col'}`}>
     <div class="copy reveal">

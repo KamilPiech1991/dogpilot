@@ -1,5 +1,5 @@
 ---
-title: "Ciąża suki tydzień po tygodniu – co się dzieje i co robić"
+title: "63 dni ciąży u suki krok po kroku – co się dzieje i co robić"
 description: "63 dni od krycia do porodu: USG, RTG, żywienie, przygotowanie porodówki i sygnały, że już się zaczyna."
 date: 2026-10-20
 category: "Rozród"

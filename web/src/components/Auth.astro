@@ -1,6 +1,7 @@
 ---
 // Panel logowania / rejestracji aplikacji webowej. Formularz jest gotowy pod Supabase Auth (data-action), do czasu backendu pokazuje notę.
 import Icon from './Icon.astro';
+import Mark from './Mark.astro';
 import { t, type Lang } from '../i18n/content';
 interface Props { lang: Lang; mode: 'login' | 'signup'; variant?: 'a' | 'b' }
 const { lang, mode, variant = 'a' } = Astro.props;
@@ -8,7 +9,7 @@ const c = t(lang).login; const login = mode === 'login';
 ---
 <div class={`auth ${variant}`}>
   <div class="form-col">
-    <div class="top"><a href={lang === 'pl' ? '/' : '/en/'} class="logo" aria-label="Dogpilot"><img src="/brand/icon-512.png" alt="" width="40" height="40"><img src={variant === 'b' ? '/brand/wordmark-white.png' : '/brand/wordmark.png'} alt="Dogpilot" width="130" height="26"></a><a href={lang === 'pl' ? '/' : '/en/'} class="back"><Icon name="back" size={16} stroke={2.4} />{c.back}</a></div>
+    <div class="top"><a href={lang === 'pl' ? '/' : '/en/'} class="logo" aria-label="Dogpilot"><Mark size={40} /><img src={variant === 'b' ? '/brand/wordmark-white.png' : '/brand/wordmark.png'} alt="Dogpilot" width="130" height="26"></a><a href={lang === 'pl' ? '/' : '/en/'} class="back"><Icon name="back" size={16} stroke={2.4} />{c.back}</a></div>
     <div class="center"><div class="box">
       <div class="head"><span class="kicker">{c.kicker}</span><h1>{login ? c.titleLogin : c.titleSignup}</h1><p class="muted">{login ? c.leadLogin : c.leadSignup}</p></div>
       <nav class="tabs" aria-label={c.tabs}><a href="/logowanie" aria-current={login ? 'page' : undefined}>{c.tabLogin}</a><a href="/rejestracja" aria-current={!login ? 'page' : undefined}>{c.tabSignup}</a></nav>
@@ -38,7 +39,7 @@ const c = t(lang).login; const login = mode === 'login';
 <style>
   .auth { min-height: 100vh; display: grid; grid-template-columns: 1.05fr 0.95fr; }
   .form-col { display: flex; flex-direction: column; padding: 28px 48px 40px; }
-  .top { display: flex; justify-content: space-between; align-items: center; gap: 16px; } .logo { display: flex; align-items: center; gap: 10px; } .logo img:first-child { border-radius: 12px; } .logo img:last-child { height: 26px; width: auto; } .back { font-weight: 800; font-size: 14px; display: inline-flex; gap: 6px; align-items: center; }
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 16px; } .logo { display: flex; align-items: center; gap: 10px; } .logo .mark { border-radius: 12px; } .logo img:last-child { height: 26px; width: auto; } .back { font-weight: 800; font-size: 14px; display: inline-flex; gap: 6px; align-items: center; }
   .center { flex: 1; display: flex; align-items: center; justify-content: center; padding: 32px 0; } .box { width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: 22px; }
   .head { display: flex; flex-direction: column; gap: 8px; } h1 { font-size: 34px; }
   .tabs { display: flex; gap: 6px; background: var(--soft); border-radius: 16px; padding: 5px; } .tabs a { flex: 1; text-align: center; min-height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 12px; font-weight: 800; font-size: 15px; color: var(--muted); } .tabs a[aria-current] { background: var(--surface); color: var(--primary-text); }
