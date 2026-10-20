@@ -13,7 +13,7 @@ const links = [[c.nav.features, home + '#funkcje'], [c.nav.pricing, home + '#cen
     <nav class="nav" aria-label={lang === 'pl' ? 'Główna' : 'Main'}>{links.map(([l, h]) => <a href={h}>{l}</a>)}</nav>
     <div class="actions">
       <a href="/logowanie" class="btn btn-o btn-sm hide-m">{c.nav.login}</a>
-      <a href="/rejestracja" class="btn btn-p btn-sm">{c.nav.signup}</a>
+      <a href="/rejestracja" class="btn btn-p btn-sm"><span class="full">{c.nav.signup}</span><span class="short">{c.nav.signupShort}</span></a>
       <button type="button" class="theme" aria-label={lang === 'pl' ? 'Przełącz tryb ciemny' : 'Toggle dark mode'} aria-pressed="false"><Icon name="sun" size={20} class="ic-sun" /><Icon name="moon" size={20} class="ic-moon" /></button>
       <button type="button" class="burger" aria-label={c.nav.menu} aria-expanded="false" aria-controls="mnav"><Icon name="menu" size={22} stroke={2.4} /></button>
     </div>
@@ -39,7 +39,9 @@ const links = [[c.nav.features, home + '#funkcje'], [c.nav.pricing, home + '#cen
   .mnav a { padding: 12px 6px; font-weight: 800; font-size: 18px; color: var(--text); border-bottom: 1px solid var(--border); }
   .mnav .btn { margin-top: 10px; border-bottom: 0; font-size: 16px; }
   .mnav:not([hidden]) { display: flex; } .langs { display: flex; gap: 16px; padding-top: 12px; } .langs a { border: 0; padding: 0; font-size: 15px; color: var(--muted); } .langs a[aria-current] { color: var(--primary-text); }
-  @media (max-width: 900px) { .nav, .hide-m { display: none; } .burger { display: flex; } .bar { height: 64px; } }
+  .short { display: none; }
+  @media (max-width: 900px) { .nav, .hide-m { display: none; } .burger { display: flex; } .bar { height: 64px; gap: 12px; } .actions { gap: 8px; } .full { display: none; } .short { display: inline; } .btn-sm { min-height: 40px; padding: 0 14px; font-size: 14px; white-space: nowrap; } .theme, .burger { width: 40px; height: 40px; flex-shrink: 0; } .logo img:first-child { width: 34px; height: 34px; } .wm { height: 22px; } }
+  @media (max-width: 340px) { .wm { display: none !important; } }
 </style>
 <script>
   // tryb ciemny: zapamiętany wybór, domyślnie ustawienie systemu

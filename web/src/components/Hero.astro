@@ -1,6 +1,5 @@
 ---
 import Icon from './Icon.astro';
-import Paws from './Paws.astro';
 import StoreButtons from './StoreButtons.astro';
 import { t, type Lang } from '../i18n/content';
 interface Props { lang: Lang; variant?: 'a' | 'b' }
@@ -8,7 +7,7 @@ const { lang, variant = 'a' } = Astro.props;
 const c = t(lang);
 ---
 {variant === 'a' ? (
-<section id="top" class="hero"><Paws layout="scatter" size={56} opacity={.1} />
+<section id="top" class="hero">
   <div class="wrap grid-2 inner">
     <div class="copy">
       <span class="pill"><Icon name="check" size={16} stroke={2.6} />{c.hero.badge}</span>
@@ -68,7 +67,7 @@ const c = t(lang);
   .ph2 { position: absolute; right: 56px; bottom: 0; width: 220px; }
   @media (max-width: 900px) {
     .hero { padding-top: 32px; } h1 { font-size: 38px; } .huge { font-size: 44px; letter-spacing: -1px; }
-    .art { min-height: 0; margin-bottom: 70px; } .art picture img { height: 240px; border-radius: 24px; } .ph { width: 118px; bottom: -60px; left: auto; right: 14px; } .toast { display: none; }
+    .art { min-height: 0; margin-bottom: 70px; } .art picture img { height: 240px; border-radius: 24px; } .ph { width: 112px; max-width: 32vw; bottom: -56px; left: auto; right: 12px; } .toast { display: none; } .copy { max-width: none; } .ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } .ctas .big { grid-column: 1 / -1; } .ctas .store { min-height: 50px; padding: 0 12px; justify-content: center; }
     .window > img { height: 300px; } .ph2 { display: none; } .center .lead { font-size: 17px; } .wave { margin-top: 24px; height: 50px; }
   }
 </style>

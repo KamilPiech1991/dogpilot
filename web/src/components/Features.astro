@@ -1,6 +1,5 @@
 ---
 import Icon from './Icon.astro';
-import Paws from './Paws.astro';
 import { t, type Lang } from '../i18n/content';
 interface Props { lang: Lang; variant?: 'a' | 'b' }
 const { lang, variant = 'a' } = Astro.props;
@@ -9,7 +8,7 @@ const F = c.features.items;
 const href = (h?: string) => !h ? undefined : (lang === 'en' && !h.startsWith('/en') ? h : h);
 ---
 {variant === 'a' ? (
-<section id="funkcje" class="feat"><Paws layout="trail-right" size={48} /><div class="wrap list">
+<section id="funkcje" class="feat"><div class="wrap list">
   <div class="head"><span class="kicker">{c.features.kicker}</span><h2>{c.features.h2}</h2></div>
   {F.map((f, i) => <div class={`grid-2 row ${i % 2 ? 'flip' : ''} reveal`}>
     <div class="phone ph"><img src={`/img/app/${f.img}.webp`} alt={f.alt} width="390" height="844" loading="lazy"></div>
@@ -35,12 +34,12 @@ const href = (h?: string) => !h ? undefined : (lang === 'en' && !h.startsWith('/
   .feat { padding: 96px 0 40px; } .list { display: flex; flex-direction: column; gap: 96px; }
   .head { text-align: center; display: flex; flex-direction: column; gap: 14px; align-items: center; } .head h2 { font-size: 40px; max-width: 760px; }
   .section .head { text-align: left; align-items: flex-start; margin-bottom: 36px; max-width: 760px; } .section .head h2 { font-size: 48px; letter-spacing: -.8px; }
-  .row .ph { width: 280px; justify-self: center; } .flip .ph { order: 2; } .flip .copy { order: 1; }
+  .row .ph { width: 280px; max-width: min(100%, 70vw); justify-self: center; } .flip .ph { order: 2; } .flip .copy { order: 1; }
   .copy { display: flex; flex-direction: column; gap: 14px; } h3 { font-size: 30px; } .more { font-weight: 800; }
   ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; font-weight: 700; }
   .tile { display: flex; flex-direction: column; gap: 12px; } .tile h3 { font-size: 24px; } .small { font-size: 15px; }
   .wide { display: grid; grid-template-columns: 1fr 240px; gap: 24px; align-items: center; min-height: 380px; } .wide h3 { font-size: 28px; }
   .peek { width: 240px; margin-bottom: -80px; } .tall { min-height: 380px; } .peek2 { width: 200px; align-self: center; margin-top: auto; margin-bottom: -120px; }
   .side { display: grid; grid-template-columns: 1fr 200px; gap: 20px; align-items: center; } .peek3 { width: 190px; margin: -10px -10px -90px 0; }
-  @media (max-width: 900px) { .feat { padding: 56px 0 24px; } .list { gap: 56px; } .head h2, .section .head h2 { font-size: 30px; } h3 { font-size: 24px; } .flip .ph, .flip .copy { order: 0; } .wide, .side { grid-template-columns: 1fr; } .peek, .peek2, .peek3 { width: 180px; margin: 0 auto -60px; } }
+  @media (max-width: 900px) { .feat { padding: 56px 0 24px; } .list { gap: 56px; } .head h2, .section .head h2 { font-size: 30px; } h3 { font-size: 24px; } .flip .ph, .flip .copy { order: 0; } .row .ph { width: 220px; } .row { gap: 24px; } .row .copy { text-align: left; } .wide, .side { grid-template-columns: 1fr; } .peek, .peek2, .peek3 { width: 180px; margin: 0 auto -60px; } }
 </style>

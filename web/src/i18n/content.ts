@@ -22,7 +22,7 @@ const pl = {
     title: 'Dogpilot – aplikacja dla hodowców psów i właścicieli',
     description: 'Psy, cieczki i ciąże, mioty z wagami szczeniąt, wystawy ZKwP, finanse i dokumenty w jednej aplikacji – na telefonie i na komputerze. Za darmo, bez karty.',
   },
-  nav: { features: 'Funkcje', pricing: 'Cennik', guide: 'Poradnik', faq: 'FAQ', contact: 'Kontakt', login: 'Zaloguj się', signup: 'Załóż darmowe konto', menu: 'Menu' },
+  nav: { features: 'Funkcje', pricing: 'Cennik', guide: 'Poradnik', faq: 'FAQ', contact: 'Kontakt', login: 'Zaloguj się', signup: 'Załóż darmowe konto', signupShort: 'Zacznij', menu: 'Menu' },
   hero: {
     badge: 'Za darmo · bez karty · Android, iPhone i przeglądarka',
     newsBadge: 'Nowość: kalendarz wystaw ZKwP 2026 w aplikacji',
@@ -136,7 +136,7 @@ const pl = {
 const en: typeof pl = {
   lang: 'en',
   meta: { title: 'Dogpilot – the app for dog breeders and owners', description: 'Dogs, heats and pregnancies, litters with puppy weights, FCI shows, finances and documents in one app – on your phone and computer. Free, no card needed.' },
-  nav: { features: 'Features', pricing: 'Pricing', guide: 'Guide', faq: 'FAQ', contact: 'Contact', login: 'Log in', signup: 'Create a free account', menu: 'Menu' },
+  nav: { features: 'Features', pricing: 'Pricing', guide: 'Guide', faq: 'FAQ', contact: 'Contact', login: 'Log in', signup: 'Create a free account', signupShort: 'Start', menu: 'Menu' },
   hero: {
     badge: 'Free · no card · Android, iPhone and browser', newsBadge: 'New: full-year show calendar in the app',
     h1: 'The dog breeder app that pilots your whole kennel', h1b: ['Run your kennel', 'like a ', 'pilot', ', not an accountant'],

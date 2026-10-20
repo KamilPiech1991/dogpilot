@@ -25,7 +25,7 @@ const posts = (await getCollection('poradnik')).sort((a, b) => b.data.date.getTi
 </footer>
 <style>
   .ft { background: var(--dark); color: var(--on-dark); padding: 64px 0 32px; }
-  .cols { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; }
+  .cols { display: grid; grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)); gap: 40px; } .cols > * { min-width: 0; }
   .col { display: flex; flex-direction: column; gap: 10px; font-size: 15px; } .col b { color: #FFFFFF; margin-bottom: 2px; } .col a { color: var(--dark-muted); } .col a:hover { color: #FFFFFF; }
   .about p, .about address { color: var(--dark-muted); font-style: normal; line-height: 1.6; max-width: 320px; } .about address a { color: var(--primary-hover); }
   .social { display: flex; gap: 10px; } .social a { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,.08); color: var(--on-dark); display: flex; align-items: center; justify-content: center; }
@@ -34,6 +34,6 @@ const posts = (await getCollection('poradnik')).sort((a, b) => b.data.date.getTi
   .nl .btn { box-shadow: none; } .ok { color: var(--primary-hover); font-size: 13px; font-weight: 800; }
   .bottom { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--dark-border); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; color: var(--dark-muted); font-size: 13px; }
   .langs { display: flex; gap: 14px; } .langs a { color: var(--dark-muted); } .langs a[aria-current] { color: #FFFFFF; font-weight: 800; }
-  @media (max-width: 900px) { .cols { grid-template-columns: 1fr 1fr; gap: 28px; } }
-  @media (max-width: 560px) { .cols { grid-template-columns: 1fr; } }
+  @media (max-width: 900px) { .cols { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; } .ft { padding: 48px 0 24px; } .nl div { flex-wrap: wrap; } .nl input { flex: 1 1 160px; } }
+  @media (max-width: 560px) { .cols { grid-template-columns: minmax(0, 1fr); } }
 </style>

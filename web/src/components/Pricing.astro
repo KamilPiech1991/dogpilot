@@ -1,12 +1,11 @@
 ---
 import Icon from './Icon.astro';
-import Paws from './Paws.astro';
 import { t, type Lang } from '../i18n/content';
 interface Props { lang: Lang; variant?: 'a' | 'b' }
 const { lang, variant = 'a' } = Astro.props;
 const c = t(lang); const P = c.pricing;
 ---
-<section id="cennik" class="pr section"><Paws layout="trail-left" size={44} /><div class="wrap col">
+<section id="cennik" class="pr section"><div class="wrap col">
   <div class="head"><span class="kicker">{P.kicker}</span><h2>{P.h2}</h2>
     <div class="toggle" role="group" aria-label={P.period}>
       <button type="button" class="on" data-period="year" aria-pressed="true">{P.yearly} <small>· {P.save}</small></button>

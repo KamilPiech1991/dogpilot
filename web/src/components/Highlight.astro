@@ -7,7 +7,6 @@ const c = t(lang);
 ---
 <section class={`hl ${variant}`}>
   {variant === 'a' && <svg class="w top" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 L1440 0 L1440 20 C 1200 90, 900 0, 720 40 S 240 90, 0 30 Z" fill="var(--surface)"></path></svg>}
-  <span class="bgpaw" aria-hidden="true"><Icon name="paw" size={420} stroke={1.2} /></span>
   <div class={`wrap ${variant === 'b' ? 'box' : 'col'}`}>
     <div class="copy reveal">
       <span class="kicker light">{c.highlight.kicker}</span>
@@ -29,7 +28,6 @@ const c = t(lang);
   .hl.a { background: linear-gradient(135deg, #32BF46 0%, #1F8A30 100%); padding: 88px 0 96px; }
   .hl.b { padding: 72px 0; color: var(--text); }
   .w { position: absolute; left: 0; width: 100%; height: 80px; } .top { top: -1px; } .bottom { bottom: -1px; }
-  .bgpaw { position: absolute; right: -60px; top: 40px; opacity: .12; color: #FFFFFF; } .hl.b .bgpaw { display: none; }
   .col { position: relative; display: flex; flex-direction: column; gap: 40px; }
   .box { position: relative; border-radius: 36px; background: linear-gradient(135deg, #1F8A30 0%, #0F1A15 70%); border: 1px solid var(--border); padding: 64px; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center; color: #FFFFFF; }
   .box::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(600px 400px at 90% 10%, rgba(79,212,99,.35), transparent 70%); pointer-events: none; }
@@ -40,5 +38,5 @@ const c = t(lang);
   .phones { position: relative; display: flex; gap: 28px; justify-content: center; align-items: flex-end; flex-wrap: wrap; }
   .p1 { width: 250px; transform: rotate(-4deg); } .p2 { width: 280px; margin-bottom: 24px; } .p3 { width: 250px; transform: rotate(4deg); }
   .hl.b .p2 { width: 250px; margin: 0; } .hl.b .p3 { width: 230px; transform: rotate(-5deg) translateY(16px); order: -1; }
-  @media (max-width: 900px) { h2 { font-size: 30px; } .box { grid-template-columns: 1fr; padding: 32px 24px; border-radius: 24px; } .p1, .p3 { display: none; } .p2 { width: 220px; } .hl.b .p3 { display: none; } .hl.a { padding: 56px 0 64px; } .hl.b { padding: 40px 0; } }
+  @media (max-width: 900px) { h2 { font-size: 30px; } .box { grid-template-columns: 1fr; padding: 32px 24px; border-radius: 24px; } .p1, .p3 { display: none; } .p2 { width: 200px; max-width: 60vw; margin: 0; } .phones { gap: 0; } .hl.b .p3 { display: none; } .hl.a { padding: 56px 0 112px; } .hl.b { padding: 40px 0; } }
 </style>

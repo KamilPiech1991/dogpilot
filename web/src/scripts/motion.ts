@@ -6,7 +6,7 @@ const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const mobile = () => window.matchMedia('(max-width: 900px)').matches;
 
 export function initMotion() {
-  if (reduce) { document.querySelectorAll('.reveal, .paw').forEach(e => e.classList.add('in')); return; }
+  if (reduce) { document.querySelectorAll('.reveal').forEach(e => e.classList.add('in')); return; }
   gsap.registerPlugin(ScrollTrigger);
 
   // wejścia sekcji
@@ -14,12 +14,6 @@ export function initMotion() {
     gsap.fromTo(el, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: .7, ease: 'power2.out', scrollTrigger: { trigger: el, start: 'top 88%', once: true } });
   });
 
-  // łapki: ślad pojawia się krok po kroku, potem lekko dryfuje z przewijaniem
-  gsap.utils.toArray<HTMLElement>('.paws').forEach(group => {
-    const paws = group.querySelectorAll<HTMLElement>('.paw');
-    gsap.fromTo(paws, { scale: 0, autoAlpha: 0, rotate: (i: number) => (i % 2 ? -14 : 14) }, { scale: 1, autoAlpha: 1, rotate: (i: number) => (i % 2 ? -8 : 8), duration: .5, ease: 'back.out(2)', stagger: .18, scrollTrigger: { trigger: group, start: 'top 85%', once: true } });
-    gsap.to(paws, { y: (i: number) => -30 - i * 10, ease: 'none', scrollTrigger: { trigger: group, start: 'top bottom', end: 'bottom top', scrub: 1 } });
-  });
 
   // hero: telefon unosi się, przy przewijaniu odpływa wolniej niż tło
   const heroPhone = document.querySelector<HTMLElement>('.hero .ph');
@@ -33,7 +27,8 @@ export function initMotion() {
   gsap.utils.toArray<HTMLElement>('.feat .row').forEach(row => {
     const flip = row.classList.contains('flip'); const ph = row.querySelector('.ph'); const copy = row.querySelector('.copy');
     if (!ph) return;
-    gsap.fromTo(ph, { x: flip ? 120 : -120, rotate: flip ? 8 : -8, autoAlpha: 0 }, { x: 0, rotate: 0, autoAlpha: 1, ease: 'power2.out', scrollTrigger: { trigger: row, start: 'top 85%', end: 'top 35%', scrub: .6 } });
+    const m = mobile();
+    gsap.fromTo(ph, { x: m ? 0 : (flip ? 120 : -120), y: m ? 32 : 0, rotate: m ? 0 : (flip ? 8 : -8), autoAlpha: 0 }, { x: 0, y: 0, rotate: 0, autoAlpha: 1, ease: 'power2.out', scrollTrigger: { trigger: row, start: 'top 85%', end: 'top 35%', scrub: .6 } });
     if (copy) gsap.fromTo(copy, { y: 40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, ease: 'power2.out', scrollTrigger: { trigger: row, start: 'top 80%', end: 'top 45%', scrub: .6 } });
     gsap.to(ph, { yPercent: -8, ease: 'none', scrollTrigger: { trigger: row, start: 'top bottom', end: 'bottom top', scrub: 1 } });
   });
