@@ -1,5 +1,5 @@
 ---
-import { t, type Lang } from '../i18n/content';
+import { SITE, t, type Lang } from '../i18n/content';
 interface Props { lang: Lang; variant?: 'a' | 'b' }
 const { lang, variant = 'a' } = Astro.props;
 const c = t(lang);
@@ -7,7 +7,7 @@ const c = t(lang);
 <section class={`wa ${variant}`}><div class={`wrap grid-2 ${variant === 'b' ? 'flip' : ''}`}>
   <div class="copy reveal"><span class="kicker">{c.webapp.kicker}</span><h2>{variant === 'b' ? c.webapp.h2b : c.webapp.h2}</h2><p class="muted">{c.webapp.p}</p>
     {variant === 'b' && <ol>{c.how.steps.map(([h, p], i) => <li><span class="n">{i + 1}</span><span><b>{h}</b> <span class="muted">– {p.split('.')[0].toLowerCase()}.</span></span></li>)}</ol>}
-    <div class="ctas"><a href="/logowanie" class="btn btn-p">{c.webapp.cta}</a>{variant === 'a' && <a href="#faq" class="btn btn-o">{c.webapp.cta2}</a>}</div></div>
+    <div class="ctas"><a href={SITE.appUrl} class="btn btn-p">{c.webapp.cta}</a>{variant === 'a' && <a href="#faq" class="btn btn-o">{c.webapp.cta2}</a>}</div></div>
   <div class="shot reveal"><img src="/img/app/d-miot.webp" alt={c.webapp.alt} width="1440" height="900" loading="lazy">
     {variant === 'a' ? <div class="phone mini"><img src="/img/app/m-miot-dark.webp" alt="" width="390" height="844" loading="lazy"></div> : <div class="sync"><span class="dot"></span>{c.webapp.sync}</div>}</div>
 </div></section>

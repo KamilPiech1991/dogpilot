@@ -115,7 +115,7 @@ const pl = {
   cta: { h2: 'Wypróbuj Dogpilot za darmo już dziś', p: 'Konto zakładasz w minutę. Dane możesz wyeksportować lub usunąć w każdej chwili.', button: 'Załóż darmowe konto', qr: 'Zeskanuj telefonem, żeby pobrać aplikację', qrAlt: 'Kod QR – dogpilot.pl/pobierz' },
   footer: {
     about: 'Aplikacja dla hodowców psów i właścicieli. Projekt i rozwój: Qamitech.',
-    product: 'Produkt', productLinks: [['Funkcje', '/#funkcje'], ['Cennik', '/#cennik'], ['Aplikacja webowa', '/logowanie'], ['Android · Google Play', SITE.playUrl], ['iPhone · App Store', SITE.appStoreUrl], ['FAQ', '/#faq']],
+    product: 'Produkt', productLinks: [['Funkcje', '/#funkcje'], ['Cennik', '/#cennik'], ['Aplikacja webowa', SITE.appUrl], ['Android · Google Play', SITE.playUrl], ['iPhone · App Store', SITE.appStoreUrl], ['FAQ', '/#faq']],
     guide: 'Poradnik', legal: 'Firma i prawo',
     legalLinks: [['Kontakt', '/kontakt'], ['Polityka prywatności', '/polityka-prywatnosci'], ['Regulamin', '/regulamin'], ['Bezpieczeństwo danych', '/bezpieczenstwo-danych'], ['Usuń konto', '/usun-konto']],
     newsletter: 'Newsletter hodowcy', emailPh: 'Twój e-mail', subscribe: 'Zapisz', rights: 'Wszystkie prawa zastrzeżone.',
@@ -201,7 +201,7 @@ const en: typeof pl = {
   guide: { kicker: 'Breeder’s guide', h2: 'Knowledge that helps with the dogs', all: 'All articles', read: 'Read', minutes: 'min read' },
   cta: { h2: 'Try Dogpilot for free today', p: 'Create an account in a minute. Export or delete your data whenever you like.', button: 'Create a free account', qr: 'Scan with your phone to download the app', qrAlt: 'QR code – dogpilot.pl/pobierz' },
   footer: { about: 'The app for dog breeders and owners. Designed and built by Qamitech.', product: 'Product',
-    productLinks: [['Features', '/en/#features'], ['Pricing', '/en/#pricing'], ['Web app', '/logowanie'], ['Android · Google Play', SITE.playUrl], ['iPhone · App Store', SITE.appStoreUrl], ['FAQ', '/en/#faq']],
+    productLinks: [['Features', '/en/#features'], ['Pricing', '/en/#pricing'], ['Web app', SITE.appUrl], ['Android · Google Play', SITE.playUrl], ['iPhone · App Store', SITE.appStoreUrl], ['FAQ', '/en/#faq']],
     guide: 'Guide', legal: 'Company and legal', legalLinks: [['Contact', '/kontakt'], ['Privacy policy', '/polityka-prywatnosci'], ['Terms of service', '/regulamin'], ['Data security', '/bezpieczenstwo-danych'], ['Delete account', '/usun-konto']],
     newsletter: 'Breeder newsletter', emailPh: 'Your e-mail', subscribe: 'Subscribe', rights: 'All rights reserved.' },
   login: { kicker: 'Web app', back: 'Back to the site', tabLogin: 'I have an account', tabSignup: 'Create a free account', tabs: 'Log in or sign up',
