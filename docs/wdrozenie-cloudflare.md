@@ -25,7 +25,9 @@ z gałęzi `main` i serwuje je pod `dogpilot.pl`. Podgląd na github.io działa 
    ```
 4. **Save and Deploy** – pierwszy build trwa 2–3 min. Strona pojawi się pod `dogpilot-xxx.pages.dev`.
 5. **Custom domains → Set up a custom domain** → `dogpilot.pl` (Cloudflare sam doda rekord DNS),
-   potem to samo dla `www.dogpilot.pl`. Plik `_redirects` przekierowuje `www` na domenę główną.
+   potem to samo dla `www.dogpilot.pl`.
+6. **Przekierowanie www → dogpilot.pl**: Cloudflare → domena `dogpilot.pl` → **Rules → Redirect Rules → Create rule**
+   → szablon **„Redirect from WWW to Root”** → Deploy. (Plik `_redirects` w Pages obsługuje tylko ścieżki, nie domeny.)
 
 ## 3. Supabase i Google pod nową domenę (5 min)
 - Supabase → **Authentication → URL Configuration**:

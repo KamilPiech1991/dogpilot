@@ -1,4 +1,4 @@
 # Cloudflare Pages – przekierowania (ignorowane na GitHub Pages)
-https://www.dogpilot.pl/* https://dogpilot.pl/:splat 301
+# www → dogpilot.pl: _redirects nie obsługuje reguł z inną domeną – ustawione jako Redirect Rule w panelu Cloudflare (docs/wdrozenie-cloudflare.md)
 # /logowanie i /rejestracja: Cloudflare sam dopisuje końcowy ukośnik – bez własnych reguł (inaczej pętla)
 /app /app/ 301
