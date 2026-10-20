@@ -1,3 +1,4 @@
 # Cloudflare Pages – przekierowania (ignorowane na GitHub Pages)
 https://www.dogpilot.pl/* https://dogpilot.pl/:splat 301
+# /logowanie i /rejestracja: Cloudflare sam dopisuje końcowy ukośnik – bez własnych reguł (inaczej pętla)
 /app /app/ 301
