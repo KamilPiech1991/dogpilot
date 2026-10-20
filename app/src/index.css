@@ -601,8 +601,18 @@ table.tbl td a { font-weight: 700; }
 .lang-switch button { border: 0; background: transparent; border-radius: 999px; padding: 7px 14px; font: inherit; font-weight: 800; font-size: 13px; cursor: pointer; color: var(--muted); transition: all .2s var(--ease); }
 .lang-switch button.on { background: var(--primary); color: #fff; }
 
-.modal { box-sizing: border-box; } .modal * { max-width: 100%; }
-@media (max-width: 560px) { .modal-backdrop { padding: 8px; } .modal { padding: 16px; } }
+/* Modal: mieści się w widocznym obszarze na iOS (dvh), przyciski zawsze pod ręką (sticky), pola nie rozpychają szerokości */
+.modal { --modal-pad: 20px; box-sizing: border-box; max-height: calc(100dvh - 32px); display: flex; flex-direction: column; } .modal * { max-width: 100%; min-width: 0; }
+.modal > :not(.actions) { flex-shrink: 0; }
+.modal .actions { position: sticky; bottom: calc(-1 * var(--modal-pad)); margin: 12px calc(-1 * var(--modal-pad)) calc(-1 * var(--modal-pad)); padding: 12px var(--modal-pad) calc(var(--modal-pad) + env(safe-area-inset-bottom, 0px)); background: var(--surface); border-top: 1px solid var(--border); flex-wrap: wrap; }
+.modal .actions .btn { flex: 1 1 auto; min-height: 44px; justify-content: center; }
+/* Pola daty/czasu na iOS Safari: pełna szerokość, tekst od lewej, ta sama wysokość co inne pola */
+.field input[type="date"], .field input[type="time"], .field input[type="datetime-local"], .field input[type="month"] { -webkit-appearance: none; appearance: none; display: block; width: 100%; min-width: 0; min-height: 46px; text-align: left; -webkit-text-align: left; }
+input::-webkit-date-and-time-value { text-align: left; min-height: 1.4em; }
+input::-webkit-datetime-edit { padding: 0; }
+.field select { -webkit-appearance: none; appearance: none; min-height: 46px; padding-right: 36px; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B5F58' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>"); background-repeat: no-repeat; background-position: right 12px center; }
+.field input:not([type="checkbox"]):not([type="radio"]):not([type="file"]) { min-height: 46px; }
+@media (max-width: 560px) { .modal-backdrop { padding: 8px; align-items: end; } .modal { --modal-pad: 16px; padding: 16px; max-height: calc(100dvh - 16px); border-radius: 22px 22px 18px 18px; } .modal .actions .btn { flex: 1 1 45%; } }
 .range { -webkit-appearance: none; appearance: none; height: 8px; border-radius: 8px; background: linear-gradient(90deg, var(--primary) var(--v, 30%), var(--surface-2) var(--v, 30%)); outline: none; }
 .range::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: #fff; border: 3px solid var(--primary); box-shadow: 0 2px 8px rgba(27,42,34,.2); cursor: pointer; }
 .range::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 3px solid var(--primary); cursor: pointer; }
