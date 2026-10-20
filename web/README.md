@@ -15,7 +15,12 @@ Bez tych wartości strona i panel działają w trybie demo (dane lokalne w przeg
 ## Panel aplikacji webowej
 Prototyp z `app/` jest budowany w tym samym workflow i publikowany pod `/app/` (na podglądzie `/dogpilot/app/`). Docelowo: `app.dogpilot.pl` z `app/dist` bez prefiksu.
 
-## Domena dogpilot.pl (GitHub Pages)
+## Domena dogpilot.pl
+
+Docelowy hosting: **Cloudflare Pages** – pełna instrukcja w `docs/wdrozenie-cloudflare.md`.
+Wariant zapasowy z GitHub Pages poniżej.
+
+### GitHub Pages (wariant zapasowy)
 
 1. **DNS u rejestratora** – rekordy dla domeny głównej (A) i dla `www` (CNAME):
    ```

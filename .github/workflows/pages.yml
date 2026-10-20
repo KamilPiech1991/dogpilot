@@ -34,22 +34,12 @@ jobs:
           enablement: true
       - run: echo "Pages origin=${{ steps.pages.outputs.origin }} base_path='${{ steps.pages.outputs.base_path }}'"
       - run: echo "Supabase keys present=${{ secrets.PUBLIC_SUPABASE_URL != '' && secrets.PUBLIC_SUPABASE_ANON_KEY != '' }}"
-      - run: npm ci
-      - run: npm run build
-        env:
-          PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
-          PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
-      - run: node scripts/prefix-base.mjs
+      - run: bash scripts/build-site.sh
+        working-directory: .
         env:
           BASE_PATH: ${{ steps.pages.outputs.base_path }}
-      # panel aplikacji webowej (app/) trafia pod /app/ obok strony
-      - run: npm ci && npm run build
-        working-directory: app
-        env:
-          APP_BASE: ${{ steps.pages.outputs.base_path }}/app/
-          VITE_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
-      - run: mkdir -p dist/app && cp -r ../app/dist/. dist/app/
+          PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
+          PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: web/dist

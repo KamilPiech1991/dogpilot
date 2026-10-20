@@ -1,0 +1,5 @@
+# Cloudflare Pages – przekierowania (ignorowane na GitHub Pages)
+https://www.dogpilot.pl/* https://dogpilot.pl/:splat 301
+/app /app/ 301
+/logowanie/ /logowanie 301
+/rejestracja/ /rejestracja 301
