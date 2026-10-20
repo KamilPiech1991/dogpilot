@@ -39,6 +39,6 @@ const head = lang === 'pl' ? ['Jak to wygląda w praktyce', 'Przewiń – ekrany
   .n { width: 40px; height: 40px; border-radius: 50%; background: var(--soft); color: var(--primary-text); font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .3s, color .3s; } .on .n { background: var(--primary); color: var(--on-primary); }
   .tour-step h3 { font-size: 26px; margin: 4px 0 10px; }
   .tour-pin { position: relative; } .big { width: 320px; margin: 0 auto; display: block; }
-  .stack { position: relative; aspect-ratio: 390 / 844; } .tour-screen { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 30px; opacity: 0; }
-  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; gap: 24px; } h2 { font-size: 30px; } .tour-step { padding: 24px 0; } .tour-step h3 { font-size: 21px; } .tour-pin { order: -1; position: sticky; top: 72px; z-index: 2; background: var(--bg); padding: 8px 0; } .big { width: 150px; max-width: 42vw; padding: 6px; border-radius: 26px; } .tour-screen { border-radius: 20px; } }
+  .stack { position: relative; aspect-ratio: 390 / 844; } .tour-screen { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: calc(var(--r) - var(--bezel)); opacity: 0; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; gap: 24px; } h2 { font-size: 30px; } .tour-step { padding: 24px 0; } .tour-step h3 { font-size: 21px; } .tour-pin { order: -1; position: sticky; top: 72px; z-index: 2; background: var(--bg); padding: 8px 0; } .big { --bezel: 4px; --r: 22px; width: 150px; max-width: 42vw; } }
 </style>

@@ -47,8 +47,10 @@ button { font: inherit; }
 [data-variant="b"] .store { background: #EAF4EE; color: #0F1A15; }
 [data-variant="b"] .store:hover { color: #0F1A15; }
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
-.phone { background: #1F1A17; border-radius: 38px; padding: 9px; box-shadow: var(--shadow); display: inline-block; max-width: 100%; }
-.phone img { border-radius: 30px; width: 100%; }
+.phone { --bezel: 9px; --r: 38px; background: #1F1A17; border-radius: var(--r); padding: var(--bezel); box-shadow: var(--shadow), inset 0 0 0 1px rgba(255,255,255,.07); display: inline-block; max-width: 100%; }
+.phone img { border-radius: calc(var(--r) - var(--bezel)); width: 100%; backface-visibility: hidden; transform: translateZ(0); }
+.phone.thin, .phone.small { --bezel: 4px; --r: 22px; }
+.phone.small { --bezel: 3px; --r: 18px; }
 [data-variant="b"] .phone { background: #0B130F; border: 1px solid #27392F; }
 .check { display: flex; gap: 10px; align-items: flex-start; line-height: 1.45; }
 .check svg { flex-shrink: 0; margin-top: 3px; color: var(--primary-text); }
