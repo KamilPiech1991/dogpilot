@@ -21,7 +21,7 @@ export default function Dogs() {
   const dogs = state.dogs.filter(d => !sexFilter || d.sex === sexFilter).sort((a, b) => a.name.localeCompare(b.name));
   const breeder = state.profile.module === 'breeder';
   const females = state.dogs.filter(d => d.sex === 'female').length, males = state.dogs.filter(d => d.sex === 'male').length;
-  const nearLimit = !limits.isPro && (females >= FREE_LIMITS.females || males >= FREE_LIMITS.males);
+  const nearLimit = !limits.isPro && state.dogs.length >= FREE_LIMITS.dogs;
 
   return (
     <div>
@@ -37,7 +37,7 @@ export default function Dogs() {
           <button className={compact ? 'active' : ''} onClick={() => setCompact(true)}>Kompaktowy</button>
         </div>
       </div>
-      {nearLimit && <div className="card soft" style={{ marginBottom: 12 }}><div className="row between"><span>{`Plan FREE: do ${FREE_LIMITS.females} suk i ${FREE_LIMITS.males} psów.`} <ProBadge /> znosi limity.</span><Link to="/ustawienia" className="btn sm">Zobacz PRO</Link></div></div>}
+      {nearLimit && <div className="card soft" style={{ marginBottom: 12 }}><div className="row between"><span>{`Plan FREE: ${FREE_LIMITS.dogs} pies lub ${FREE_LIMITS.dogs} suka.`} <ProBadge /> znosi limity.</span><Link to="/ustawienia" className="btn sm">Zobacz PRO</Link></div></div>}
       {dogs.length === 0 ? <Card><Empty icon={<DogIcon size={28} />}>
           {sexFilter === 'female' ? 'Nie masz jeszcze suk.' : sexFilter === 'male' ? 'Nie masz jeszcze psów.' : 'Nie masz jeszcze psów ani suk.'}
           <div className="row" style={{ justifyContent: 'center', flexWrap: 'wrap', gap: 8, marginTop: 14 }}>

@@ -94,7 +94,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       toast: (msg, ms) => { setToastMs(ms ?? 2500); setToast(msg); },
       limits: {
         isPro,
-        canAddDog: sex => isPro || state.dogs.filter(d => d.sex === sex).length < (sex === 'female' ? FREE_LIMITS.females : FREE_LIMITS.males),
+        canAddDog: () => isPro || state.dogs.length < FREE_LIMITS.dogs,
         canAddShow: () => isPro || state.shows.length < FREE_LIMITS.shows,
         canAddChampionship: () => isPro || state.championships.length < FREE_LIMITS.championships,
         chartMonths: isPro ? 6 : FREE_LIMITS.chartMonths,

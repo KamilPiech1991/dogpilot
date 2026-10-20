@@ -13,7 +13,7 @@ export const SITE = {
   analyticsDomain: '', // np. dogpilot.pl – włącza Plausible (statystyki bez ciasteczek)
   address: ['[ulica i numer]', '[kod] [miejscowość], Polska'],
   pricing: { free: 0, proYear: 29, proMonth: 3.99, proYearEur: 7, proMonthEur: 0.99 },
-  limits: { females: 2, males: 2, shows: 5, championships: 6, chartMonths: 4 },
+  limits: { dogs: 1, shows: 3, championships: 6, chartMonths: 4 },
 };
 
 const pl = {
@@ -102,7 +102,7 @@ const pl = {
   pricing: {
     kicker: 'Cennik', h2: 'Za darmo dla właściciela psa i małej hodowli. PRO, kiedy hodowla rośnie.', yearly: 'Rocznie', monthly: 'Miesięcznie', save: 'oszczędzasz 39%', period: 'Okres rozliczenia',
     free: { name: 'Plan FREE', h3: 'Dla właściciela psa i początku hodowli', p: 'Najważniejsze funkcje bez limitu czasu i bez karty. Właścicielowi jednego czy dwóch psów wystarcza na stałe.', price: '0 zł', per: 'na zawsze', cta: 'Załóż darmowe konto',
-      items: ['Do 2 suk i 2 psów', 'Mioty, wagi szczeniąt i karta przekazania z QR', 'Do 5 wystaw i 6 championatów', 'Wykres wydatków z ostatnich 4 miesięcy', 'Kalendarz wystaw ZKwP i powiadomienia'] },
+      items: ['1 pies lub 1 suka', 'Raporty', 'Do 3 wystaw', 'Wydatki', 'Mioty, wagi szczeniąt i karta przekazania z QR', 'Kalendarz wystaw ZKwP i powiadomienia'] },
     pro: { name: 'Plan PRO', badge: 'Wybór hodowców', h3: 'Cała hodowla bez limitów', p: 'Wszystkie obecne i przyszłe funkcje, kopia w chmurze, zespół hodowli.',
       priceYear: '29 zł', priceMonth: '3,99 zł', perYear: 'rocznie', perMonth: 'miesięcznie', anchorYear: 'To tylko 2,42 zł miesięcznie – mniej niż jeden przysmak.', anchorMonth: 'W planie rocznym zapłacisz 29 zł – oszczędzasz 39%.', cta: 'Wypróbuj PRO',
       note: 'Płatność w sklepie Google Play / App Store albo kartą w aplikacji webowej. Anulujesz w każdej chwili.',
@@ -111,7 +111,7 @@ const pl = {
   faq: {
     kicker: 'FAQ', h2: 'Pytania, które słyszymy najczęściej', p: 'Nie znalazłeś odpowiedzi? Napisz do nas – odpowiadamy w dni robocze.', cta: 'Kontakt',
     items: [
-      ['Czy Dogpilot jest naprawdę darmowy?', 'Tak. Plan FREE nie ma limitu czasu i nie wymaga karty. Ograniczenia dotyczą liczby psów (2 suki i 2 psy), wystaw i championatów oraz długości wykresu wydatków. PRO zdejmuje limity.'],
+      ['Czy Dogpilot jest naprawdę darmowy?', 'Tak. Plan FREE nie ma limitu czasu i nie wymaga karty. Ograniczenia dotyczą liczby psów (1 pies lub 1 suka) i wystaw (do 3). PRO zdejmuje limity.'],
       ['Nie prowadzę hodowli, mam jednego psa. Czy Dogpilot jest dla mnie?', 'Tak. W trybie „Mam psiaka” aplikacja chowa moduły hodowlane i zostawia zdrowie, terminy, wydatki, dokumenty i galerię Twojego psa. Plan FREE w zupełności wystarcza właścicielowi jednego lub dwóch psów.'],
       ['Kupiłem szczenię od hodowcy, który używa Dogpilot. Co dalej?', 'Zainstaluj Dogpilot, załóż darmowe konto w trybie „Mam psiaka” i zeskanuj kod QR z karty przekazania. Wagi, szczepienia, odrobaczenia i karma szczenięcia pojawią się w Twojej aplikacji bez przepisywania.'],
       ['Czy działa na iPhonie i na komputerze?', 'Tak – Dogpilot jest dostępny na Androida, iPhone’a i jako aplikacja webowa w przeglądarce. Jedno konto, te same dane na wszystkich urządzeniach.'],
@@ -206,13 +206,13 @@ const en: typeof pl = {
   ] },
   pricing: { kicker: 'Pricing', h2: 'Free for dog owners and small kennels. PRO when the kennel grows.', yearly: 'Yearly', monthly: 'Monthly', save: 'save 41%', period: 'Billing period',
     free: { name: 'FREE plan', h3: 'For dog owners and kennels starting out', p: 'The essential features with no time limit and no card. Enough for an owner of one or two dogs, for good.', price: '€0', per: 'forever', cta: 'Create a free account',
-      items: ['Up to 2 females and 2 males', 'Litters, puppy weights and a QR handover card', 'Up to 5 shows and 6 championships', 'Expense chart for the last 4 months', 'Show calendar and notifications'] },
+      items: ['1 dog (male or female)', 'Reports', 'Up to 3 shows', 'Expenses', 'Litters, puppy weights and a QR handover card', 'Show calendar and notifications'] },
     pro: { name: 'PRO plan', badge: 'Breeders’ choice', h3: 'The whole kennel without limits', p: 'All current and future features, cloud backup, kennel team.',
       priceYear: '€7', priceMonth: '€0.99', perYear: 'per year', perMonth: 'per month', anchorYear: 'That is just €0.58 a month – less than a single treat.', anchorMonth: 'On the yearly plan you pay €7 – you save 41%.', cta: 'Try PRO',
       note: 'Pay in Google Play / App Store or by card in the web app. Cancel any time.',
       items: ['Unlimited dogs, litters, shows and championships', 'Full charts, reports and PDF documents with your logo', 'Heat calendar with forecast, pedigree and COI', 'Kennel team with roles and a buyer page', 'Cloud backup and phone ↔ computer sync', 'Litter posts on Facebook and Instagram'] } },
   faq: { kicker: 'FAQ', h2: 'The questions we hear most often', p: 'Can’t find your answer? Write to us – we reply on working days.', cta: 'Contact', items: [
-    ['Is Dogpilot really free?', 'Yes. The FREE plan has no time limit and needs no card. The limits concern the number of dogs (2 females and 2 males), shows and championships, and the length of the expense chart. PRO removes the limits.'],
+    ['Is Dogpilot really free?', 'Yes. The FREE plan has no time limit and needs no card. The limits concern the number of dogs (1 male or 1 female) and shows (up to 3). PRO removes the limits.'],
     ['I am not a breeder, I have one dog. Is Dogpilot for me?', 'Yes. In “I have a dog” mode the app hides the kennel modules and keeps your dog’s health, dates, expenses, documents and gallery. The FREE plan is plenty for an owner of one or two dogs.'],
     ['I bought a puppy from a breeder who uses Dogpilot. What now?', 'Install Dogpilot, create a free account in “I have a dog” mode and scan the QR code on the handover card. The puppy’s weights, vaccinations, deworming and food appear in your app with nothing to retype.'],
     ['Does it work on iPhone and on a computer?', 'Yes – Dogpilot is available for Android, iPhone and as a web app in the browser. One account, the same data on every device.'],

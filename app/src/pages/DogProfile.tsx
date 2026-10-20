@@ -4,6 +4,7 @@ import { buildPedigree, coefficientOfInbreeding, type PedNode } from '../app/ped
 import { heatStats } from '../app/heat';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { FREE_LIMITS } from '../app/types';
 import { useStore } from '../app/store';
 import { Card, Empty, Field, KV, Modal, ProBadge, Stat, Tabs, confirmDel, EditBtn, DelBtn } from '../components/ui';
 import { ArtHeader } from '../components/ui';
@@ -152,9 +153,9 @@ export default function DogProfile() {
           <>
             <div className="row between no-print">
               <div className="row" style={{ gap: 8 }}><select value={year} onChange={e => setYear(e.target.value)} style={{ padding: 8, borderRadius: 8, border: '1px solid var(--border)' }}><option value="all">Rok: wszystkie</option>{years.map(y => <option key={y} value={y}>Rok: {y}</option>)}</select><Link to="/wystawy" className="btn secondary sm"><CalendarDays size={16} /> Kalendarz wystaw</Link></div>
-              <button className="btn" onClick={() => { if (!limits.canAddShow()) { toast('Plan FREE: maks. 5 wystaw. Przejdź na PRO.'); return; } setEditShow({ id: uid(), dogId: dog!.id, country: 'Polska', city: '', rank: SHOW_RANKS[0], date: today(), dogClass: SHOW_CLASSES[4] }); }}><Plus size={18} /> Dodaj wystawę</button>
+              <button className="btn" onClick={() => { if (!limits.canAddShow()) { toast(`Plan FREE: maks. ${FREE_LIMITS.shows} wystaw. Przejdź na PRO.`); return; } setEditShow({ id: uid(), dogId: dog!.id, country: 'Polska', city: '', rank: SHOW_RANKS[0], date: today(), dogClass: SHOW_CLASSES[4] }); }}><Plus size={18} /> Dodaj wystawę</button>
             </div>
-            {!limits.isPro && shows.length >= 5 && <div className="card soft">Limit 5 wystaw w planie FREE. <ProBadge /> znosi limit.</div>}
+            {!limits.isPro && shows.length >= FREE_LIMITS.shows && <div className="card soft">Limit {FREE_LIMITS.shows} wystaw w planie FREE. <ProBadge /> znosi limit.</div>}
             {visible.length === 0 ? <Card><Empty>Brak wystaw.</Empty></Card> : visible.map(s => (
               <Card key={s.id}>
                 <div className="row between"><div><b style={{ color: 'var(--primary-600)', fontSize: 16 }}>{s.country}, {s.city}</b><div>{s.rank}</div></div><div><EditBtn onClick={() => setEditShow(s)} /><DelBtn onClick={() => confirmDel() && remove('shows', s.id)} /></div></div>

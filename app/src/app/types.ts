@@ -300,7 +300,7 @@ export const INCOME_CATEGORIES = ['Sprzedaż szczenięcia', 'Zaliczka za szczeni
 export const HEAT_DEFAULT_INTERVAL_DAYS = 180;
 export const GALLERY_MAX = 6;
 
-export const FREE_LIMITS = { females: 2, males: 2, shows: 5, championships: 6, chartMonths: 4 };
+export const FREE_LIMITS = { dogs: 1, shows: 3, championships: 6, chartMonths: 4 };
 
 export const EXPENSE_CATEGORIES: Record<string, string[]> = {
   'Żywienie': ['Karma sucha', 'Karma mokra', 'Przysmaki', 'Inne'],
