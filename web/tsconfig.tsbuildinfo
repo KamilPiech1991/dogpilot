@@ -1,0 +1,1 @@
+{"root":["./.astro/types.d.ts","./astro.config.mjs","./scripts/prefix-base.mjs","./src/content.config.ts","./src/i18n/content.ts","./src/lib/supabase.ts","./src/scripts/motion.ts"],"version":"6.0.2"}

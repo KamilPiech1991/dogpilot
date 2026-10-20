@@ -1,0 +1,18 @@
+---
+// Dekoracyjny ślad psich łapek. Pozycje w % względem rodzica (position: relative). Animowane w motion.ts.
+interface Props { layout?: 'trail-right' | 'trail-left' | 'corner' | 'scatter'; color?: string; opacity?: number; size?: number }
+const { layout = 'trail-right', color = 'var(--primary)', opacity = .14, size = 44 } = Astro.props;
+const L: Record<string, [number, number, number][]> = {
+  'trail-right': [[86, 6, 0], [91, 20, 1], [85, 34, 0], [90, 48, 1], [84, 62, 0]],
+  'trail-left': [[4, 14, 1], [9, 28, 0], [3, 42, 1], [8, 56, 0]],
+  'corner': [[90, 8, 0], [95, 22, 1], [89, 36, 0]],
+  'scatter': [[6, 10, 1], [92, 18, 0], [12, 70, 0], [88, 78, 1]],
+};
+const P = 'M11 4a2 2 0 1 0 0 .01zM18 8a2 2 0 1 0 0 .01zM20 16a2 2 0 1 0 0 .01zM9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z';
+---
+<div class="paws" aria-hidden="true">{L[layout].map(([x, y, m], i) => <svg class="paw" style={`left:${x}%;top:${y}%;width:${size - (i % 2) * 8}px;height:${size - (i % 2) * 8}px;transform:rotate(${m ? -12 : 12}deg) scaleX(${m ? -1 : 1});color:${color};opacity:${opacity}`} viewBox="0 0 24 24" fill="currentColor"><circle cx="11" cy="4" r="2.2"/><circle cx="18" cy="8" r="2.2"/><circle cx="20" cy="16" r="2.2"/><path d="M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z"/></svg>)}</div>
+<style>
+  .paws { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+  .paw { position: absolute; }
+  @media (max-width: 900px) { .paw { width: 28px !important; height: 28px !important; } }
+</style>

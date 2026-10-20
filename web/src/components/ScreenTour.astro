@@ -1,0 +1,45 @@
+---
+// Przypięty telefon po prawej, kroki po lewej – ekrany aplikacji zmieniają się wraz z przewijaniem (motion.ts).
+import Paws from './Paws.astro';
+import { type Lang } from '../i18n/content';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const pl = [
+  ['Start', 'Dzień zaczyna się od podsumowania', 'Kto jest w ciąży, które szczenię trzeba zważyć, jaki termin dziś wypada – jeden ekran zamiast trzech zeszytów.', 'm-start'],
+  ['Rozród', 'Cieczka, krycie, progesteron, USG', 'Dogpilot prognozuje następną cieczkę i prowadzi przez plan krycia krok po kroku.', 'm-pies-rozrod'],
+  ['Ciąża', '63 dni pod kontrolą', 'Monitor ciąży liczy dni, przypomina o USG i RTG i podpowiada, co robić w każdym tygodniu.', 'm-ciaza'],
+  ['Miot', 'Szczenięta, wagi, odchów', 'Ważysz cały miot na jednym ekranie, a plan odchowu pilnuje szczepień, odrobaczeń i przeglądu.', 'm-miot-odchow'],
+  ['Przekazanie', 'Kod QR dla nowego domu', 'Nabywca skanuje kod i ma całą historię szczenięcia w swojej aplikacji – bez przepisywania.', 'm-pawid'],
+  ['Wystawy', 'Sezon zaplanowany z terminarza ZKwP', 'Wybierasz wystawy gwiazdką, aplikacja przypomina o zgłoszeniach, a wyniki trafiają do profilu psa.', 'm-wystawy'],
+];
+const en = [
+  ['Home', 'The day starts with a summary', 'Who is pregnant, which puppy needs weighing, what is due today – one screen instead of three notebooks.', 'm-start'],
+  ['Breeding', 'Heat, mating, progesterone, ultrasound', 'Dogpilot forecasts the next heat and walks you through the mating plan step by step.', 'm-pies-rozrod'],
+  ['Pregnancy', '63 days under control', 'The pregnancy monitor counts the days, reminds you of ultrasound and X-ray and tells you what to do each week.', 'm-ciaza'],
+  ['Litter', 'Puppies, weights, rearing', 'Weigh the whole litter on one screen while the rearing plan tracks vaccinations, deworming and inspection.', 'm-miot-odchow'],
+  ['Handover', 'A QR code for the new home', 'The buyer scans the code and has the puppy’s whole history in their app – no retyping.', 'm-pawid'],
+  ['Shows', 'A season planned from the club calendar', 'Star the shows you want, get reminded about entries, and results land in the dog’s profile.', 'm-wystawy'],
+];
+const steps = lang === 'pl' ? pl : en;
+const head = lang === 'pl' ? ['Jak to wygląda w praktyce', 'Przewiń – ekrany aplikacji zmieniają się razem z historią'] : ['How it works in practice', 'Scroll – the app screens change with the story'];
+---
+<section class="tour section"><div class="wrap grid">
+  <Paws layout="trail-left" size={40} />
+  <div class="tour-steps">
+    <div class="head"><span class="kicker">{head[0]}</span><h2>{head[1]}</h2></div>
+    {steps.map(([k, h, p], i) => <div class={`tour-step ${i === 0 ? 'on' : ''}`}><span class="n">{i + 1}</span><div><span class="kicker">{k}</span><h3>{h}</h3><p class="muted">{p}</p></div></div>)}
+  </div>
+  <div class="tour-pin"><div class="phone big">
+    <div class="stack">{steps.map(([, h, , img], i) => <img class="tour-screen" src={`/img/app/${img}.webp`} alt={h} width="390" height="844" loading={i === 0 ? 'eager' : 'lazy'} />)}</div>
+  </div></div>
+</div></section>
+<style>
+  .tour { position: relative; overflow: clip; } .grid { position: relative; display: grid; grid-template-columns: 1fr 360px; gap: 64px; align-items: start; }
+  .head { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; } h2 { font-size: 40px; }
+  .tour-step { display: flex; gap: 18px; padding: 56px 0; border-top: 1px solid var(--border); opacity: .45; transition: opacity .4s; } .tour-step.on { opacity: 1; }
+  .n { width: 40px; height: 40px; border-radius: 50%; background: var(--soft); color: var(--primary-text); font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .3s, color .3s; } .on .n { background: var(--primary); color: var(--on-primary); }
+  .tour-step h3 { font-size: 26px; margin: 4px 0 10px; }
+  .tour-pin { position: relative; } .big { width: 320px; margin: 0 auto; display: block; }
+  .stack { position: relative; aspect-ratio: 390 / 844; } .tour-screen { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 30px; opacity: 0; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; gap: 24px; } h2 { font-size: 30px; } .tour-step { padding: 24px 0; } .tour-step h3 { font-size: 21px; } .tour-pin { order: -1; position: sticky; top: 72px; z-index: 2; background: var(--bg); padding: 8px 0; } .big { width: 170px; padding: 6px; border-radius: 26px; } .tour-screen { border-radius: 20px; } }
+</style>

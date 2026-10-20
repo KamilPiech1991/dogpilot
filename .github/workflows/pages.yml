@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'web/**'
+      - 'app/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 permissions:
@@ -28,7 +29,17 @@ jobs:
           cache-dependency-path: web/package-lock.json
       - run: npm ci
       - run: npm run build
+        env:
+          PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
+          PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
       - run: BASE_PATH=/dogpilot node scripts/prefix-base.mjs
+      # panel aplikacji webowej (app/) trafia pod /app/ obok strony
+      - run: npm ci && APP_BASE=/dogpilot/app/ npm run build
+        working-directory: app
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
+      - run: mkdir -p dist/app && cp -r ../app/dist/. dist/app/
       - uses: actions/configure-pages@v5
         with:
           enablement: true

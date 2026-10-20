@@ -53,7 +53,7 @@
         try {
           var st = JSON.parse(localStorage.getItem('dogpilot.state.v1') || 'null');
           var en = (localStorage.getItem('dogpilot.lang') || (st && st.profile && st.profile.language)) === 'en';
-          if (st && st.profile && st.profile.darkMode) { el.classList.add('dark'); document.getElementById('sp-word').src = '/brand/wordmark-white.png'; }
+          if (st && st.profile && st.profile.darkMode) { el.classList.add('dark'); document.getElementById('sp-word').src = 'brand/wordmark-white.png'; }
           if (en) { document.getElementById('sp-tag').textContent = 'Your kennel and dogs in one place'; }
         } catch (e) { /* brak danych */ }
         var label = en ? 'Loading… ' : 'Ładowanie… ';

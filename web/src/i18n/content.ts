@@ -7,12 +7,12 @@ export const SITE = {
   url: 'https://dogpilot.pl',
   playUrl: 'https://play.google.com/store/apps/details?id=pl.dogpilot.app',
   appStoreUrl: 'https://apps.apple.com/app/dogpilot/id000000000',
-  appUrl: '/logowanie',
+  appUrl: '/app/',
   email: '[e-mail kontaktowy]',
   formsEndpoint: '', // np. https://formspree.io/f/xxxx – do czasu ustawienia formularze pokazują potwierdzenie lokalnie
   analyticsDomain: '', // np. dogpilot.pl – włącza Plausible (statystyki bez ciasteczek)
   address: ['[ulica i numer]', '[kod] [miejscowość], Polska'],
-  pricing: { free: 0, proYear: 89, proMonth: 12.99, proYearEur: 19, proMonthEur: 2.99 },
+  pricing: { free: 0, proYear: 29, proMonth: 3.99, proYearEur: 7, proMonthEur: 0.99 },
   limits: { females: 2, males: 2, shows: 5, championships: 6, chartMonths: 4 },
 };
 
@@ -90,11 +90,11 @@ const pl = {
     ],
   },
   pricing: {
-    kicker: 'Cennik', h2: 'Zacznij za darmo. PRO, kiedy hodowla rośnie.', yearly: 'Rocznie', monthly: 'Miesięcznie', save: 'oszczędzasz 43%', period: 'Okres rozliczenia',
+    kicker: 'Cennik', h2: 'Zacznij za darmo. PRO, kiedy hodowla rośnie.', yearly: 'Rocznie', monthly: 'Miesięcznie', save: 'oszczędzasz 39%', period: 'Okres rozliczenia',
     free: { name: 'Plan FREE', h3: 'Dla początku hodowli', p: 'Najważniejsze funkcje bez limitu czasu i bez karty.', price: '0 zł', per: 'na zawsze', cta: 'Załóż darmowe konto',
       items: ['Do 2 suk i 2 psów', 'Mioty, wagi szczeniąt i karta przekazania z QR', 'Do 5 wystaw i 6 championatów', 'Wykres wydatków z ostatnich 4 miesięcy', 'Kalendarz wystaw ZKwP i powiadomienia'] },
     pro: { name: 'Plan PRO', badge: 'Najczęściej wybierany', h3: 'Cała hodowla bez limitów', p: 'Wszystkie obecne i przyszłe funkcje, kopia w chmurze, zespół hodowli.',
-      priceYear: '89 zł', priceMonth: '12,99 zł', perYear: 'rocznie', perMonth: 'miesięcznie', anchorYear: 'To tylko 7,42 zł miesięcznie – mniej niż worek przysmaków.', anchorMonth: 'W planie rocznym zapłacisz 89 zł – oszczędzasz 43%.', cta: 'Wypróbuj PRO',
+      priceYear: '29 zł', priceMonth: '3,99 zł', perYear: 'rocznie', perMonth: 'miesięcznie', anchorYear: 'To tylko 2,42 zł miesięcznie – mniej niż jeden przysmak.', anchorMonth: 'W planie rocznym zapłacisz 29 zł – oszczędzasz 39%.', cta: 'Wypróbuj PRO',
       note: 'Płatność w sklepie Google Play / App Store albo kartą w aplikacji webowej. Anulujesz w każdej chwili.',
       items: ['Bez limitu psów, miotów, wystaw i championatów', 'Pełne wykresy, raporty i dokumenty PDF z logo hodowli', 'Kalendarz cieczek z prognozą, rodowód i COI', 'Zespół hodowli z rolami i strona dla nabywcy', 'Kopia w chmurze i synchronizacja telefon ↔ komputer', 'Publikacja miotów na Facebooku i Instagramie'] },
   },
@@ -129,7 +129,7 @@ const pl = {
     mobileHint: 'Masz już aplikację na telefonie? Zaloguj się tym samym kontem – dane zsynchronizują się same.',
     sideH2: 'Jedno konto – telefon, tablet i komputer', sideP: 'Rejestr miotów, raporty i dokumenty wygodniej robi się na dużym ekranie. Ważenie szczeniąt i zdjęcia – na telefonie przy psach.',
     sideBadges: ['Dane w UE, RODO', 'Kopia w chmurze co tydzień', 'Zespół hodowli z rolami'], help: 'Pomoc', privacy: 'Prywatność',
-    soon: 'Logowanie zostanie włączone razem z backendem (Supabase). Do tego czasu możesz otworzyć prototyp z danymi demonstracyjnymi.',
+    soon: 'Logowanie przez konto zostanie włączone po podłączeniu Supabase. Panel możesz już otworzyć w trybie demo: /app/',
   },
 };
 
@@ -181,11 +181,11 @@ const en: typeof pl = {
     ['[Breeder review from the beta programme – to be added after testing.]', '[Name]', '[Kennel] · [breed]'],
     ['[Dog owner review in “I have a dog” mode – to be added.]', '[Name]', 'owner · [breed]'],
   ] },
-  pricing: { kicker: 'Pricing', h2: 'Start for free. PRO when the kennel grows.', yearly: 'Yearly', monthly: 'Monthly', save: 'save 47%', period: 'Billing period',
+  pricing: { kicker: 'Pricing', h2: 'Start for free. PRO when the kennel grows.', yearly: 'Yearly', monthly: 'Monthly', save: 'save 41%', period: 'Billing period',
     free: { name: 'FREE plan', h3: 'For a kennel that is starting out', p: 'The essential features with no time limit and no card.', price: '€0', per: 'forever', cta: 'Create a free account',
       items: ['Up to 2 females and 2 males', 'Litters, puppy weights and a QR handover card', 'Up to 5 shows and 6 championships', 'Expense chart for the last 4 months', 'Show calendar and notifications'] },
     pro: { name: 'PRO plan', badge: 'Most popular', h3: 'The whole kennel without limits', p: 'All current and future features, cloud backup, kennel team.',
-      priceYear: '€19', priceMonth: '€2.99', perYear: 'per year', perMonth: 'per month', anchorYear: 'That is just €1.58 a month – less than a bag of treats.', anchorMonth: 'On the yearly plan you pay €19 – you save 47%.', cta: 'Try PRO',
+      priceYear: '€7', priceMonth: '€0.99', perYear: 'per year', perMonth: 'per month', anchorYear: 'That is just €0.58 a month – less than a single treat.', anchorMonth: 'On the yearly plan you pay €7 – you save 41%.', cta: 'Try PRO',
       note: 'Pay in Google Play / App Store or by card in the web app. Cancel any time.',
       items: ['Unlimited dogs, litters, shows and championships', 'Full charts, reports and PDF documents with your logo', 'Heat calendar with forecast, pedigree and COI', 'Kennel team with roles and a buyer page', 'Cloud backup and phone ↔ computer sync', 'Litter posts on Facebook and Instagram'] } },
   faq: { kicker: 'FAQ', h2: 'Frequently asked questions', p: 'Can’t find your answer? Write to us – we reply on working days.', cta: 'Contact', items: [
@@ -212,7 +212,7 @@ const en: typeof pl = {
     mobileHint: 'Already have the app on your phone? Log in with the same account – data syncs automatically.',
     sideH2: 'One account – phone, tablet and computer', sideP: 'The litter register, reports and documents are easier on a big screen. Weighing puppies and photos – on your phone next to the dogs.',
     sideBadges: ['Data in the EU, GDPR', 'Weekly cloud backup', 'Kennel team with roles'], help: 'Help', privacy: 'Privacy',
-    soon: 'Login will be enabled together with the backend (Supabase). Until then you can open the prototype with demo data.' },
+    soon: 'Account login will be enabled once Supabase is connected. You can already open the panel in demo mode: /app/' },
 };
 
 export const CONTENT: Record<Lang, typeof pl> = { pl, en };

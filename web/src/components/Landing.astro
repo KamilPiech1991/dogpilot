@@ -1,6 +1,6 @@
 ---
 // Pełna strona główna złożona z sekcji – wariant A (jasny, zigzag) lub B (ciemny, bento).
-import Hero from './Hero.astro'; import TrustBar from './TrustBar.astro'; import Pillars from './Pillars.astro'; import Video from './Video.astro'; import Highlight from './Highlight.astro'; import Features from './Features.astro'; import Gallery from './Gallery.astro'; import WebApp from './WebApp.astro'; import HowItWorks from './HowItWorks.astro'; import Testimonials from './Testimonials.astro'; import Pricing from './Pricing.astro'; import Faq from './Faq.astro'; import Guide from './Guide.astro'; import FinalCta from './FinalCta.astro';
+import Hero from './Hero.astro'; import TrustBar from './TrustBar.astro'; import Pillars from './Pillars.astro'; import Video from './Video.astro'; import Highlight from './Highlight.astro'; import Features from './Features.astro'; import Gallery from './Gallery.astro'; import WebApp from './WebApp.astro'; import HowItWorks from './HowItWorks.astro'; import Testimonials from './Testimonials.astro'; import Pricing from './Pricing.astro'; import Faq from './Faq.astro'; import Guide from './Guide.astro'; import FinalCta from './FinalCta.astro'; import ScreenTour from './ScreenTour.astro';
 import type { Lang } from '../i18n/content';
 interface Props { lang: Lang; variant?: 'a' | 'b' }
 const { lang, variant = 'a' } = Astro.props;
@@ -9,6 +9,7 @@ const { lang, variant = 'a' } = Astro.props;
 <TrustBar lang={lang} variant={variant} />
 <Pillars lang={lang} variant={variant} />
 {variant === 'a' && <Video lang={lang} />}
+<ScreenTour lang={lang} />
 <Highlight lang={lang} variant={variant} />
 <Features lang={lang} variant={variant} />
 <Gallery lang={lang} variant={variant} />

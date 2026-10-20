@@ -1,11 +1,12 @@
 ---
 import StoreButtons from './StoreButtons.astro';
+import Paws from './Paws.astro';
 import { t, type Lang } from '../i18n/content';
 interface Props { lang: Lang; variant?: 'a' | 'b' }
 const { lang, variant = 'a' } = Astro.props;
 const c = t(lang);
 ---
-<section class="fc"><div class="wrap"><div class={`box ${variant} reveal`}>
+<section class="fc"><div class="wrap"><div class={`box ${variant} reveal`}><Paws layout="scatter" size={64} color="#FFFFFF" opacity={.14} />
   <div class="copy"><h2>{c.cta.h2}</h2><p>{c.cta.p}</p><div class="ctas"><a href="/rejestracja" class="btn main">{c.cta.button}</a><StoreButtons lang={lang} compact /></div></div>
   <div class="qr"><a href="/pobierz" class="code"><img src="/img/qr-pobierz.svg" alt={c.cta.qrAlt} width="150" height="150" loading="lazy"></a><span>{c.cta.qr}</span></div>
 </div></div></section>

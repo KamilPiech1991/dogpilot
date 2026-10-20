@@ -22,7 +22,7 @@ const c = t(lang).login; const login = mode === 'login';
         {login && <label class="rem"><input type="checkbox" name="remember" checked>{c.remember}</label>}
         <button type="submit" class="btn btn-p submit">{login ? c.ctaLogin : c.ctaSignup}</button>
         {!login && <p class="terms muted">{c.terms}</p>}
-        <p class="soon muted" hidden>{c.soon} <a href="https://kamilpiech1991.github.io/dogpilot/" rel="noopener">→</a></p>
+        <p class="soon muted" hidden>{c.soon}</p>
       </form>
       <div class="hint"><span class="ic"><Icon name="phone" size={18} stroke={2.2} /></span><span>{c.mobileHint}</span></div>
     </div></div>
@@ -61,7 +61,30 @@ const c = t(lang).login; const login = mode === 'login';
   @media (max-width: 900px) { .auth { grid-template-columns: 1fr; } .art { display: none; } .form-col { padding: 20px 20px 32px; } h1 { font-size: 28px; } }
 </style>
 <script>
-  // Do czasu backendu formularz pokazuje notę zamiast wysyłać dane.
-  document.querySelectorAll<HTMLFormElement>('form[data-auth]').forEach(f => f.addEventListener('submit', e => { e.preventDefault(); if (!f.reportValidity()) return; f.querySelector('.soon')?.removeAttribute('hidden'); }));
-  document.querySelectorAll<HTMLButtonElement>('[data-provider]').forEach(b => b.addEventListener('click', () => b.closest('.box')?.querySelector('.soon')?.removeAttribute('hidden')));
+  import { supabase, authReady } from '../lib/supabase';
+  const APP = (import.meta.env.PUBLIC_APP_URL as string | undefined) ?? '/app/';
+  const appUrl = () => new URL(APP, location.href).href;
+  const note = (box: Element | null, msg?: string) => { const el = box?.querySelector<HTMLElement>('.soon'); if (!el) return; if (msg) el.textContent = msg; el.removeAttribute('hidden'); };
+  // już zalogowany → prosto do panelu
+  if (authReady) supabase!.auth.getSession().then(({ data }) => { if (data.session) location.replace(appUrl()); });
+  document.querySelectorAll<HTMLButtonElement>('[data-provider]').forEach(b => b.addEventListener('click', async () => {
+    const box = b.closest('.box');
+    if (!authReady) return note(box);
+    const { error } = await supabase!.auth.signInWithOAuth({ provider: b.dataset.provider as 'google' | 'apple', options: { redirectTo: appUrl() } });
+    if (error) note(box, error.message);
+  }));
+  document.querySelectorAll<HTMLFormElement>('form[data-auth]').forEach(f => f.addEventListener('submit', async e => {
+    e.preventDefault(); if (!f.reportValidity()) return;
+    const box = f.closest('.box');
+    if (!authReady) return note(box);
+    const fd = new FormData(f); const email = String(fd.get('email')); const password = String(fd.get('password'));
+    const btn = f.querySelector<HTMLButtonElement>('button[type=submit]'); btn && (btn.disabled = true);
+    const res = f.dataset.auth === 'signup'
+      ? await supabase!.auth.signUp({ email, password, options: { data: { name: fd.get('name'), mode: fd.get('mode') }, emailRedirectTo: appUrl() } })
+      : await supabase!.auth.signInWithPassword({ email, password });
+    btn && (btn.disabled = false);
+    if (res.error) return note(box, res.error.message);
+    if (f.dataset.auth === 'signup' && !res.data.session) return note(box, 'Sprawdź skrzynkę – wysłaliśmy link potwierdzający.');
+    location.href = appUrl();
+  }));
 </script>

@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import Paws from './Paws.astro';
 import StoreButtons from './StoreButtons.astro';
 import { t, type Lang } from '../i18n/content';
 interface Props { lang: Lang; variant?: 'a' | 'b' }
@@ -7,7 +8,7 @@ const { lang, variant = 'a' } = Astro.props;
 const c = t(lang);
 ---
 {variant === 'a' ? (
-<section id="top" class="hero">
+<section id="top" class="hero"><Paws layout="scatter" size={56} opacity={.1} />
   <div class="wrap grid-2 inner">
     <div class="copy">
       <span class="pill"><Icon name="check" size={16} stroke={2.6} />{c.hero.badge}</span>

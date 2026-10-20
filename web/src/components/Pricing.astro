@@ -1,11 +1,12 @@
 ---
 import Icon from './Icon.astro';
+import Paws from './Paws.astro';
 import { t, type Lang } from '../i18n/content';
 interface Props { lang: Lang; variant?: 'a' | 'b' }
 const { lang, variant = 'a' } = Astro.props;
 const c = t(lang); const P = c.pricing;
 ---
-<section id="cennik" class="pr section"><div class="wrap col">
+<section id="cennik" class="pr section"><Paws layout="trail-left" size={44} /><div class="wrap col">
   <div class="head"><span class="kicker">{P.kicker}</span><h2>{P.h2}</h2>
     <div class="toggle" role="group" aria-label={P.period}>
       <button type="button" class="on" data-period="year" aria-pressed="true">{P.yearly} <small>· {P.save}</small></button>
@@ -24,6 +25,7 @@ const c = t(lang); const P = c.pricing;
   </div>
 </div></section>
 <style>
+  section { position: relative; } .wrap { position: relative; z-index: 1; }
   .col { display: flex; flex-direction: column; gap: 32px; align-items: center; } .head { text-align: center; display: flex; flex-direction: column; gap: 12px; align-items: center; } h2 { font-size: 40px; }
   .toggle { display: inline-flex; background: var(--soft); border-radius: 999px; padding: 4px; margin-top: 8px; } [data-variant="b"] .toggle { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; }
   .toggle button { border: 0; border-radius: 999px; padding: 10px 18px; font-weight: 800; font-size: 14px; cursor: pointer; background: transparent; color: var(--muted); } [data-variant="b"] .toggle button { border-radius: 10px; }

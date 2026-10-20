@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PawPrint, Dog, Eye, EyeOff, Mail, Lock, ArrowLeft, ShieldCheck, Globe } from 'lucide-react';
 import { useStore } from '../app/store';
 import { demoState } from '../app/seed';
 import { Field, Wordmark } from '../components/ui';
 import type { Module } from '../app/types';
 import { setLanguage } from '../app/i18n';
+import { authReady, currentUser, onAuth, signInGoogle } from '../app/auth';
 
 type Step = 'module' | 'auth' | 'details';
 type Lang = 'pl' | 'en';
@@ -90,7 +91,17 @@ export default function Onboarding() {
     if (!pwOk) { setAuthErr(mode === 'login' ? L.errPwLogin : L.errPw); return; }
     setAuthErr(''); setProvider('email'); setStep('details');
   };
-  const google = () => { setAuthErr(''); setProvider('google'); if (!email) setEmail(''); setStep('details'); };
+  // sesja z Supabase (po powrocie z Google) → od razu do danych hodowli
+  useEffect(() => {
+    if (!authReady) return;
+    const apply = (u: Awaited<ReturnType<typeof currentUser>>) => { if (!u) return; setEmail(u.email); if (u.name) setName(n => n || u.name); setProvider(u.provider === 'google' ? 'google' : 'email'); setStep('details'); };
+    currentUser().then(apply); return onAuth(apply);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const google = async () => {
+    setAuthErr('');
+    if (authReady) { const { error } = await signInGoogle(); if (error) setAuthErr(error); return; } // przekierowanie do Google
+    setProvider('google'); if (!email) setEmail(''); setStep('details');
+  };
   const finish = () => setProfile({ module, breederName: name.trim(), kennelName: kennel.trim(), kennelNo: kennelNo.trim(), email: email.trim(), authProvider: provider, language: lang, onboarded: true });
 
   return (

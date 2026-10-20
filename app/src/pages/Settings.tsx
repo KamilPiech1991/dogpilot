@@ -10,6 +10,7 @@ import { emptyState, demoState } from '../app/seed';
 import { FREE_LIMITS, NOTIF_LABEL, type AppState, type Currency, type Member, type NotifKind, type NotifySettings } from '../app/types';
 import { fmtDate, fmtDateTime, fmtMoney, today, uid } from '../app/format';
 import { collectNotifications, notifySettings } from '../app/notifications';
+import { authReady, signOut } from '../app/auth';
 import { cloudInfo, deleteCloud, fmtBytes, loadCloud, saveCloud } from '../app/cloud';
 import { ConnectModal, FacebookMark, InstagramMark, ShareComposer, NETWORK_LABEL, type Network } from '../components/Social';
 import { NotifIcon } from '../components/NotifIcon';
@@ -108,7 +109,7 @@ export default function Settings() {
         <Card title="Plan" right={p.plan === 'pro' ? <ProBadge /> : <span className="badge gray">FREE</span>}>
           <div className="grid cols-2 stack-m">
             <div className="card soft"><b>FREE – 0 zł</b><ul className="muted" style={{ paddingLeft: 18 }}><li>{`do ${FREE_LIMITS.females} suk i ${FREE_LIMITS.males} psów`}</li><li>do {FREE_LIMITS.shows} wystaw, {FREE_LIMITS.championships} championatów</li><li>wykres wydatków: {FREE_LIMITS.chartMonths} z 6 miesięcy</li></ul></div>
-            <div className="card soft"><b>PRO – 89 zł/rok lub 12,99 zł/mies.</b><ul className="muted" style={{ paddingLeft: 18 }}><li>bez limitów psów, wystaw i championatów</li><li>pełne wykresy, raporty i dokumenty PDF</li><li>zespół hodowli, strona nabywcy, synchronizacja (w przygotowaniu)</li></ul></div>
+            <div className="card soft"><b>PRO – 29 zł/rok lub 3,99 zł/mies.</b><ul className="muted" style={{ paddingLeft: 18 }}><li>bez limitów psów, wystaw i championatów</li><li>pełne wykresy, raporty i dokumenty PDF</li><li>zespół hodowli, strona nabywcy, synchronizacja (w przygotowaniu)</li></ul></div>
           </div>
           <div className="row" style={{ marginTop: 10 }}>
             <button className="btn" onClick={() => { setProfile({ plan: p.plan === 'pro' ? 'free' : 'pro' }); toast(p.plan === 'pro' ? 'Przełączono na FREE' : 'Aktywowano PRO (tryb demo)'); }}>{p.plan === 'pro' ? 'Przełącz na FREE (demo)' : 'Aktywuj PRO (demo)'}</button>
@@ -222,6 +223,7 @@ export default function Settings() {
         </Card>
         <Card title="Usuń konto" className="danger-zone">
           <p>Usunięcie konta trwale kasuje wszystkie dane: psy, mioty, szczenięta, finanse, kopie w chmurze i połączenia z Facebookiem i Instagramem. Tej operacji nie można cofnąć.</p>
+          {authReady && <button className="btn ghost" onClick={() => signOut().then(() => { window.location.hash = '/'; window.location.reload(); })}>Wyloguj</button>}
           <button className="btn danger" onClick={() => setDelOpen(true)}><Trash2 size={16} /> Usuń konto i wszystkie dane</button>
         </Card>
         <Card title="O aplikacji">

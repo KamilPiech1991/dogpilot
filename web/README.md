@@ -5,3 +5,12 @@
 - Treści i ustawienia (e-mail, adres, linki do sklepów, endpoint formularzy, analityka): `src/i18n/content.ts` → `SITE`
 - Poradnik: pliki Markdown w `src/content/poradnik/`
 - Podgląd na GitHub Pages: workflow `.github/workflows/pages.yml` (prefiks `/dogpilot` dodaje `scripts/prefix-base.mjs`); produkcja na własnej domenie działa z katalogu głównego bez prefiksu.
+
+## Logowanie (Supabase Auth: Google, e-mail)
+1. Utwórz projekt Supabase (region Frankfurt) i w **Authentication → Providers** włącz Google (Client ID/Secret z Google Cloud Console → OAuth client, typ Web, authorized redirect URI: `https://<projekt>.supabase.co/auth/v1/callback`).
+2. W **Authentication → URL configuration** dodaj adresy strony i panelu (np. `https://dogpilot.pl`, `https://dogpilot.pl/app/`, podgląd `https://kamilpiech1991.github.io/dogpilot/app/`).
+3. Skopiuj `Project URL` i `anon key` do `web/.env` i `app/.env` (wzór: `.env.example`), a dla GitHub Pages do **Settings → Secrets and variables → Actions** jako `PUBLIC_SUPABASE_URL` i `PUBLIC_SUPABASE_ANON_KEY`.
+Bez tych wartości strona i panel działają w trybie demo (dane lokalne w przeglądarce).
+
+## Panel aplikacji webowej
+Prototyp z `app/` jest budowany w tym samym workflow i publikowany pod `/app/` (na podglądzie `/dogpilot/app/`). Docelowo: `app.dogpilot.pl` z `app/dist` bez prefiksu.
