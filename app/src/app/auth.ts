@@ -3,7 +3,7 @@ import { createClient, type SupabaseClient, type Session } from '@supabase/supab
 
 const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
 const key = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
-export const supabase: SupabaseClient | null = url && key ? createClient(url, key) : null;
+export const supabase: SupabaseClient | null = url && key ? createClient(url, key, { auth: { flowType: 'pkce', detectSessionInUrl: true, persistSession: true } }) : null;
 export const authReady = Boolean(supabase);
 
 export type AuthUser = { id: string; email: string; name: string; provider: 'email' | 'google' | 'apple' };
