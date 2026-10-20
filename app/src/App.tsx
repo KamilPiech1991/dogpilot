@@ -22,11 +22,13 @@ import Portal from './pages/Portal';
 import ShowCalendar from './pages/ShowCalendar';
 import DogWizard from './pages/DogWizard';
 import Notifications from './pages/Notifications';
+import SetPassword from './pages/SetPassword';
 
 export default function App() {
   const { state, toast } = useStore();
   const loc = useLocation();
   useEffect(() => { consumeAuthReturn().then(r => { if (r) toast(r.message, r.ok ? 5000 : 12000); }); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  if (loc.pathname === '/ustaw-haslo') return <SetPassword />;
   if (!state.profile.onboarded) return <Onboarding />;
   if (loc.pathname.startsWith('/portal/')) return <Routes><Route path="/portal/:id" element={<Portal />} /></Routes>;
   const breeder = state.profile.module === 'breeder';

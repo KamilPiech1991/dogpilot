@@ -5,7 +5,8 @@ import { demoState } from '../app/seed';
 import { Field, Wordmark } from '../components/ui';
 import type { Module } from '../app/types';
 import { setLanguage } from '../app/i18n';
-import { authReady, currentUser, onAuth, signInGoogle } from '../app/auth';
+import { authReady, currentUser, onAuth, signInGoogle, signInEmail, signUpEmail, rememberConsent, setPassword as savePassword, syncCustomer } from '../app/auth';
+const SITE_BASE = (import.meta.env.BASE_URL as string).replace(/app\/?$/, '');
 
 type Step = 'module' | 'auth' | 'details';
 type Lang = 'pl' | 'en';
@@ -20,7 +21,8 @@ const TXT = {
     regSub: 'Plan FREE bez karty. Dane synchronizują się między telefonem a komputerem.', loginSub: 'Zaloguj się, a Twoje psy i mioty będą czekać tam, gdzie je zostawiłeś.',
     email: 'Adres e-mail', emailPh: 'np. ania@hodowla.pl', pw: 'Hasło', pwHint: 'Co najmniej 8 znaków.', pwNew: 'Wymyśl hasło', pwCur: 'Twoje hasło', show: 'Pokaż hasło', hide: 'Ukryj hasło',
     forgot: 'Nie pamiętasz hasła?', doRegister: 'Załóż konto', doLogin: 'Zaloguj się', or: 'lub', gReg: 'Zarejestruj się kontem Google', gLogin: 'Zaloguj się kontem Google',
-    legalReg: 'Zakładając konto akceptujesz regulamin i politykę prywatności. Dane hodowli nie są udostępniane nikomu bez Twojej zgody.', legalLogin: 'Prototyp: logowanie jest symulowane, konto i synchronizacja pojawią się razem z backendem.',
+    legalReg: 'Zakładając konto akceptujesz regulamin i politykę prywatności. Dane hodowli nie są udostępniane nikomu bez Twojej zgody.',
+    consent1: 'Akceptuję', termsLink: 'regulamin', and: 'i', privacyLink: 'politykę prywatności', consent2: '. Wiem, że dane mojego konta (e-mail, imię, dostawca logowania) będą przechowywane w bazie klientów Dogpilot na serwerach w UE w celu świadczenia usługi.', errConsent: 'Zaznacz zgodę na regulamin i politykę prywatności.', confirmSent: 'Dziękujemy za rejestrację! Wysłaliśmy e-mail z potwierdzeniem – kliknij link w wiadomości, a potem zaloguj się.', setPwOpt: 'Hasło do logowania e-mailem (opcjonalnie)', setPwHint: 'Co najmniej 8 znaków. Bez hasła logujesz się kontem Google; link do ustawienia hasła wyślemy też e-mailem.', busy: 'Chwileczkę…', legalLogin: 'Prototyp: logowanie jest symulowane, konto i synchronizacja pojawią się razem z backendem.',
     errEmail: 'Podaj poprawny adres e-mail.', errPwLogin: 'Wpisz hasło.', errPw: 'Hasło powinno mieć co najmniej 8 znaków.',
     back: 'Logowanie', kennelData: 'Dane hodowli', yourData: 'Twoje dane', gLinked: 'Konto Google połączone.', account: 'Konto:', fewFields: 'Jeszcze tylko kilka pól i zaczynamy.',
     name: 'Twoje imię', namePh: 'np. Ania', kennel: 'Nazwa hodowli', kennelPh: 'np. z Zielonego Wzgórza', kennelNo: 'Numer hodowli (opcjonalnie)', gEmail: 'Adres e-mail konta Google', gEmailPh: 'np. ania@gmail.com', start: 'Zaczynamy',
@@ -35,7 +37,8 @@ const TXT = {
     regSub: 'FREE plan, no card needed. Your data syncs between phone and computer.', loginSub: 'Log in and your dogs and litters will be right where you left them.',
     email: 'E-mail address', emailPh: 'e.g. anna@kennel.com', pw: 'Password', pwHint: 'At least 8 characters.', pwNew: 'Create a password', pwCur: 'Your password', show: 'Show password', hide: 'Hide password',
     forgot: 'Forgot your password?', doRegister: 'Create account', doLogin: 'Log in', or: 'or', gReg: 'Sign up with Google', gLogin: 'Log in with Google',
-    legalReg: 'By creating an account you accept the terms and privacy policy. Kennel data is never shared without your consent.', legalLogin: 'Prototype: login is simulated; accounts and sync arrive with the backend.',
+    legalReg: 'By creating an account you accept the terms and privacy policy. Kennel data is never shared without your consent.',
+    consent1: 'I accept the', termsLink: 'terms of service', and: 'and', privacyLink: 'privacy policy', consent2: '. I understand that my account data (e-mail, name, login provider) will be stored in the Dogpilot customer database on EU servers to provide the service.', errConsent: 'Please accept the terms of service and privacy policy.', confirmSent: 'Thank you for signing up! We sent a confirmation e-mail – click the link, then log in.', setPwOpt: 'Password for e-mail login (optional)', setPwHint: 'At least 8 characters. Without it you log in with Google; we also e-mail you a link to set a password.', busy: 'One moment…', legalLogin: 'Prototype: login is simulated; accounts and sync arrive with the backend.',
     errEmail: 'Enter a valid e-mail address.', errPwLogin: 'Enter your password.', errPw: 'Password must be at least 8 characters.',
     back: 'Log in', kennelData: 'Kennel details', yourData: 'Your details', gLinked: 'Google account connected.', account: 'Account:', fewFields: 'Just a few fields and we are ready.',
     name: 'Your first name', namePh: 'e.g. Anna', kennel: 'Kennel name', kennelPh: 'e.g. Green Hill', kennelNo: 'Kennel number (optional)', gEmail: 'Google account e-mail', gEmailPh: 'e.g. anna@gmail.com', start: "Let's start",
@@ -75,6 +78,10 @@ export default function Onboarding() {
   const [showPw, setShowPw] = useState(false);
   const [authErr, setAuthErr] = useState('');
   const [provider, setProvider] = useState<'email' | 'google'>('email');
+  const [consent, setConsent] = useState(false);
+  const [newPw, setNewPw] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [authInfo, setAuthInfo] = useState('');
   const [name, setName] = useState(state.profile.breederName || '');
   const [kennel, setKennel] = useState(state.profile.kennelName || '');
   const [kennelNo, setKennelNo] = useState(state.profile.kennelNo || '');
@@ -86,10 +93,27 @@ export default function Onboarding() {
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   const pwOk = mode === 'login' ? password.length > 0 : password.length >= 8;
 
-  const submitAuth = () => {
+  const submitAuth = async () => {
     if (!emailOk) { setAuthErr(L.errEmail); return; }
     if (!pwOk) { setAuthErr(mode === 'login' ? L.errPwLogin : L.errPw); return; }
-    setAuthErr(''); setProvider('email'); setStep('details');
+    if (mode === 'register' && !consent) { setAuthErr(L.errConsent); return; }
+    setAuthErr(''); setAuthInfo('');
+    if (authReady) {
+      setBusy(true);
+      if (mode === 'register') {
+        const c = rememberConsent();
+        const r = await signUpEmail(email.trim(), password, { mode: module, language: lang, consent: c });
+        setBusy(false);
+        if (r.error) { setAuthErr(r.error); return; }
+        if (r.confirm) { setAuthInfo(L.confirmSent); return; } // potwierdzenie e-mailem – sesja powstanie po kliknięciu linku
+      } else {
+        const r = await signInEmail(email.trim(), password);
+        setBusy(false);
+        if (r.error) { setAuthErr(r.error); return; }
+      }
+      return; // efekt onAuth przeniesie do danych konta
+    }
+    setProvider('email'); setStep('details');
   };
   // sesja z Supabase (po powrocie z Google) → od razu do danych hodowli
   useEffect(() => {
@@ -99,10 +123,17 @@ export default function Onboarding() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const google = async () => {
     setAuthErr('');
-    if (authReady) { const { error } = await signInGoogle(); if (error) setAuthErr(error); return; } // przekierowanie do Google
+    if (mode === 'register' && !consent) { setAuthErr(L.errConsent); return; }
+    if (authReady) { if (mode === 'register') rememberConsent(); const { error } = await signInGoogle(); if (error) setAuthErr(error); return; } // przekierowanie do Google
     setProvider('google'); if (!email) setEmail(''); setStep('details');
   };
-  const finish = () => setProfile({ module, breederName: name.trim(), kennelName: kennel.trim(), kennelNo: kennelNo.trim(), email: email.trim(), authProvider: provider, language: lang, onboarded: true });
+  const finish = async () => {
+    if (authReady) {
+      if (provider === 'google' && newPw) { if (newPw.length < 8) { setAuthErr(L.errPw); return; } const r = await savePassword(newPw); if (r.error) { setAuthErr(r.error); return; } }
+      syncCustomer({ full_name: name.trim(), mode: module, kennel_name: module === 'breeder' ? kennel.trim() : undefined, language: lang });
+    }
+    setProfile({ module, breederName: name.trim(), kennelName: kennel.trim(), kennelNo: kennelNo.trim(), email: email.trim(), authProvider: provider, language: lang, onboarded: true });
+  };
 
   return (
     <div className="module-pick">
@@ -161,12 +192,14 @@ export default function Onboarding() {
                 <div className="input-ico"><Lock size={18} /><input type={showPw ? 'text' : 'password'} autoComplete={mode === 'register' ? 'new-password' : 'current-password'} value={password} onChange={e => setPassword(e.target.value)} placeholder={mode === 'register' ? L.pwNew : L.pwCur} /><button type="button" className="icon-btn" aria-label={showPw ? L.hide : L.show} onClick={() => setShowPw(s => !s)}>{showPw ? <EyeOff size={18} /> : <Eye size={18} />}</button></div>
               </Field>
               {mode === 'login' && <div style={{ textAlign: 'right', marginTop: -4 }}><a href="#" onClick={e => e.preventDefault()} style={{ fontSize: 13, fontWeight: 700 }}>{L.forgot}</a></div>}
+              {mode === 'register' && <label className="consent"><input type="checkbox" checked={consent} onChange={e => setConsent(e.target.checked)} /><span>{L.consent1} <a href={`${SITE_BASE}regulamin`} target="_blank" rel="noopener">{L.termsLink}</a> {L.and} <a href={`${SITE_BASE}polityka-prywatnosci`} target="_blank" rel="noopener">{L.privacyLink}</a>{L.consent2}</span></label>}
               {authErr && <div className="badge danger" style={{ marginTop: 8 }}>{authErr}</div>}
-              <button type="submit" className="btn" style={{ width: '100%', marginTop: 12, height: 48 }}>{mode === 'register' ? L.doRegister : L.doLogin}</button>
+              {authInfo && <div className="badge" style={{ marginTop: 8, whiteSpace: 'normal', textAlign: 'left' }}>{authInfo}</div>}
+              <button type="submit" className="btn" style={{ width: '100%', marginTop: 12, height: 48 }} disabled={busy}>{busy ? L.busy : mode === 'register' ? L.doRegister : L.doLogin}</button>
             </form>
             <div className="auth-or"><span>{L.or}</span></div>
             <button className="btn google" onClick={google}><GoogleMark /> {mode === 'register' ? L.gReg : L.gLogin}</button>
-            <div className="muted" style={{ fontSize: 12, display: 'flex', gap: 6, alignItems: 'flex-start', marginTop: 12 }}><ShieldCheck size={16} style={{ flexShrink: 0, marginTop: 1 }} /><span>{mode === 'register' ? L.legalReg : L.legalLogin}</span></div>
+            {mode === 'login' && <div className="muted" style={{ fontSize: 12, display: 'flex', gap: 6, alignItems: 'flex-start', marginTop: 12 }}><ShieldCheck size={16} style={{ flexShrink: 0, marginTop: 1 }} /><span>{L.legalLogin}</span></div>}
           </div>
         )}
 
@@ -181,6 +214,8 @@ export default function Onboarding() {
               <Field label={L.kennelNo}><input value={kennelNo} onChange={e => setKennelNo(e.target.value)} /></Field>
             </>}
             {provider === 'google' && <Field label={L.gEmail}><input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder={L.gEmailPh} /></Field>}
+            {provider === 'google' && authReady && <Field label={L.setPwOpt} hint={L.setPwHint}><input type="password" autoComplete="new-password" value={newPw} onChange={e => setNewPw(e.target.value)} /></Field>}
+            {authErr && <div className="badge danger" style={{ marginBottom: 8 }}>{authErr}</div>}
             <button className="btn" style={{ width: '100%', height: 48 }} disabled={!name.trim()} onClick={finish}>{L.start}</button>
           </div>
         )}

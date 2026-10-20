@@ -15,14 +15,14 @@ const c = t(lang).login; const login = mode === 'login';
       <nav class="tabs" aria-label={c.tabs}><a href="/logowanie" aria-current={login ? 'page' : undefined}>{c.tabLogin}</a><a href="/rejestracja" aria-current={!login ? 'page' : undefined}>{c.tabSignup}</a></nav>
       <div class="social"><button type="button" class="btn btn-o" data-provider="google"><Icon name="google" size={18} />{c.google}</button><button type="button" class="btn btn-o" data-provider="apple"><Icon name="apple" size={18} />{c.apple}</button></div>
       <div class="or"><span></span>{c.or}<span></span></div>
-      <form method="post" action="#" data-auth={mode} novalidate>
+      <form method="post" action="#" data-auth={mode} data-consent-msg={c.consentMissing} data-confirm-msg={c.confirmSent} novalidate>
         {!login && <div class="field"><label for="name">{c.name}</label><input id="name" name="name" type="text" placeholder={c.namePh} autocomplete="given-name" required></div>}
         <div class="field"><label for="email">{c.email}</label><input id="email" name="email" type="email" placeholder={c.emailPh} autocomplete="email" required></div>
         <div class="field"><div class="row"><label for="pass">{c.pass}</label>{login && <a href="#reset" class="sm">{c.forgot}</a>}</div><input id="pass" name="password" type="password" placeholder={login ? c.passLogin : c.passSignup} autocomplete={login ? 'current-password' : 'new-password'} minlength="8" required></div>
         {!login && <fieldset><legend>{c.mode}</legend><label class="opt on"><input type="radio" name="mode" value="breeder" checked>{c.breeder}</label><label class="opt"><input type="radio" name="mode" value="owner">{c.owner}</label></fieldset>}
         {login && <label class="rem"><input type="checkbox" name="remember" checked>{c.remember}</label>}
+        {!login && <label class="consent"><input type="checkbox" name="consent" required><span>{c.consent1} <a href="/regulamin" target="_blank" rel="noopener">{c.termsLink}</a> {c.and} <a href="/polityka-prywatnosci" target="_blank" rel="noopener">{c.privacyLink}</a>{c.consent2}</span></label>}
         <button type="submit" class="btn btn-p submit">{login ? c.ctaLogin : c.ctaSignup}</button>
-        {!login && <p class="terms muted">{c.terms}</p>}
         <p class="soon muted" hidden>{c.soon}</p>
       </form>
       <div class="hint"><span class="ic"><Icon name="phone" size={18} stroke={2.2} /></span><span>{c.mobileHint}</span></div>
@@ -51,6 +51,7 @@ const c = t(lang).login; const login = mode === 'login';
   fieldset { border: 0; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } legend { font-size: 13px; font-weight: 800; margin-bottom: 8px; }
   .opt { display: flex; gap: 10px; align-items: center; border: 2px solid var(--border); background: var(--surface); border-radius: 14px; padding: 12px; cursor: pointer; font-weight: 800; font-size: 14px; } .opt:has(input:checked) { border-color: var(--primary); background: var(--soft); } .opt input { accent-color: var(--primary); }
   .rem { display: flex; gap: 10px; align-items: center; font-size: 14px; color: var(--muted); } .rem input { accent-color: var(--primary); width: 18px; height: 18px; }
+  .consent { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; line-height: 1.45; color: var(--muted); cursor: pointer; } .consent input { width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--primary); flex-shrink: 0; } .consent a { font-weight: 800; }
   .submit { min-height: 54px; width: 100%; } .terms { font-size: 12px; line-height: 1.5; } .terms a { font-weight: 800; } .soon { font-size: 13px; background: var(--soft); border-radius: 12px; padding: 10px 12px; }
   .hint { display: flex; gap: 10px; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 12px 14px; font-size: 13px; color: var(--muted); } .ic { width: 36px; height: 36px; border-radius: 10px; background: var(--soft); color: var(--primary-text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .bottom { display: flex; justify-content: space-between; gap: 16px; font-size: 13px; flex-wrap: wrap; } .links { display: flex; gap: 14px; } .links a[aria-current] { font-weight: 800; }
@@ -71,8 +72,21 @@ const c = t(lang).login; const login = mode === 'login';
   { const q = new URLSearchParams(location.search); const h = new URLSearchParams(location.hash.slice(1)); const err = q.get('error_description') || h.get('error_description') || q.get('error') || h.get('error'); if (err) note(document.querySelector('.box'), `Logowanie nie powiodło się: ${err.replace(/\+/g, ' ')}`); }
   // już zalogowany → prosto do panelu
   if (authReady) supabase!.auth.getSession().then(({ data }) => { if (data.session) location.replace(appUrl()); });
+  // wersje dokumentów akceptowanych przy rejestracji (te same co w panelu)
+  const TERMS_VERSION = '2026-10-20', PRIVACY_VERSION = '2026-10-20';
+  const consentOf = (form: HTMLFormElement | null) => {
+    if (!form || form.dataset.auth !== 'signup') return { ok: true, data: null };
+    const cb = form.querySelector<HTMLInputElement>('input[name="consent"]');
+    if (cb && !cb.checked) { cb.focus(); return { ok: false, data: null }; }
+    const data = { terms_version: TERMS_VERSION, privacy_version: PRIVACY_VERSION, terms_accepted_at: new Date().toISOString(), marketing_consent: false };
+    try { localStorage.setItem('dogpilot.consent', JSON.stringify(data)); } catch { /* bez pamięci */ }
+    return { ok: true, data };
+  };
   document.querySelectorAll<HTMLButtonElement>('[data-provider]').forEach(b => b.addEventListener('click', async () => {
     const box = b.closest('.box');
+    const form = box?.querySelector<HTMLFormElement>('form[data-auth]') ?? null;
+    const consent = consentOf(form);
+    if (!consent.ok) return note(box, form?.dataset.consentMsg);
     if (!authReady) return note(box);
     const { error } = await supabase!.auth.signInWithOAuth({ provider: b.dataset.provider as 'google' | 'apple', options: { redirectTo: appUrl() } });
     if (error) note(box, error.message);
@@ -80,15 +94,17 @@ const c = t(lang).login; const login = mode === 'login';
   document.querySelectorAll<HTMLFormElement>('form[data-auth]').forEach(f => f.addEventListener('submit', async e => {
     e.preventDefault(); if (!f.reportValidity()) return;
     const box = f.closest('.box');
+    const consent = consentOf(f);
+    if (!consent.ok) return note(box, f.dataset.consentMsg);
     if (!authReady) return note(box);
     const fd = new FormData(f); const email = String(fd.get('email')); const password = String(fd.get('password'));
     const btn = f.querySelector<HTMLButtonElement>('button[type=submit]'); btn && (btn.disabled = true);
     const res = f.dataset.auth === 'signup'
-      ? await supabase!.auth.signUp({ email, password, options: { data: { name: fd.get('name'), mode: fd.get('mode') }, emailRedirectTo: appUrl() } })
+      ? await supabase!.auth.signUp({ email, password, options: { data: { full_name: fd.get('name'), mode: fd.get('mode'), language: document.documentElement.lang || 'pl', ...(consent.data ?? {}) }, emailRedirectTo: appUrl() } })
       : await supabase!.auth.signInWithPassword({ email, password });
     btn && (btn.disabled = false);
     if (res.error) return note(box, res.error.message);
-    if (f.dataset.auth === 'signup' && !res.data.session) return note(box, 'Sprawdź skrzynkę – wysłaliśmy link potwierdzający.');
+    if (f.dataset.auth === 'signup' && !res.data.session) return note(box, f.dataset.confirmMsg || 'Sprawdź skrzynkę – wysłaliśmy link potwierdzający.');
     location.href = appUrl();
   }));
 </script>
