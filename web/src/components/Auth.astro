@@ -1,0 +1,67 @@
+---
+// Panel logowania / rejestracji aplikacji webowej. Formularz jest gotowy pod Supabase Auth (data-action), do czasu backendu pokazuje notę.
+import Icon from './Icon.astro';
+import { t, type Lang } from '../i18n/content';
+interface Props { lang: Lang; mode: 'login' | 'signup'; variant?: 'a' | 'b' }
+const { lang, mode, variant = 'a' } = Astro.props;
+const c = t(lang).login; const login = mode === 'login';
+---
+<div class={`auth ${variant}`}>
+  <div class="form-col">
+    <div class="top"><a href={lang === 'pl' ? '/' : '/en/'} class="logo" aria-label="Dogpilot"><img src="/brand/icon-512.png" alt="" width="40" height="40"><img src={variant === 'b' ? '/brand/wordmark-white.png' : '/brand/wordmark.png'} alt="Dogpilot" width="130" height="26"></a><a href={lang === 'pl' ? '/' : '/en/'} class="back"><Icon name="back" size={16} stroke={2.4} />{c.back}</a></div>
+    <div class="center"><div class="box">
+      <div class="head"><span class="kicker">{c.kicker}</span><h1>{login ? c.titleLogin : c.titleSignup}</h1><p class="muted">{login ? c.leadLogin : c.leadSignup}</p></div>
+      <nav class="tabs" aria-label={c.tabs}><a href="/logowanie" aria-current={login ? 'page' : undefined}>{c.tabLogin}</a><a href="/rejestracja" aria-current={!login ? 'page' : undefined}>{c.tabSignup}</a></nav>
+      <div class="social"><button type="button" class="btn btn-o" data-provider="google"><Icon name="google" size={18} />{c.google}</button><button type="button" class="btn btn-o" data-provider="apple"><Icon name="apple" size={18} />{c.apple}</button></div>
+      <div class="or"><span></span>{c.or}<span></span></div>
+      <form method="post" action="#" data-auth={mode} novalidate>
+        {!login && <div class="field"><label for="name">{c.name}</label><input id="name" name="name" type="text" placeholder={c.namePh} autocomplete="given-name" required></div>}
+        <div class="field"><label for="email">{c.email}</label><input id="email" name="email" type="email" placeholder={c.emailPh} autocomplete="email" required></div>
+        <div class="field"><div class="row"><label for="pass">{c.pass}</label>{login && <a href="#reset" class="sm">{c.forgot}</a>}</div><input id="pass" name="password" type="password" placeholder={login ? c.passLogin : c.passSignup} autocomplete={login ? 'current-password' : 'new-password'} minlength="8" required></div>
+        {!login && <fieldset><legend>{c.mode}</legend><label class="opt on"><input type="radio" name="mode" value="breeder" checked>{c.breeder}</label><label class="opt"><input type="radio" name="mode" value="owner">{c.owner}</label></fieldset>}
+        {login && <label class="rem"><input type="checkbox" name="remember" checked>{c.remember}</label>}
+        <button type="submit" class="btn btn-p submit">{login ? c.ctaLogin : c.ctaSignup}</button>
+        {!login && <p class="terms muted">{c.terms}</p>}
+        <p class="soon muted" hidden>{c.soon} <a href="https://kamilpiech1991.github.io/dogpilot/" rel="noopener">→</a></p>
+      </form>
+      <div class="hint"><span class="ic"><Icon name="phone" size={18} stroke={2.2} /></span><span>{c.mobileHint}</span></div>
+    </div></div>
+    <div class="bottom muted"><span>© {new Date().getFullYear()} Qamitech · Dogpilot</span><span class="links"><a href="/kontakt">{c.help}</a><a href="/polityka-prywatnosci">{c.privacy}</a><a href="/logowanie" aria-current={lang === 'pl' ? 'page' : undefined}>Polski</a><a href="/en/logowanie">English</a></span></div>
+  </div>
+  <aside class="art">
+    <div class="copy"><h2>{c.sideH2}</h2><p>{c.sideP}</p></div>
+    <img class="photo" src="/brand/header2-800.webp" alt="" width="800" height="450" loading="lazy">
+    <img class="shot" src={variant === 'b' ? '/img/app/d-start-dark.webp' : '/img/app/d-start.webp'} alt="" width="1440" height="900" loading="lazy">
+    <ul>{c.sideBadges.map(b => <li>{b}</li>)}</ul>
+  </aside>
+</div>
+<style>
+  .auth { min-height: 100vh; display: grid; grid-template-columns: 1.05fr 0.95fr; }
+  .form-col { display: flex; flex-direction: column; padding: 28px 48px 40px; }
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 16px; } .logo { display: flex; align-items: center; gap: 10px; } .logo img:first-child { border-radius: 12px; } .logo img:last-child { height: 26px; width: auto; } .back { font-weight: 800; font-size: 14px; display: inline-flex; gap: 6px; align-items: center; }
+  .center { flex: 1; display: flex; align-items: center; justify-content: center; padding: 32px 0; } .box { width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: 22px; }
+  .head { display: flex; flex-direction: column; gap: 8px; } h1 { font-size: 34px; }
+  .tabs { display: flex; gap: 6px; background: var(--soft); border-radius: 16px; padding: 5px; } .tabs a { flex: 1; text-align: center; min-height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 12px; font-weight: 800; font-size: 15px; color: var(--muted); } .tabs a[aria-current] { background: var(--surface); color: var(--primary-text); }
+  .b .tabs { background: var(--surface); border: 1px solid var(--border); } .b .tabs a[aria-current] { background: var(--primary); color: var(--on-primary); }
+  .social { display: flex; flex-direction: column; gap: 10px; } .social .btn { width: 100%; }
+  .or { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 13px; } .or span { flex: 1; height: 1px; background: var(--border); }
+  form { display: flex; flex-direction: column; gap: 14px; } .field { display: flex; flex-direction: column; gap: 6px; } .field label { font-size: 13px; font-weight: 800; } .row { display: flex; justify-content: space-between; align-items: center; } .sm { font-size: 13px; font-weight: 800; }
+  input[type=text], input[type=email], input[type=password] { height: 50px; border-radius: 14px; border: 2px solid var(--border); background: var(--surface); padding: 0 14px; font: inherit; font-size: 16px; color: var(--text); width: 100%; } input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--soft); }
+  fieldset { border: 0; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } legend { font-size: 13px; font-weight: 800; margin-bottom: 8px; }
+  .opt { display: flex; gap: 10px; align-items: center; border: 2px solid var(--border); background: var(--surface); border-radius: 14px; padding: 12px; cursor: pointer; font-weight: 800; font-size: 14px; } .opt:has(input:checked) { border-color: var(--primary); background: var(--soft); } .opt input { accent-color: var(--primary); }
+  .rem { display: flex; gap: 10px; align-items: center; font-size: 14px; color: var(--muted); } .rem input { accent-color: var(--primary); width: 18px; height: 18px; }
+  .submit { min-height: 54px; width: 100%; } .terms { font-size: 12px; line-height: 1.5; } .terms a { font-weight: 800; } .soon { font-size: 13px; background: var(--soft); border-radius: 12px; padding: 10px 12px; }
+  .hint { display: flex; gap: 10px; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 12px 14px; font-size: 13px; color: var(--muted); } .ic { width: 36px; height: 36px; border-radius: 10px; background: var(--soft); color: var(--primary-text); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .bottom { display: flex; justify-content: space-between; gap: 16px; font-size: 13px; flex-wrap: wrap; } .links { display: flex; gap: 14px; } .links a[aria-current] { font-weight: 800; }
+  .art { position: relative; overflow: hidden; background: linear-gradient(160deg, #32BF46 0%, #1F8A30 100%); color: #FFFFFF; display: flex; flex-direction: column; justify-content: space-between; padding: 40px 48px; gap: 24px; }
+  .b .art { background: var(--surface); border-left: 1px solid var(--border); color: var(--text); }
+  .copy { display: flex; flex-direction: column; gap: 10px; max-width: 520px; } .copy h2 { font-size: 30px; } .copy p { opacity: .95; }
+  .photo { width: 100%; height: 260px; object-fit: cover; border-radius: 24px; box-shadow: 0 20px 44px rgba(0,0,0,.22); } .shot { width: 92%; margin: -120px auto 0; border-radius: 16px; box-shadow: 0 24px 56px rgba(0,0,0,.3); border: 4px solid rgba(255,255,255,.25); position: relative; }
+  .art ul { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; font-size: 13px; font-weight: 800; } .art li { background: rgba(255,255,255,.14); border-radius: 14px; padding: 12px; } .b .art li { background: var(--surface-2); }
+  @media (max-width: 900px) { .auth { grid-template-columns: 1fr; } .art { display: none; } .form-col { padding: 20px 20px 32px; } h1 { font-size: 28px; } }
+</style>
+<script>
+  // Do czasu backendu formularz pokazuje notę zamiast wysyłać dane.
+  document.querySelectorAll<HTMLFormElement>('form[data-auth]').forEach(f => f.addEventListener('submit', e => { e.preventDefault(); if (!f.reportValidity()) return; f.querySelector('.soon')?.removeAttribute('hidden'); }));
+  document.querySelectorAll<HTMLButtonElement>('[data-provider]').forEach(b => b.addEventListener('click', () => b.closest('.box')?.querySelector('.soon')?.removeAttribute('hidden')));
+</script>

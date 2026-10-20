@@ -1,0 +1,8 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Landing from '../components/Landing.astro';
+import { t } from '../i18n/content';
+const c = t('pl');
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: c.faq.items.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) };
+---
+<Layout lang="pl" variant="a" path="/" schema={[faqSchema]}><Landing lang="pl" variant="a" /></Layout>

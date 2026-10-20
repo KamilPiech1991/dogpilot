@@ -1,0 +1,42 @@
+---
+import Icon from './Icon.astro';
+import { t, type Lang } from '../i18n/content';
+interface Props { lang: Lang; variant?: 'a' | 'b' }
+const { lang, variant = 'a' } = Astro.props;
+const c = t(lang);
+const home = lang === 'pl' ? (variant === 'b' ? '/b/' : '/') : '/en/';
+const links = [[c.nav.features, home + '#funkcje'], [c.nav.pricing, home + '#cennik'], [c.nav.guide, lang === 'pl' ? '/poradnik' : home + '#guide'], [c.nav.faq, home + '#faq'], [c.nav.contact, '/kontakt']];
+---
+<header class="hdr">
+  <div class="wrap bar">
+    <a href={home} class="logo" aria-label="Dogpilot – strona główna"><img src="/brand/icon-512.png" alt="" width="40" height="40"><img src={variant === 'b' ? '/brand/wordmark-white.png' : '/brand/wordmark.png'} alt="Dogpilot" class="wm" width="130" height="26"></a>
+    <nav class="nav" aria-label={lang === 'pl' ? 'Główna' : 'Main'}>{links.map(([l, h]) => <a href={h}>{l}</a>)}</nav>
+    <div class="actions">
+      <a href="/logowanie" class="btn btn-o btn-sm hide-m">{c.nav.login}</a>
+      <a href="/rejestracja" class="btn btn-p btn-sm">{c.nav.signup}</a>
+      <button type="button" class="burger" aria-label={c.nav.menu} aria-expanded="false" aria-controls="mnav"><Icon name="menu" size={22} stroke={2.4} /></button>
+    </div>
+  </div>
+  <nav id="mnav" class="mnav" aria-label={c.nav.menu} hidden>
+    {links.map(([l, h]) => <a href={h}>{l}</a>)}
+    <a href="/logowanie" class="btn btn-o">{c.nav.login}</a>
+    <a href="/rejestracja" class="btn btn-p">{c.nav.signup}</a>
+  </nav>
+</header>
+<style>
+  .hdr { position: sticky; top: 0; z-index: 30; background: color-mix(in srgb, var(--bg) 88%, transparent); border-bottom: 1px solid var(--border); backdrop-filter: blur(10px); }
+  .bar { height: 76px; display: flex; align-items: center; gap: 28px; }
+  .logo { display: flex; align-items: center; gap: 10px; } .logo img:first-child { border-radius: 12px; } .wm { height: 26px; width: auto; }
+  .nav { display: flex; gap: 26px; margin-left: 12px; } .nav a { color: var(--text); font-weight: 700; font-size: 15px; } .nav a:hover { color: var(--primary-text); }
+  .actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .burger { display: none; width: 44px; height: 44px; border-radius: 12px; border: 2px solid var(--border); background: var(--surface); color: var(--text); align-items: center; justify-content: center; cursor: pointer; }
+  .mnav { display: none; flex-direction: column; gap: 4px; padding: 12px 24px 20px; border-top: 1px solid var(--border); background: var(--bg); }
+  .mnav a { padding: 12px 6px; font-weight: 800; font-size: 18px; color: var(--text); border-bottom: 1px solid var(--border); }
+  .mnav .btn { margin-top: 10px; border-bottom: 0; font-size: 16px; }
+  .mnav:not([hidden]) { display: flex; }
+  @media (max-width: 900px) { .nav, .hide-m { display: none; } .burger { display: flex; } .bar { height: 64px; } }
+</style>
+<script>
+  const b = document.querySelector('.burger'), m = document.getElementById('mnav');
+  b?.addEventListener('click', () => { const open = m!.hasAttribute('hidden'); if (open) m!.removeAttribute('hidden'); else m!.setAttribute('hidden', ''); b.setAttribute('aria-expanded', String(open)); });
+</script>

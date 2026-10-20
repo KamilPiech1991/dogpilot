@@ -1,0 +1,27 @@
+---
+import Icon from './Icon.astro';
+import { t, type Lang } from '../i18n/content';
+interface Props { lang: Lang; variant?: 'a' | 'b' }
+const { lang, variant = 'a' } = Astro.props;
+const c = t(lang);
+const meta = [['paw', 'var(--soft)', 'var(--primary-text)'], ['heart', '#FDE7F1', '#9D174D'], ['wallet', '#E3EDFE', '#1E3A8A'], ['trophy', '#FDF1D8', '#8A5A00']];
+const metaB = [['paw', '#4FD463'], ['heart', '#F08A7A'], ['wallet', '#7FB5FF'], ['trophy', '#F5CD6B']];
+---
+{variant === 'a' ? (
+<section class="pil"><div class="wrap grid-4">{c.pillars.items.map(([h, p], i) => <div class="card reveal"><span class="ic" style={`background:${meta[i][1]};color:${meta[i][2]}`}><Icon name={meta[i][0]} /></span><h3>{h}</h3><p class="muted">{p}</p></div>)}</div></section>
+) : (
+<section class="section"><div class="wrap"><div class="head"><span class="kicker">{c.pillars.kicker}</span><h2>{c.pillars.h2}</h2></div>
+  <div class="bento">{c.pillars.items.map(([h, p], i) => <div class={`tile reveal ${i < 2 ? 'span3' : 'span2'}`}><span style={`color:${metaB[i][1]}`}><Icon name={metaB[i][0]} size={30} /></span><h3>{h}</h3><p class="muted">{p}</p></div>)}
+    <a href="#demo" class="tile span2 vid" aria-label={c.video.play}><img src="/img/app/d-finanse.webp" alt="" width="1440" height="900" loading="lazy"><span class="ov"><span class="pb"><Icon name="play" size={26} /></span><b>{c.video.note}</b></span></a>
+  </div></div></section>
+)}
+<style>
+  .pil { background: var(--surface); padding: 24px 0 72px; } .card { display: flex; flex-direction: column; gap: 12px; }
+  .ic { width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; } h3 { font-size: 19px; } .card p { font-size: 15px; }
+  .head { display: flex; flex-direction: column; gap: 12px; max-width: 760px; margin-bottom: 36px; } .head h2 { font-size: 48px; letter-spacing: -.8px; }
+  .tile { display: flex; flex-direction: column; gap: 10px; min-height: 220px; } .tile h3 { font-size: 24px; }
+  .vid { padding: 0; display: block; } .vid img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .55; }
+  .ov { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--text); font-size: 14px; }
+  .pb { width: 64px; height: 64px; border-radius: 50%; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; }
+  @media (max-width: 900px) { .head h2 { font-size: 32px; } }
+</style>

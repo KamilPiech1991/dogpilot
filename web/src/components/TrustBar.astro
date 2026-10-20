@@ -1,0 +1,19 @@
+---
+import Icon from './Icon.astro';
+import { t, type Lang } from '../i18n/content';
+interface Props { lang: Lang; variant?: 'a' | 'b' }
+const { lang, variant = 'a' } = Astro.props;
+const c = t(lang);
+const icons = ['shield', 'monitor', 'sun', 'chart'];
+---
+{variant === 'a' ? (
+<section class="trust"><div class="wrap row">{c.trust.map((x, i) => <span><Icon name={icons[i]} size={20} stroke={2.2} />{x}</span>)}</div></section>
+) : (
+<section class="trust b"><div class="wrap row">{c.trustB.map(x => <span>{x}</span>)}</div></section>
+)}
+<style>
+  .trust { background: var(--surface); padding: 8px 0 40px; }
+  .row { display: flex; flex-wrap: wrap; gap: 14px 40px; justify-content: center; align-items: center; color: var(--muted); font-weight: 700; font-size: 15px; }
+  .row span { display: inline-flex; align-items: center; gap: 8px; } .row svg { color: var(--primary-text); }
+  .b { background: var(--dark); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 22px 0; } .b .row { font-size: 14px; font-weight: 800; letter-spacing: .3px; gap: 14px 44px; }
+</style>

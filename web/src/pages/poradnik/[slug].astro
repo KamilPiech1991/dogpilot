@@ -1,0 +1,25 @@
+---
+import { getCollection, render } from 'astro:content';
+import Doc from '../../layouts/Doc.astro';
+import FinalCta from '../../components/FinalCta.astro';
+import { SITE } from '../../i18n/content';
+export async function getStaticPaths() { return (await getCollection('poradnik')).map(p => ({ params: { slug: p.id }, props: { post: p } })); }
+const { post } = Astro.props; const { Content } = await render(post);
+const others = (await getCollection('poradnik')).filter(p => p.id !== post.id).slice(0, 3);
+const schema = [{ '@context': 'https://schema.org', '@type': 'Article', headline: post.data.title, description: post.data.description, datePublished: post.data.date.toISOString(), author: { '@type': 'Organization', name: SITE.company }, publisher: { '@type': 'Organization', name: SITE.company } },
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Poradnik', item: new URL('/poradnik', SITE.url).href }, { '@type': 'ListItem', position: 2, name: post.data.title }] }];
+---
+<Doc title={post.data.title} description={post.data.description} path={`/poradnik/${post.id}`} kicker={`Poradnik · ${post.data.category}`} schema={schema}>
+  <p slot="meta" class="muted meta">{post.data.date.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' })} · {post.data.minutes} min czytania</p>
+  <Content />
+  <div slot="after">
+    {post.data.feature && <aside class="feat"><div class="phone"><img src={`/img/app/${post.data.image}.webp`} alt="" width="390" height="844" loading="lazy"></div><div><span class="kicker">Jak to działa w Dogpilot</span><p>{post.data.feature}</p><a href="/rejestracja" class="btn btn-p">Wypróbuj za darmo</a></div></aside>}
+    <section class="more"><h2>Przeczytaj także</h2><ul>{others.map(o => <li><a href={`/poradnik/${o.id}`}>{o.data.title}</a><span class="muted"> · {o.data.minutes} min</span></li>)}</ul></section>
+  </div>
+</Doc>
+<FinalCta lang="pl" />
+<style>
+  .meta { font-size: 14px; } .feat { margin: 48px 0; display: grid; grid-template-columns: 180px 1fr; gap: 28px; align-items: center; background: var(--soft); border-radius: 24px; padding: 28px; } .feat .phone { width: 180px; padding: 6px; border-radius: 26px; } .feat .phone img { border-radius: 20px; } .feat div:last-child { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .more h2 { font-size: 24px; margin-bottom: 12px; } .more ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; } .more a { font-weight: 800; }
+  @media (max-width: 700px) { .feat { grid-template-columns: 1fr; } .feat .phone { width: 150px; } }
+</style>

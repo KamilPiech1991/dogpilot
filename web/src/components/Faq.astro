@@ -1,0 +1,18 @@
+---
+import { t, type Lang } from '../i18n/content';
+interface Props { lang: Lang; variant?: 'a' | 'b' }
+const { lang, variant = 'a' } = Astro.props;
+const c = t(lang);
+---
+<section id="faq" class={`fq ${variant}`}><div class="wrap two">
+  <div class="intro"><span class="kicker">{c.faq.kicker}</span><h2>{c.faq.h2}</h2><p class="muted">{c.faq.p}</p><a href="/kontakt" class="btn btn-o">{c.faq.cta}</a></div>
+  <div class="list">{c.faq.items.map(([q, a], i) => <details open={i === 0}><summary>{q}<span class="mark" aria-hidden="true"></span></summary><p class="muted">{a}</p></details>)}</div>
+</div></section>
+<style>
+  .fq { padding: 88px 0; } .fq.a { background: var(--surface); } .fq.b { border-top: 1px solid var(--border); }
+  .two { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 48px; } .intro { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; } h2 { font-size: 40px; }
+  details { border-bottom: 1px solid var(--border); } summary { list-style: none; cursor: pointer; padding: 18px 0; font-weight: 800; font-size: 17px; display: flex; justify-content: space-between; align-items: center; gap: 16px; } summary::-webkit-details-marker { display: none; }
+  .mark { width: 28px; height: 28px; border-radius: 50%; background: var(--soft); color: var(--primary-text); flex-shrink: 0; position: relative; } .mark::before, .mark::after { content: ''; position: absolute; left: 50%; top: 50%; width: 12px; height: 2.5px; background: currentColor; transform: translate(-50%, -50%); } .mark::after { transform: translate(-50%, -50%) rotate(90deg); transition: transform .2s; } details[open] .mark::after { transform: translate(-50%, -50%) rotate(0); }
+  details p { padding: 0 0 18px; font-size: 15px; }
+  @media (max-width: 900px) { .two { grid-template-columns: 1fr; gap: 24px; } h2 { font-size: 30px; } .fq { padding: 56px 0; } }
+</style>

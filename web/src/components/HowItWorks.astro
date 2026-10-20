@@ -1,0 +1,14 @@
+---
+import { t, type Lang } from '../i18n/content';
+interface Props { lang: Lang }
+const c = t(Astro.props.lang);
+---
+<section class="section"><div class="wrap col">
+  <div class="head"><span class="kicker">{c.how.kicker}</span><h2>{c.how.h2}</h2></div>
+  <div class="grid-3">{c.how.steps.map(([h, p], i) => <div class="card reveal"><span class="n">{i + 1}</span><h3>{h}</h3><p class="muted">{p}</p></div>)}</div>
+</div></section>
+<style>
+  .col { display: flex; flex-direction: column; gap: 36px; } .head { text-align: center; display: flex; flex-direction: column; gap: 12px; align-items: center; } h2 { font-size: 40px; }
+  .card { display: flex; flex-direction: column; gap: 12px; } .n { width: 44px; height: 44px; border-radius: 50%; background: var(--primary); color: var(--on-primary); font-weight: 900; font-size: 18px; display: flex; align-items: center; justify-content: center; } h3 { font-size: 21px; }
+  @media (max-width: 900px) { h2 { font-size: 30px; } }
+</style>

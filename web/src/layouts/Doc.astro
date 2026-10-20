@@ -1,0 +1,20 @@
+---
+// Układ strony tekstowej (poradnik, strony prawne).
+import Layout from './Layout.astro';
+import type { Lang } from '../i18n/content';
+interface Props { title: string; description: string; lang?: Lang; path: string; kicker?: string; schema?: Record<string, unknown>[] }
+const { title, description, lang = 'pl', path, kicker, schema } = Astro.props;
+---
+<Layout lang={lang} path={path} title={`${title} – Dogpilot`} description={description} schema={schema}>
+  <article class="doc"><div class="wrap narrow">
+    <header class="dh">{kicker && <span class="kicker">{kicker}</span>}<h1>{title}</h1><p class="lead">{description}</p><slot name="meta" /></header>
+    <div class="prose"><slot /></div>
+    <slot name="after" />
+  </div></article>
+</Layout>
+<style>
+  .doc { padding: 56px 0 96px; } .narrow { max-width: 760px; } .dh { display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; } h1 { font-size: 44px; }
+  .prose :global(h2) { font-size: 26px; margin: 36px 0 12px; } .prose :global(h3) { font-size: 20px; margin: 24px 0 8px; } .prose :global(p), .prose :global(li) { margin: 0 0 14px; color: var(--text); } .prose :global(ul), .prose :global(ol) { padding-left: 22px; }
+  .prose :global(blockquote) { margin: 24px 0; padding: 14px 18px; border-left: 4px solid var(--primary); background: var(--surface); border-radius: 12px; color: var(--muted); } .prose :global(strong) { font-weight: 800; } .prose :global(a) { font-weight: 800; }
+  @media (max-width: 900px) { h1 { font-size: 32px; } .doc { padding: 32px 0 64px; } }
+</style>

@@ -1,0 +1,44 @@
+---
+import Icon from './Icon.astro';
+import { t, type Lang } from '../i18n/content';
+interface Props { lang: Lang; variant?: 'a' | 'b' }
+const { lang, variant = 'a' } = Astro.props;
+const c = t(lang);
+const F = c.features.items;
+const href = (h?: string) => !h ? undefined : (lang === 'en' && !h.startsWith('/en') ? h : h);
+---
+{variant === 'a' ? (
+<section id="funkcje" class="feat"><div class="wrap list">
+  <div class="head"><span class="kicker">{c.features.kicker}</span><h2>{c.features.h2}</h2></div>
+  {F.map((f, i) => <div class={`grid-2 row ${i % 2 ? 'flip' : ''} reveal`}>
+    <div class="phone ph"><img src={`/img/app/${f.img}.webp`} alt={f.alt} width="390" height="844" loading="lazy"></div>
+    <div class="copy"><span class="kicker">{f.kicker}</span><h3>{f.h3}</h3><p class="muted">{f.p}</p>
+      {f.bullets && <ul>{f.bullets.map(b => <li class="check"><Icon name="check" size={20} stroke={2.6} />{b}</li>)}</ul>}
+      {f.link && <a href={href(f.href)} class="more">{f.link} →</a>}
+    </div>
+  </div>)}
+</div></section>
+) : (
+<section id="funkcje" class="section"><div class="wrap">
+  <div class="head"><span class="kicker">{c.features.kicker}</span><h2>{c.features.h2b}</h2><p class="lead">{c.features.leadB}</p></div>
+  <div class="bento">
+    <div class="tile span4 wide reveal"><div class="copy"><span class="kicker">{F[0].kicker}</span><h3>{F[0].h3}</h3><p class="muted">{F[0].p}</p>{F[0].link && <a href={href(F[0].href)} class="more">{F[0].link} →</a>}</div><div class="phone peek"><img src={`/img/app/${F[0].imgB ?? F[0].img}.webp`} alt={F[0].alt} width="390" height="844" loading="lazy"></div></div>
+    {[F[2], F[1], F[3], F[4]].map(f => <div class="tile span2 tall reveal"><span class="kicker">{f.kicker}</span><h3>{f.h3}</h3><p class="muted small">{f.p}</p><div class="phone peek2"><img src={`/img/app/${f.imgB ?? f.img}.webp`} alt={f.alt} width="390" height="844" loading="lazy"></div></div>)}
+    <div class="tile span3 side reveal"><div class="copy"><span class="kicker">{F[5].kicker}</span><h3>{F[5].h3}</h3><p class="muted small">{F[5].p}</p></div><div class="phone peek3"><img src="/img/app/m-powiadomienia.webp" alt={F[5].alt} width="390" height="844" loading="lazy"></div></div>
+    <div class="tile span3 side reveal"><div class="copy"><span class="kicker">{lang === 'pl' ? 'Psy' : 'Dogs'}</span><h3>{lang === 'pl' ? 'Profil psa: zdrowie, rodowód, osiągnięcia, galeria' : 'Dog profile: health, pedigree, achievements, gallery'}</h3><p class="muted small">{lang === 'pl' ? 'Kreator dodawania krok po kroku, 3 pokolenia rodowodu z COI, do 6 zdjęć, oś czasu.' : 'Step-by-step wizard, 3-generation pedigree with COI, up to 6 photos, timeline.'}</p></div><div class="phone peek3"><img src="/img/app/m-pies-rodowod.webp" alt="" width="390" height="844" loading="lazy"></div></div>
+  </div>
+</div></section>
+)}
+<style>
+  .feat { padding: 96px 0 40px; } .list { display: flex; flex-direction: column; gap: 96px; }
+  .head { text-align: center; display: flex; flex-direction: column; gap: 14px; align-items: center; } .head h2 { font-size: 40px; max-width: 760px; }
+  .section .head { text-align: left; align-items: flex-start; margin-bottom: 36px; max-width: 760px; } .section .head h2 { font-size: 48px; letter-spacing: -.8px; }
+  .row .ph { width: 280px; justify-self: center; } .flip .ph { order: 2; } .flip .copy { order: 1; }
+  .copy { display: flex; flex-direction: column; gap: 14px; } h3 { font-size: 30px; } .more { font-weight: 800; }
+  ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; font-weight: 700; }
+  .tile { display: flex; flex-direction: column; gap: 12px; } .tile h3 { font-size: 24px; } .small { font-size: 15px; }
+  .wide { display: grid; grid-template-columns: 1fr 240px; gap: 24px; align-items: center; min-height: 380px; } .wide h3 { font-size: 28px; }
+  .peek { width: 240px; margin-bottom: -80px; } .tall { min-height: 380px; } .peek2 { width: 200px; align-self: center; margin-top: auto; margin-bottom: -120px; }
+  .side { display: grid; grid-template-columns: 1fr 200px; gap: 20px; align-items: center; } .peek3 { width: 190px; margin: -10px -10px -90px 0; }
+  @media (max-width: 900px) { .feat { padding: 56px 0 24px; } .list { gap: 56px; } .head h2, .section .head h2 { font-size: 30px; } h3 { font-size: 24px; } .flip .ph, .flip .copy { order: 0; } .wide, .side { grid-template-columns: 1fr; } .peek, .peek2, .peek3 { width: 180px; margin: 0 auto -60px; } }
+</style>

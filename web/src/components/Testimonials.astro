@@ -1,0 +1,17 @@
+---
+import { t, type Lang } from '../i18n/content';
+interface Props { lang: Lang; variant?: 'a' | 'b' }
+const { lang, variant = 'a' } = Astro.props;
+const c = t(lang);
+const tints = ['var(--soft)', '#FDE7F1', '#E3EDFE'];
+---
+<section class={`tm ${variant}`}><div class="wrap col">
+  <div class="head"><span class="kicker">{c.testimonials.kicker}</span><h2>{c.testimonials.h2}</h2></div>
+  <div class="grid-3">{c.testimonials.items.map(([q, n, s], i) => <figure class="card reveal"><span class="stars" aria-hidden="true">★★★★★</span><blockquote>„{q}”</blockquote><figcaption><span class="av" style={`background:${tints[i]}`}></span><span><b>{n}</b><br><span class="muted sm">{s}</span></span></figcaption></figure>)}</div>
+</div></section>
+<style>
+  .tm { padding: 88px 0; } .tm.a { background: var(--surface); } .tm.b { border-top: 1px solid var(--border); } .col { display: flex; flex-direction: column; gap: 32px; } .head { display: flex; flex-direction: column; gap: 12px; } h2 { font-size: 40px; }
+  figure { margin: 0; display: flex; flex-direction: column; gap: 16px; } .stars { color: var(--warn); letter-spacing: 2px; } blockquote { margin: 0; font-size: 17px; line-height: 1.55; }
+  figcaption { display: flex; align-items: center; gap: 12px; margin-top: auto; } .av { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; } .sm { font-size: 13px; }
+  @media (max-width: 900px) { h2 { font-size: 30px; } .tm { padding: 56px 0; } }
+</style>

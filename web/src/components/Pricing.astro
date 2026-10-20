@@ -1,0 +1,50 @@
+---
+import Icon from './Icon.astro';
+import { t, type Lang } from '../i18n/content';
+interface Props { lang: Lang; variant?: 'a' | 'b' }
+const { lang, variant = 'a' } = Astro.props;
+const c = t(lang); const P = c.pricing;
+---
+<section id="cennik" class="pr section"><div class="wrap col">
+  <div class="head"><span class="kicker">{P.kicker}</span><h2>{P.h2}</h2>
+    <div class="toggle" role="group" aria-label={P.period}>
+      <button type="button" class="on" data-period="year" aria-pressed="true">{P.yearly} <small>· {P.save}</small></button>
+      <button type="button" data-period="month" aria-pressed="false">{P.monthly}</button>
+    </div></div>
+  <div class="plans">
+    <div class="card free reveal"><div><span class="kicker muted">{P.free.name}</span><h3>{P.free.h3}</h3><p class="muted sm">{P.free.p}</p></div>
+      <div class="price"><span class="big">{P.free.price}</span><span class="muted">{P.free.per}</span></div>
+      <ul>{P.free.items.map(x => <li class="check"><Icon name="check" size={20} stroke={2.6} />{x}</li>)}</ul>
+      <a href="/rejestracja" class="btn btn-o">{P.free.cta}</a></div>
+    <div class="card pro reveal"><span class="badge">{P.pro.badge}</span><div><span class="kicker acc">{P.pro.name}</span><h3>{P.pro.h3}</h3><p class="sm dm">{P.pro.p}</p></div>
+      <div class="price"><span class="big gold" data-year={P.pro.priceYear} data-month={P.pro.priceMonth}>{P.pro.priceYear}</span><span class="dm" data-year={P.pro.perYear} data-month={P.pro.perMonth}>{P.pro.perYear}</span></div>
+      <div class="sm dm anchor" data-year={P.pro.anchorYear} data-month={P.pro.anchorMonth}>{P.pro.anchorYear}</div>
+      <ul>{P.pro.items.map(x => <li class="check"><Icon name="check" size={20} stroke={2.6} />{x}</li>)}</ul>
+      <a href="/rejestracja?plan=pro" class="btn btn-p">{P.pro.cta}</a><div class="note dm">{P.pro.note}</div></div>
+  </div>
+</div></section>
+<style>
+  .col { display: flex; flex-direction: column; gap: 32px; align-items: center; } .head { text-align: center; display: flex; flex-direction: column; gap: 12px; align-items: center; } h2 { font-size: 40px; }
+  .toggle { display: inline-flex; background: var(--soft); border-radius: 999px; padding: 4px; margin-top: 8px; } [data-variant="b"] .toggle { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; }
+  .toggle button { border: 0; border-radius: 999px; padding: 10px 18px; font-weight: 800; font-size: 14px; cursor: pointer; background: transparent; color: var(--muted); } [data-variant="b"] .toggle button { border-radius: 10px; }
+  .toggle button.on { background: var(--surface); color: var(--text); } [data-variant="b"] .toggle button.on { background: var(--primary); color: var(--on-primary); } .toggle small { color: var(--primary-text); } [data-variant="b"] .toggle .on small { color: inherit; }
+  .plans { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; width: 100%; max-width: 920px; }
+  .card { padding: 32px; display: flex; flex-direction: column; gap: 18px; } h3 { font-size: 28px; margin-top: 6px; } .sm { font-size: 15px; margin-top: 6px; }
+  .price { display: flex; align-items: baseline; gap: 8px; } .big { font-size: 44px; font-weight: 900; } .gold { color: var(--warn); }
+  ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 15px; } .card .btn { margin-top: auto; }
+  .pro { position: relative; background: var(--dark); color: var(--on-dark); border-color: var(--dark); box-shadow: 0 24px 56px rgba(27,42,34,.22); } [data-variant="b"] .pro { background: var(--surface); border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary), 0 30px 80px rgba(79,212,99,.15); }
+  .pro .check svg { color: var(--primary-hover); } .acc { color: var(--primary-hover); } .dm { color: var(--dark-muted); }
+  .badge { position: absolute; top: -14px; right: 24px; background: var(--primary); color: var(--on-primary); border-radius: 999px; padding: 6px 14px; font-size: 12px; font-weight: 900; letter-spacing: .5px; text-transform: uppercase; } [data-variant="b"] .badge { top: 18px; right: 18px; }
+  .note { font-size: 12px; text-align: center; }
+  @media (max-width: 900px) { .plans { grid-template-columns: 1fr; } h2 { font-size: 30px; } }
+</style>
+<script>
+  document.querySelectorAll('.pr').forEach(sec => {
+    const btns = sec.querySelectorAll<HTMLButtonElement>('.toggle button');
+    btns.forEach(b => b.addEventListener('click', () => {
+      const p = b.dataset.period as 'year' | 'month';
+      btns.forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', String(x === b)); });
+      sec.querySelectorAll<HTMLElement>('[data-year]').forEach(el => { el.textContent = el.dataset[p] ?? ''; });
+    }));
+  });
+</script>

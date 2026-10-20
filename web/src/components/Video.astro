@@ -1,0 +1,18 @@
+---
+import Icon from './Icon.astro';
+import { t, type Lang } from '../i18n/content';
+interface Props { lang: Lang }
+const c = t(Astro.props.lang);
+---
+<section class="vid" id="demo"><div class="wrap col">
+  <span class="kicker">{c.video.kicker}</span><h2>{c.video.h2}</h2>
+  <a href="#demo" class="frame reveal" aria-label={c.video.play}><img src="/img/app/d-start.webp" alt={c.video.alt} width="1440" height="900" loading="lazy"><span class="ov"><span class="pb"><Icon name="play" size={34} /></span></span><span class="note">{c.video.note}</span></a>
+</div></section>
+<style>
+  .vid { background: var(--surface); padding: 0 0 80px; } .col { display: flex; flex-direction: column; gap: 20px; align-items: center; text-align: center; } h2 { font-size: 40px; max-width: 760px; }
+  .frame { position: relative; display: block; width: 100%; max-width: 980px; border-radius: 28px; overflow: hidden; box-shadow: var(--shadow); }
+  .ov { position: absolute; inset: 0; background: rgba(15,26,21,.28); display: flex; align-items: center; justify-content: center; }
+  .pb { width: 88px; height: 88px; border-radius: 50%; background: #FFFFFF; color: #1F8A30; display: flex; align-items: center; justify-content: center; box-shadow: 0 14px 30px rgba(0,0,0,.25); }
+  .note { position: absolute; left: 20px; bottom: 20px; background: #FFFFFF; color: #1F1A17; border-radius: 999px; padding: 8px 14px; font-size: 13px; font-weight: 800; }
+  @media (max-width: 900px) { h2 { font-size: 30px; } .note { font-size: 11px; left: 10px; bottom: 10px; } }
+</style>

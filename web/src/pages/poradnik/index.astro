@@ -1,0 +1,11 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Guide from '../../components/Guide.astro';
+import FinalCta from '../../components/FinalCta.astro';
+---
+<Layout lang="pl" path="/poradnik" title="Poradnik hodowcy – Dogpilot" description="Ciąża suki tydzień po tygodniu, odbiór szczeniaka, wydatki hodowli, wystawy, dokumentacja – wiedza dla hodowców z funkcjami Dogpilot w tle.">
+  <section class="section"><div class="wrap intro"><span class="kicker">Poradnik hodowcy</span><h1>Wiedza, która przydaje się przy psach</h1><p class="lead">Każdy artykuł to problem hodowcy, konkretna wiedza i pokazanie, jak dana rzecz działa w Dogpilot. Piszemy po polsku, dla hodowli ZKwP/FCI i dla właścicieli, którzy chcą prowadzić psa świadomie. Nowe artykuły dochodzą co dwa tygodnie; tematy, które są w drodze: krycie psa i ewidencja kryć, dokumentacja hodowli, wyniki wystaw psów, kalendarz cieczek.</p></div></section>
+  <Guide lang="pl" limit={50} />
+  <FinalCta lang="pl" />
+</Layout>
+<style>.intro { display: flex; flex-direction: column; gap: 14px; max-width: 760px; } h1 { font-size: 44px; } .section { padding-bottom: 0; } @media (max-width: 900px) { h1 { font-size: 32px; } }</style>

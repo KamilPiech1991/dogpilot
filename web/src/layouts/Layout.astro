@@ -1,0 +1,59 @@
+---
+// Wspólny szkielet strony: meta, fonty, schema.org, nagłówek i stopka.
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE, t, type Lang } from '../i18n/content';
+interface Props { title?: string; description?: string; lang?: Lang; variant?: 'a' | 'b'; bare?: boolean; schema?: Record<string, unknown>[]; path?: string }
+const { lang = 'pl', variant = 'a', bare = false, schema = [], path = '/' } = Astro.props;
+const c = t(lang);
+const title = Astro.props.title ?? c.meta.title;
+const description = Astro.props.description ?? c.meta.description;
+const canonical = new URL(path, SITE.url).href;
+const base = [
+  { '@context': 'https://schema.org', '@type': 'Organization', name: SITE.company, url: SITE.url, logo: new URL('/brand/icon-512.png', SITE.url).href },
+  { '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: SITE.name, applicationCategory: 'LifestyleApplication', operatingSystem: 'Android, iOS, Web', url: SITE.url,
+    offers: [{ '@type': 'Offer', price: '0', priceCurrency: 'PLN', name: 'FREE' }, { '@type': 'Offer', price: String(SITE.pricing.proYear), priceCurrency: 'PLN', name: 'PRO (rok)' }] },
+];
+---
+<!doctype html>
+<html lang={lang} data-variant={variant}>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title}</title>
+<meta name="description" content={description}>
+<link rel="canonical" href={canonical}>
+<link rel="alternate" hreflang="pl" href={new URL(path.startsWith('/en') ? path.replace(/^\/en\/?/, '/') : path, SITE.url).href}>
+<link rel="alternate" hreflang="en" href={new URL(path.startsWith('/en') ? path : '/en/', SITE.url).href}>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/brand/icon-512.png">
+<meta name="theme-color" content={variant === 'b' ? '#0F1A15' : '#32BF46'}>
+<meta property="og:type" content="website">
+<meta property="og:title" content={title}>
+<meta property="og:description" content={description}>
+<meta property="og:url" content={canonical}>
+<meta property="og:image" content={new URL('/brand/header-1600.webp', SITE.url).href}>
+<meta property="og:locale" content={lang === 'pl' ? 'pl_PL' : 'en_GB'}>
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
+<link rel="sitemap" href="/sitemap-index.xml">
+{[...base, ...schema].map(s => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+</head>
+<body>
+<a class="skip" href="#main">{lang === 'pl' ? 'Przejdź do treści' : 'Skip to content'}</a>
+{!bare && <Header lang={lang} variant={variant} />}
+<main id="main"><slot /></main>
+{!bare && <Footer lang={lang} />}
+<script>
+  // delikatne wejście sekcji przy przewijaniu (bez bibliotek)
+  const els = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -10% 0px' });
+    els.forEach(el => io.observe(el));
+  } else els.forEach(el => el.classList.add('in'));
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+---
+import { t, type Lang } from '../i18n/content';
+interface Props { lang: Lang; variant?: 'a' | 'b' }
+const { lang, variant = 'a' } = Astro.props;
+const c = t(lang);
+---
+<section class={`wa ${variant}`}><div class={`wrap grid-2 ${variant === 'b' ? 'flip' : ''}`}>
+  <div class="copy reveal"><span class="kicker">{c.webapp.kicker}</span><h2>{variant === 'b' ? c.webapp.h2b : c.webapp.h2}</h2><p class="muted">{c.webapp.p}</p>
+    {variant === 'b' && <ol>{c.how.steps.map(([h, p], i) => <li><span class="n">{i + 1}</span><span><b>{h}</b> <span class="muted">– {p.split('.')[0].toLowerCase()}.</span></span></li>)}</ol>}
+    <div class="ctas"><a href="/logowanie" class="btn btn-p">{c.webapp.cta}</a>{variant === 'a' && <a href="#faq" class="btn btn-o">{c.webapp.cta2}</a>}</div></div>
+  <div class="shot reveal"><img src="/img/app/d-miot.webp" alt={c.webapp.alt} width="1440" height="900" loading="lazy">
+    {variant === 'a' ? <div class="phone mini"><img src="/img/app/m-miot-dark.webp" alt="" width="390" height="844" loading="lazy"></div> : <div class="sync"><span class="dot"></span>{c.webapp.sync}</div>}</div>
+</div></section>
+<style>
+  .wa { padding: 88px 0; } .wa.a { background: var(--surface); } .grid-2 { grid-template-columns: 0.9fr 1.1fr; } .flip { grid-template-columns: 1.1fr 0.9fr; } .flip .copy { order: 2; } .flip .shot { order: 1; }
+  .copy { display: flex; flex-direction: column; gap: 16px; } h2 { font-size: 40px; } .ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+  .shot { position: relative; } .shot > img { border-radius: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+  .mini { position: absolute; right: -10px; bottom: -30px; width: 150px; padding: 6px; border-radius: 26px; } .mini img { border-radius: 20px; }
+  .sync { position: absolute; left: 24px; bottom: -22px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 12px 16px; font-size: 14px; display: flex; gap: 10px; align-items: center; } .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--primary); }
+  ol { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; } li { display: flex; gap: 14px; align-items: flex-start; }
+  .n { width: 32px; height: 32px; border-radius: 10px; background: var(--primary); color: var(--on-primary); font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  @media (max-width: 900px) { .grid-2, .flip { grid-template-columns: 1fr; } .flip .copy, .flip .shot { order: 0; } h2 { font-size: 30px; } .mini { width: 110px; right: 0; bottom: -20px; } .wa { padding: 56px 0; } }
+</style>

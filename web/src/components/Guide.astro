@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import { t, type Lang } from '../i18n/content';
+interface Props { lang: Lang; variant?: 'a' | 'b'; limit?: number }
+const { lang, variant = 'a', limit = 3 } = Astro.props;
+const c = t(lang);
+const posts = (await getCollection('poradnik')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime()).slice(0, limit);
+---
+<section id={lang === 'en' ? 'guide' : 'poradnik'} class="gd section"><div class="wrap col">
+  <div class="head"><div><span class="kicker">{c.guide.kicker}</span><h2>{c.guide.h2}</h2></div><a href="/poradnik" class="all">{c.guide.all} →</a></div>
+  <div class="grid-3">{posts.map(p => <a href={`/poradnik/${p.id}`} class={`${variant === 'b' ? 'tile' : 'card'} post reveal`}>
+    {variant === 'a' && <div class="cover" style={`background:${p.data.tint}`}><img src={`/img/app/${p.data.image}.webp`} alt="" width="390" height="844" loading="lazy"></div>}
+    <div class="body"><span class="muted sm">{p.data.category} · {p.data.minutes} {c.guide.minutes}</span><h3>{p.data.title}</h3><p class="muted">{p.data.description}</p>{variant === 'b' && <span class="read">{c.guide.read} →</span>}</div></a>)}</div>
+</div></section>
+<style>
+  .col { display: flex; flex-direction: column; gap: 28px; } .head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; } h2 { font-size: 40px; margin-top: 8px; } .all { font-weight: 800; }
+  .post { color: var(--text); display: flex; flex-direction: column; padding: 0; overflow: hidden; } .post:hover { color: var(--text); transform: translateY(-2px); } .post { transition: transform .2s; }
+  .cover { height: 180px; display: flex; align-items: flex-end; justify-content: center; overflow: hidden; } .cover img { width: 140px; border-radius: 16px 16px 0 0; box-shadow: 0 -10px 30px rgba(0,0,0,.18); }
+  .body { padding: 20px 22px 24px; display: flex; flex-direction: column; gap: 8px; } .tile .body { padding: 28px; } .sm { font-size: 12px; font-weight: 700; } h3 { font-size: 20px; line-height: 1.25; } .body p { font-size: 14px; } .read { margin-top: auto; font-weight: 800; color: var(--primary-text); padding-top: 8px; }
+  @media (max-width: 900px) { h2 { font-size: 30px; } }
+</style>
