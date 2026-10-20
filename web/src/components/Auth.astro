@@ -63,7 +63,8 @@ const c = t(lang).login; const login = mode === 'login';
 </style>
 <script>
   import { supabase, authReady } from '../lib/supabase';
-  const APP = (import.meta.env.PUBLIC_APP_URL as string | undefined) ?? '/app/';
+  // adres panelu: ze zmiennej, a gdy jej nie ma – z meta (na podglądzie GitHub Pages ma prefiks /dogpilot/)
+  const APP = (import.meta.env.PUBLIC_APP_URL as string | undefined) ?? document.querySelector<HTMLMetaElement>('meta[name="app-base"]')?.content ?? '/app/';
   const appUrl = () => new URL(APP, location.href).href;
   const note = (box: Element | null, msg?: string) => { const el = box?.querySelector<HTMLElement>('.soon'); if (!el) return; if (msg) el.textContent = msg; el.removeAttribute('hidden'); };
   // już zalogowany → prosto do panelu
