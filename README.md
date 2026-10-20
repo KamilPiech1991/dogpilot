@@ -4,7 +4,7 @@ Aplikacja dla hodowców psów i właścicieli (web + Android + iOS z jednej bazy
 
 | Katalog | Co zawiera | Uruchomienie |
 |---|---|---|
-| `web/` | strona dogpilot (Astro): strona główna, cennik, FAQ, poradnik, logowanie, strony prawne, wersja EN | `cd web && npm install && npm run dev` |
+| `web/` | strona dogpilot (Astro, projekt A „Ciepła karta”): strona główna, cennik, FAQ, poradnik, logowanie/rejestracja, /pobierz (smart link + QR), strony prawne, wersja EN; podgląd: GitHub Pages z workflow `pages.yml` | `cd web && npm install && npm run dev` |
 | `app/` | prototyp aplikacji (React + TypeScript + Vite), dane lokalne w przeglądarce | `cd app && npm install && npm run dev` |
 | `docs/` | analiza konkurencji i plan produktu, plan wdrożenia, podsumowanie prac | – |
 

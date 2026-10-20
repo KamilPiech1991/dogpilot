@@ -21,6 +21,7 @@ const links = [[c.nav.features, home + '#funkcje'], [c.nav.pricing, home + '#cen
     {links.map(([l, h]) => <a href={h}>{l}</a>)}
     <a href="/logowanie" class="btn btn-o">{c.nav.login}</a>
     <a href="/rejestracja" class="btn btn-p">{c.nav.signup}</a>
+    <div class="langs"><a href="/" aria-current={lang === 'pl' ? 'page' : undefined}>Polski</a><a href="/en/" aria-current={lang === 'en' ? 'page' : undefined}>English</a></div>
   </nav>
 </header>
 <style>
@@ -33,7 +34,7 @@ const links = [[c.nav.features, home + '#funkcje'], [c.nav.pricing, home + '#cen
   .mnav { display: none; flex-direction: column; gap: 4px; padding: 12px 24px 20px; border-top: 1px solid var(--border); background: var(--bg); }
   .mnav a { padding: 12px 6px; font-weight: 800; font-size: 18px; color: var(--text); border-bottom: 1px solid var(--border); }
   .mnav .btn { margin-top: 10px; border-bottom: 0; font-size: 16px; }
-  .mnav:not([hidden]) { display: flex; }
+  .mnav:not([hidden]) { display: flex; } .langs { display: flex; gap: 16px; padding-top: 12px; } .langs a { border: 0; padding: 0; font-size: 15px; color: var(--muted); } .langs a[aria-current] { color: var(--primary-text); }
   @media (max-width: 900px) { .nav, .hide-m { display: none; } .burger { display: flex; } .bar { height: 64px; } }
 </style>
 <script>

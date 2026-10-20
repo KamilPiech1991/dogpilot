@@ -40,6 +40,7 @@ const base = [
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
 <link rel="sitemap" href="/sitemap-index.xml">
+{SITE.analyticsDomain && <script defer data-domain={SITE.analyticsDomain} src="https://plausible.io/js/script.outbound-links.js"></script>}
 {[...base, ...schema].map(s => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
 </head>
 <body>
@@ -54,6 +55,16 @@ const base = [
     const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -10% 0px' });
     els.forEach(el => io.observe(el));
   } else els.forEach(el => el.classList.add('in'));
+  // formularze (newsletter, kontakt): wysyłka do skonfigurowanego endpointu albo lokalne potwierdzenie
+  document.querySelectorAll<HTMLFormElement>('form[data-form]').forEach(f => f.addEventListener('submit', async e => {
+    e.preventDefault(); if (!f.reportValidity()) return;
+    const ok = f.querySelector<HTMLElement>('[data-ok]'); const btn = f.querySelector<HTMLButtonElement>('button[type=submit]');
+    const endpoint = f.dataset.endpoint;
+    if (endpoint) { try { btn && (btn.disabled = true); await fetch(endpoint, { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } }); } catch { /* pokaż potwierdzenie mimo błędu sieci */ } }
+    f.reset(); ok?.removeAttribute('hidden'); btn && (btn.disabled = false);
+  }));
+  // kliknięcia w sklepy – zdarzenie dla analityki
+  document.querySelectorAll<HTMLAnchorElement>('[data-track]').forEach(a => a.addEventListener('click', () => { (window as any).plausible?.('store_click', { props: { store: a.dataset.track } }); }));
 </script>
 </body>
 </html>

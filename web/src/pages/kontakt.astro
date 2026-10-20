@@ -1,6 +1,26 @@
 ---
 import Doc from '../layouts/Doc.astro';
+import { SITE } from '../i18n/content';
 ---
 <Doc title="Kontakt" description="Napisz do zespołu Dogpilot – pytania, pomoc, współpraca, program beta dla hodowli." path="/kontakt" kicker="Dogpilot">
-<h2>Zespół Dogpilot</h2><p>Qamitech<br>[ulica i numer]<br>[kod] [miejscowość], Polska</p><p>E-mail: <a href="mailto:kontakt@example.com">[e-mail kontaktowy]</a> · odpowiadamy w dni robocze, zwykle tego samego dnia.</p><h2>Program beta dla hodowli</h2><p>Szukamy 10–20 hodowli (różne rasy, w tym z zespołem), które przetestują Dogpilot przed premierą. W zamian: plan PRO na rok i wpływ na kolejność funkcji. Napisz, jaką rasę prowadzisz i ile masz psów.</p><h2>Media i współpraca</h2><p>Materiały prasowe (logo, zrzuty ekranu) wysyłamy na prośbę.</p>
+<h2>Zespół Dogpilot</h2><p>{SITE.company}<br>{SITE.address[0]}<br>{SITE.address[1]}</p><p>E-mail: <a href="/kontakt">{SITE.email}</a> · odpowiadamy w dni robocze, zwykle tego samego dnia.</p>
+<h2>Napisz do nas</h2>
+<form class="cf" method="post" data-form="contact" data-endpoint={SITE.formsEndpoint}>
+  <div class="two"><label>Imię i nazwisko<input type="text" name="name" required autocomplete="name"></label><label>E-mail<input type="email" name="email" required autocomplete="email"></label></div>
+  <label>Temat<select name="topic"><option>Pytanie o aplikację</option><option>Program beta dla hodowli</option><option>Pomoc z kontem</option><option>Współpraca / media</option><option>Inne</option></select></label>
+  <label>Wiadomość<textarea name="message" rows="6" required></textarea></label>
+  <label class="chk"><input type="checkbox" name="consent" required>Wyrażam zgodę na kontakt w sprawie mojej wiadomości (dane przetwarza Qamitech zgodnie z <a href="/polityka-prywatnosci">polityką prywatności</a>).</label>
+  <button type="submit" class="btn btn-p">Wyślij wiadomość</button>
+  <p data-ok hidden class="ok">Dziękujemy – odpowiemy najszybciej, jak się da.</p>
+</form>
+<h2>Program beta dla hodowli</h2><p>Szukamy 10–20 hodowli (różne rasy, w tym z zespołem), które przetestują Dogpilot przed premierą. W zamian: plan PRO na rok i wpływ na kolejność funkcji. Napisz, jaką rasę prowadzisz i ile masz psów.</p>
+<h2>Media i współpraca</h2><p>Materiały prasowe (logo, zrzuty ekranu) wysyłamy na prośbę.</p>
 </Doc>
+<style>
+  .cf { display: flex; flex-direction: column; gap: 14px; margin: 8px 0 24px; } .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .cf label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 800; } .cf input:not([type=checkbox]), .cf select, .cf textarea { font: inherit; font-size: 16px; font-weight: 500; border: 2px solid var(--border); border-radius: 14px; background: var(--surface); padding: 12px 14px; color: var(--text); } .cf textarea { resize: vertical; }
+  .cf input:focus, .cf select:focus, .cf textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--soft); }
+  .chk { flex-direction: row !important; align-items: flex-start; gap: 10px !important; font-weight: 500 !important; font-size: 13px; color: var(--muted); } .chk input { accent-color: var(--primary); width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; }
+  .cf .btn { align-self: flex-start; } .ok { color: var(--primary-text); font-weight: 800; }
+  @media (max-width: 700px) { .two { grid-template-columns: 1fr; } }
+</style>

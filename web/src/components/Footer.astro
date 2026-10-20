@@ -18,7 +18,7 @@ const posts = (await getCollection('poradnik')).sort((a, b) => b.data.date.getTi
     <div class="col"><b>{c.footer.product}</b>{c.footer.productLinks.map(([l, h]) => <a href={h}>{l}</a>)}</div>
     <div class="col"><b>{c.footer.guide}</b>{posts.map(p => <a href={`/poradnik/${p.id}`}>{p.data.title}</a>)}</div>
     <div class="col"><b>{c.footer.legal}</b>{c.footer.legalLinks.map(([l, h]) => <a href={h}>{l}</a>)}
-      <form class="nl" action="#" method="post"><label for="nl">{c.footer.newsletter}</label><div><input id="nl" type="email" name="email" placeholder={c.footer.emailPh} required><button type="submit" class="btn btn-p btn-sm">{c.footer.subscribe}</button></div></form>
+      <form class="nl" method="post" data-form="newsletter" data-endpoint={SITE.formsEndpoint}><label for="nl">{c.footer.newsletter}</label><div><input id="nl" type="email" name="email" placeholder={c.footer.emailPh} required><button type="submit" class="btn btn-p btn-sm">{c.footer.subscribe}</button></div><p data-ok hidden class="ok">{lang === 'pl' ? 'Dziękujemy! Potwierdź zapis w wiadomości e-mail.' : 'Thank you! Please confirm in the e-mail we sent.'}</p></form>
     </div>
   </div>
   <div class="wrap bottom"><span>© {new Date().getFullYear()} {SITE.company} · {SITE.name}. {c.footer.rights}</span><span class="langs"><a href="/" aria-current={lang === 'pl' ? 'page' : undefined}>Polski</a><a href="/en/" aria-current={lang === 'en' ? 'page' : undefined}>English</a></span></div>
@@ -31,7 +31,7 @@ const posts = (await getCollection('poradnik')).sort((a, b) => b.data.date.getTi
   .social { display: flex; gap: 10px; } .social a { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,.08); color: var(--on-dark); display: flex; align-items: center; justify-content: center; }
   .nl { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; } .nl label { color: #FFFFFF; font-weight: 800; } .nl div { display: flex; gap: 8px; }
   .nl input { flex: 1; min-width: 0; height: 44px; border-radius: 12px; border: 1px solid var(--dark-border); background: rgba(255,255,255,.06); color: #FFFFFF; padding: 0 12px; font: inherit; font-size: 14px; }
-  .nl .btn { box-shadow: none; }
+  .nl .btn { box-shadow: none; } .ok { color: var(--primary-hover); font-size: 13px; font-weight: 800; }
   .bottom { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--dark-border); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; color: var(--dark-muted); font-size: 13px; }
   .langs { display: flex; gap: 14px; } .langs a { color: var(--dark-muted); } .langs a[aria-current] { color: #FFFFFF; font-weight: 800; }
   @media (max-width: 900px) { .cols { grid-template-columns: 1fr 1fr; gap: 28px; } }

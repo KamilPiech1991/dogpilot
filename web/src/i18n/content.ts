@@ -9,6 +9,8 @@ export const SITE = {
   appStoreUrl: 'https://apps.apple.com/app/dogpilot/id000000000',
   appUrl: '/logowanie',
   email: '[e-mail kontaktowy]',
+  formsEndpoint: '', // np. https://formspree.io/f/xxxx – do czasu ustawienia formularze pokazują potwierdzenie lokalnie
+  analyticsDomain: '', // np. dogpilot.pl – włącza Plausible (statystyki bez ciasteczek)
   address: ['[ulica i numer]', '[kod] [miejscowość], Polska'],
   pricing: { free: 0, proYear: 89, proMonth: 12.99, proYearEur: 19, proMonthEur: 2.99 },
   limits: { females: 2, males: 2, shows: 5, championships: 6, chartMonths: 4 },
@@ -110,7 +112,7 @@ const pl = {
     ],
   },
   guide: { kicker: 'Poradnik hodowcy', h2: 'Wiedza, która przydaje się przy psach', all: 'Wszystkie artykuły', read: 'Czytaj', minutes: 'min czytania' },
-  cta: { h2: 'Wypróbuj Dogpilot za darmo już dziś', p: 'Konto zakładasz w minutę. Dane możesz wyeksportować lub usunąć w każdej chwili.', button: 'Załóż darmowe konto', qr: 'Zeskanuj telefonem, żeby pobrać aplikację', qrAlt: '[Kod QR – link do pobrania aplikacji]' },
+  cta: { h2: 'Wypróbuj Dogpilot za darmo już dziś', p: 'Konto zakładasz w minutę. Dane możesz wyeksportować lub usunąć w każdej chwili.', button: 'Załóż darmowe konto', qr: 'Zeskanuj telefonem, żeby pobrać aplikację', qrAlt: 'Kod QR – dogpilot.pl/pobierz' },
   footer: {
     about: 'Aplikacja dla hodowców psów i właścicieli. Projekt i rozwój: Qamitech.',
     product: 'Produkt', productLinks: [['Funkcje', '/#funkcje'], ['Cennik', '/#cennik'], ['Aplikacja webowa', '/logowanie'], ['Android · Google Play', SITE.playUrl], ['iPhone · App Store', SITE.appStoreUrl], ['FAQ', '/#faq']],
@@ -197,7 +199,7 @@ const en: typeof pl = {
     ['How do I move data from a notebook or another app?', 'You add dogs and litters with the wizard in a few minutes. CSV files are imported by our team as part of the beta programme – write to us.'],
   ] },
   guide: { kicker: 'Breeder’s guide', h2: 'Knowledge that helps with the dogs', all: 'All articles', read: 'Read', minutes: 'min read' },
-  cta: { h2: 'Try Dogpilot for free today', p: 'Create an account in a minute. Export or delete your data whenever you like.', button: 'Create a free account', qr: 'Scan with your phone to download the app', qrAlt: '[QR code – app download link]' },
+  cta: { h2: 'Try Dogpilot for free today', p: 'Create an account in a minute. Export or delete your data whenever you like.', button: 'Create a free account', qr: 'Scan with your phone to download the app', qrAlt: 'QR code – dogpilot.pl/pobierz' },
   footer: { about: 'The app for dog breeders and owners. Designed and built by Qamitech.', product: 'Product',
     productLinks: [['Features', '/en/#features'], ['Pricing', '/en/#pricing'], ['Web app', '/logowanie'], ['Android · Google Play', SITE.playUrl], ['iPhone · App Store', SITE.appStoreUrl], ['FAQ', '/en/#faq']],
     guide: 'Guide', legal: 'Company and legal', legalLinks: [['Contact', '/kontakt'], ['Privacy policy', '/polityka-prywatnosci'], ['Terms of service', '/regulamin'], ['Data security', '/bezpieczenstwo-danych'], ['Delete account', '/usun-konto']],
