@@ -27,22 +27,28 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: web/package-lock.json
+      # Odczyt adresu Pages: bez domeny własnej strona żyje pod /dogpilot/, z domeną (dogpilot.pl) w katalogu głównym.
+      - id: pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - run: echo "Pages origin=${{ steps.pages.outputs.origin }} base_path='${{ steps.pages.outputs.base_path }}'"
       - run: npm ci
       - run: npm run build
         env:
           PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
           PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
-      - run: BASE_PATH=/dogpilot node scripts/prefix-base.mjs
+      - run: node scripts/prefix-base.mjs
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
       # panel aplikacji webowej (app/) trafia pod /app/ obok strony
-      - run: npm ci && APP_BASE=/dogpilot/app/ npm run build
+      - run: npm ci && npm run build
         working-directory: app
         env:
+          APP_BASE: ${{ steps.pages.outputs.base_path }}/app/
           VITE_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
       - run: mkdir -p dist/app && cp -r ../app/dist/. dist/app/
-      - uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: web/dist

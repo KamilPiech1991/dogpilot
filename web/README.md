@@ -14,3 +14,17 @@ Bez tych wartości strona i panel działają w trybie demo (dane lokalne w przeg
 
 ## Panel aplikacji webowej
 Prototyp z `app/` jest budowany w tym samym workflow i publikowany pod `/app/` (na podglądzie `/dogpilot/app/`). Docelowo: `app.dogpilot.pl` z `app/dist` bez prefiksu.
+
+## Domena dogpilot.pl (GitHub Pages)
+
+1. **DNS u rejestratora** – rekordy dla domeny głównej (A) i dla `www` (CNAME):
+   ```
+   dogpilot.pl      A      185.199.108.153
+   dogpilot.pl      A      185.199.109.153
+   dogpilot.pl      A      185.199.110.153
+   dogpilot.pl      A      185.199.111.153
+   www.dogpilot.pl  CNAME  kamilpiech1991.github.io
+   ```
+2. **GitHub → Settings → Pages → Custom domain**: `dogpilot.pl`, zapisz, poczekaj na „DNS check successful”, zaznacz **Enforce HTTPS** (certyfikat pojawia się do ~godziny). `www.dogpilot.pl` przekieruje na domenę główną.
+3. Workflow sam wykrywa domenę (`actions/configure-pages` → `base_path`): z domeną buduje stronę w katalogu głównym, bez niej pod `/dogpilot/`. Po ustawieniu domeny uruchom build ręcznie (Actions → Run workflow) albo wypchnij dowolną zmianę.
+4. W Supabase (Authentication → URL configuration) dodaj `https://dogpilot.pl/**`, a jako Site URL `https://dogpilot.pl/app/`.
