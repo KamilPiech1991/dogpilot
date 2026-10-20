@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Bell, Dog, PawPrint, Trophy, Wallet, QrCode, Heart, FileText, Flower2, ArrowRight, Scale, Stethoscope, Globe, Sparkles, ChevronRight, Baby, CalendarDays } from 'lucide-react';
+import { Bell, Dog, PawPrint, Trophy, Wallet, QrCode, Heart, FileText, Flower2, ArrowRight, Scale, Stethoscope, Globe, Sparkles, ChevronRight, Baby, CalendarDays, LogOut } from 'lucide-react';
+import { signOut } from '../app/auth';
 import { useStore } from '../app/store';
 import { addDays, daysBetween, fmtDate, fmtMoney, today } from '../app/format';
 import { heatStats } from '../app/heat';
@@ -10,7 +11,8 @@ const TAGLINES = ['Co dziś w hodowli?', 'Wszystkie ogony policzone?', 'Miski pe
 const MONTHS = ['styczniu', 'lutym', 'marcu', 'kwietniu', 'maju', 'czerwcu', 'lipcu', 'sierpniu', 'wrześniu', 'październiku', 'listopadzie', 'grudniu'];
 
 export default function Dashboard() {
-  const { state } = useStore();
+  const { state, setProfile } = useStore();
+  const logout = () => { if (!confirm('Wylogować się? Dane zostaną na tym urządzeniu.')) return; signOut().then(() => { setProfile({ onboarded: false }); nav('/'); }); };
   const nav = useNavigate();
   const p = state.profile;
   const breeder = p.module === 'breeder';
@@ -52,6 +54,7 @@ export default function Dashboard() {
           <span className={`badge ${p.plan === 'pro' ? 'pro' : ''}`}>{p.plan.toUpperCase()}</span>
           <button className="icon-btn bell-btn" aria-label={`Powiadomienia: ${upcoming.length}`} title="Powiadomienia" onClick={() => nav('/powiadomienia')}><Bell size={20} />{upcoming.length > 0 && <span className="dot">{upcoming.length > 9 ? '9+' : upcoming.length}</span>}</button>
           <button className="icon-btn" aria-label="Odbierz psa" title="Odbierz psa" onClick={() => nav('/skanuj')}><QrCode size={20} /></button>
+          <button className="icon-btn" aria-label="Wyloguj" title="Wyloguj" onClick={logout}><LogOut size={20} /></button>
         </div>
       </div>
 

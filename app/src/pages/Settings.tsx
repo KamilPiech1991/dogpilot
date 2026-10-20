@@ -5,7 +5,7 @@ import { useStore } from '../app/store';
 import { Card, Field, ProBadge, Switch, DelBtn, Modal, Tabs } from '../components/ui';
 import { PhotoPicker } from '../components/ui';
 import { ArtHeader } from '../components/ui';
-import { Settings as ArtIcon } from 'lucide-react';
+import { Settings as ArtIcon, LogOut } from 'lucide-react';
 import { emptyState, demoState } from '../app/seed';
 import { FREE_LIMITS, NOTIF_LABEL, type AppState, type Currency, type Member, type NotifKind, type NotifySettings } from '../app/types';
 import { fmtDate, fmtDateTime, fmtMoney, today, uid } from '../app/format';
@@ -221,9 +221,12 @@ export default function Settings() {
             <button className="btn secondary" onClick={() => { if (confirm('Załadować dane demonstracyjne? Obecne dane zostaną nadpisane.')) { replace(demoState()); toast('Załadowano dane demo'); } }}>Dane demo</button>
           </div>
         </Card>
+        <Card title="Konto" icon={<LogOut size={18} />}>
+          <p className="muted">{authReady ? 'Zalogowano kontem Dogpilot – te same dane zobaczysz po zalogowaniu na telefonie.' : 'Tryb demo – dane są zapisane tylko w tej przeglądarce.'}{state.profile.email ? ` Konto: ${state.profile.email}.` : ''}</p>
+          <button className="btn secondary" onClick={() => { if (!confirm('Wylogować się? Dane zostaną na tym urządzeniu.')) return; signOut().then(() => { setProfile({ onboarded: false }); window.location.hash = '/'; }); }}><LogOut size={16} /> Wyloguj</button>
+        </Card>
         <Card title="Usuń konto" className="danger-zone">
           <p>Usunięcie konta trwale kasuje wszystkie dane: psy, mioty, szczenięta, finanse, kopie w chmurze i połączenia z Facebookiem i Instagramem. Tej operacji nie można cofnąć.</p>
-          {authReady && <button className="btn ghost" onClick={() => signOut().then(() => { window.location.hash = '/'; window.location.reload(); })}>Wyloguj</button>}
           <button className="btn danger" onClick={() => setDelOpen(true)}><Trash2 size={16} /> Usuń konto i wszystkie dane</button>
         </Card>
         <Card title="O aplikacji">

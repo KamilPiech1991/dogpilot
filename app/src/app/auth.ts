@@ -18,4 +18,4 @@ export function onAuth(cb: (u: AuthUser | null) => void) { if (!supabase) return
 export async function signInGoogle() { if (!supabase) return { error: 'demo' }; const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin + window.location.pathname } }); return { error: error?.message }; }
 export async function signInEmail(email: string, password: string) { if (!supabase) return { error: 'demo' }; const { error } = await supabase.auth.signInWithPassword({ email, password }); return { error: error?.message }; }
 export async function signUpEmail(email: string, password: string, name: string) { if (!supabase) return { error: 'demo', confirm: false }; const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { name } } }); return { error: error?.message, confirm: !data.session }; }
-export async function signOut() { await supabase?.auth.signOut(); }
+export async function signOut() { try { await supabase?.auth.signOut(); } catch { /* brak sesji */ } }

@@ -66,7 +66,7 @@ function GoogleMark() {
 }
 
 export default function Onboarding() {
-  const { setProfile, replace } = useStore();
+  const { state, setProfile, replace } = useStore();
   const [step, setStep] = useState<Step>('module');
   const [module, setModule] = useState<Module>('breeder');
   const [mode, setMode] = useState<AuthMode>('register');
@@ -75,9 +75,9 @@ export default function Onboarding() {
   const [showPw, setShowPw] = useState(false);
   const [authErr, setAuthErr] = useState('');
   const [provider, setProvider] = useState<'email' | 'google'>('email');
-  const [name, setName] = useState('');
-  const [kennel, setKennel] = useState('');
-  const [kennelNo, setKennelNo] = useState('');
+  const [name, setName] = useState(state.profile.breederName || '');
+  const [kennel, setKennel] = useState(state.profile.kennelName || '');
+  const [kennelNo, setKennelNo] = useState(state.profile.kennelNo || '');
   const [lang, setLangState] = useState<Lang>(initialLang);
   const L = TXT[lang];
   const setLang = (l: Lang) => { setLangState(l); try { localStorage.setItem(LANG_KEY, l); } catch { /* ignore */ } setLanguage(l); };
