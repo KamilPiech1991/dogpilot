@@ -3,7 +3,7 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { Home, Dog, PawPrint, Wallet, BarChart3, Settings, Bell, QrCode, Plus, Scale, Syringe, Receipt, AlarmClock, FileText, Search, Moon, Sun, Trophy, ExternalLink, CalendarDays, LogOut } from 'lucide-react';
 import { useStore } from '../app/store';
 import { Wordmark } from './ui';
-import { signOut } from '../app/auth';
+import { logout } from '../app/auth';
 import { collectNotifications, maybeSystemNotify } from '../app/notifications';
 import { today, daysBetween } from '../app/format';
 import { saveCloud } from '../app/cloud';
@@ -65,7 +65,7 @@ export default function Layout() {
         {side.map(i => <NavLink key={i.to} to={i.to} end={i.to === '/'} className={({ isActive }) => `navlink ${isActive ? 'active' : ''}`}><span className="ico">{i.ico}</span>{i.label}{i.to === '/powiadomienia' && notifCount > 0 && <span className="count">{notifCount}</span>}</NavLink>)}
         <div className="spacer" />
         <button className="navlink" style={{ border: 0, background: 'transparent', cursor: 'pointer', textAlign: 'left' }} onClick={() => setProfile({ theme: state.profile.darkMode ? 'light' : 'dark' })}><span className="ico">{state.profile.darkMode ? <Sun size={22} /> : <Moon size={22} />}</span>{state.profile.darkMode ? 'Tryb jasny' : 'Tryb ciemny'}</button>
-        <button className="navlink" style={{ border: 0, background: 'transparent', cursor: 'pointer', textAlign: 'left' }} onClick={() => { if (!confirm('Wylogować się? Dane zostaną na tym urządzeniu.')) return; signOut().then(() => { setProfile({ onboarded: false }); nav('/'); }); }}><span className="ico"><LogOut size={22} /></span>Wyloguj</button>
+        <button className="navlink" style={{ border: 0, background: 'transparent', cursor: 'pointer', textAlign: 'left' }} onClick={() => { if (!confirm('Wylogować się?')) return; logout().then(k => { if (k === 'local') { setProfile({ onboarded: false }); nav('/'); } }); }}><span className="ico"><LogOut size={22} /></span>Wyloguj</button>
         <div className="muted" style={{ padding: 10, display: 'flex', gap: 10, alignItems: 'center' }}>
           {state.profile.logo && <img className="kennel-logo" src={state.profile.logo} alt="" />}
           <div><div><b>{state.profile.kennelName || state.profile.breederName}</b></div>

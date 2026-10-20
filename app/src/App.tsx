@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import { consumeAuthReturn } from './app/auth';
+import { consumeAuthReturn, WEB_PANEL, currentUser, onAuth, goToLogin, isLeaving } from './app/auth';
 import Layout from './components/Layout';
 import { useStore } from './app/store';
 import Onboarding from './pages/Onboarding';
@@ -27,10 +27,21 @@ import SetPassword from './pages/SetPassword';
 export default function App() {
   const { state, toast } = useStore();
   const loc = useLocation();
-  useEffect(() => { consumeAuthReturn().then(r => { if (r) toast(r.message, r.ok ? 5000 : 12000); }); }, []); // eslint-disable-line react-hooks/exhaustive-deps
-  if (loc.pathname === '/ustaw-haslo') return <SetPassword />;
-  if (!state.profile.onboarded) return <Onboarding />;
+  const [auth, setAuth] = useState<'loading' | 'in' | 'out'>(WEB_PANEL ? 'loading' : 'in');
+  useEffect(() => {
+    consumeAuthReturn().then(r => { if (r) toast(r.message, r.ok ? 5000 : 12000); });
+    if (!WEB_PANEL) return;
+    let alive = true;
+    currentUser().then(u => { if (alive) setAuth(u ? 'in' : 'out'); });
+    const off = onAuth(u => { if (alive) setAuth(u ? 'in' : 'out'); });
+    return () => { alive = false; off(); };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // strony publiczne: karta nabywcy (QR) i ustawianie hasła z linku w e-mailu
   if (loc.pathname.startsWith('/portal/')) return <Routes><Route path="/portal/:id" element={<Portal />} /></Routes>;
+  if (loc.pathname === '/ustaw-haslo') return <SetPassword />;
+  if (auth === 'loading') return null; // splash z index.html zasłania ekran
+  if (auth === 'out') { if (!isLeaving()) goToLogin(); return null; } // panel webowy bez sesji → strona logowania
+  if (!state.profile.onboarded) return <Onboarding />;
   const breeder = state.profile.module === 'breeder';
   return (
     <Routes>

@@ -5,6 +5,12 @@ const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
 const key = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
 export const supabase: SupabaseClient | null = url && key ? createClient(url, key, { auth: { flowType: 'pkce', detectSessionInUrl: true, persistSession: true } }) : null;
 export const authReady = Boolean(supabase);
+/** Panel webowy = konto Supabase w przeglądarce. Przyszła aplikacja mobilna zostanie przy ekranie powitalnym. */
+export const WEB_PANEL = authReady;
+/** Strona WWW obok panelu: /dogpilot/app/ → /dogpilot/, /app/ → / */
+export const SITE_URL = new URL((import.meta.env.BASE_URL as string).replace(/app\/?$/, '') || '/', window.location.origin).href;
+let leaving = false;
+export const isLeaving = () => leaving;
 
 /** Wersje dokumentów, które klient akceptuje przy rejestracji (podbij przy zmianie treści). */
 export const TERMS_VERSION = '2026-10-20';
@@ -21,13 +27,14 @@ export function rememberConsent(marketing = false): Consent {
 function readConsent(): Consent | null { try { return JSON.parse(localStorage.getItem(CONSENT_KEY) || 'null'); } catch { return null; } }
 function clearConsent() { try { localStorage.removeItem(CONSENT_KEY); } catch { /* ignoruj */ } }
 
-export type AuthUser = { id: string; email: string; name: string; provider: 'email' | 'google' | 'apple'; hasPassword: boolean };
+export type AuthUser = { id: string; email: string; name: string; provider: 'email' | 'google' | 'apple'; hasPassword: boolean; mode?: 'breeder' | 'owner' };
 const toUser = (s: Session | null): AuthUser | null => {
   if (!s) return null;
   const u = s.user; const meta = (u.user_metadata ?? {}) as Record<string, string>;
   const p = u.app_metadata?.provider as string | undefined;
   const hasPassword = Boolean(u.identities?.some(i => i.provider === 'email'));
-  return { id: u.id, email: u.email ?? '', name: meta.full_name ?? meta.name ?? meta.given_name ?? '', provider: p === 'google' ? 'google' : p === 'apple' ? 'apple' : 'email', hasPassword };
+  const mode = meta.mode === 'owner' || meta.mode === 'breeder' ? meta.mode : undefined;
+  return { id: u.id, email: u.email ?? '', name: meta.full_name ?? meta.name ?? meta.given_name ?? '', provider: p === 'google' ? 'google' : p === 'apple' ? 'apple' : 'email', hasPassword, mode };
 };
 export async function currentUser(): Promise<AuthUser | null> { if (!supabase) return null; const { data } = await supabase.auth.getSession(); return toUser(data.session); }
 export function onAuth(cb: (u: AuthUser | null) => void) { if (!supabase) return () => {}; const { data } = supabase.auth.onAuthStateChange((_e, s) => cb(toUser(s))); return () => data.subscription.unsubscribe(); }
@@ -94,3 +101,13 @@ export async function consumeAuthReturn(): Promise<{ ok: boolean; message: strin
 function cleanUrl() { try { const u = new URL(window.location.href); ['code', 'error', 'error_description', 'error_code'].forEach(k => u.searchParams.delete(k)); window.history.replaceState(window.history.state, '', u.toString()); } catch { /* ignoruj */ } }
 
 export async function signOut() { try { await supabase?.auth.signOut(); } catch { /* brak sesji */ } }
+/** Wylogowanie. W panelu webowym kończy sesję i wraca na stronę WWW; bez konta (demo / mobile) zwraca 'local' – ekran powitalny obsługuje wywołujący. */
+export async function logout(): Promise<'site' | 'local'> {
+  if (!WEB_PANEL) return 'local';
+  leaving = true;
+  await signOut();
+  window.location.href = SITE_URL;
+  return 'site';
+}
+/** Bez sesji w panelu webowym → strona logowania (e-mail i hasło albo Google). */
+export function goToLogin() { leaving = true; window.location.replace(SITE_URL + 'logowanie'); }

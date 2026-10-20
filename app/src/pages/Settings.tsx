@@ -10,7 +10,7 @@ import { emptyState, demoState } from '../app/seed';
 import { FREE_LIMITS, NOTIF_LABEL, type AppState, type Currency, type Member, type NotifKind, type NotifySettings } from '../app/types';
 import { fmtDate, fmtDateTime, fmtMoney, today, uid } from '../app/format';
 import { collectNotifications, notifySettings } from '../app/notifications';
-import { authReady, signOut } from '../app/auth';
+import { authReady, logout } from '../app/auth';
 import { cloudInfo, deleteCloud, fmtBytes, loadCloud, saveCloud } from '../app/cloud';
 import { ConnectModal, FacebookMark, InstagramMark, ShareComposer, NETWORK_LABEL, type Network } from '../components/Social';
 import { NotifIcon } from '../components/NotifIcon';
@@ -222,8 +222,8 @@ export default function Settings() {
           </div>
         </Card>
         <Card title="Konto" icon={<LogOut size={18} />}>
-          <p className="muted">{authReady ? 'Zalogowano kontem Dogpilot – te same dane zobaczysz po zalogowaniu na telefonie.' : 'Tryb demo – dane są zapisane tylko w tej przeglądarce.'}{state.profile.email ? ` Konto: ${state.profile.email}.` : ''}</p>
-          <button className="btn secondary" onClick={() => { if (!confirm('Wylogować się? Dane zostaną na tym urządzeniu.')) return; signOut().then(() => { setProfile({ onboarded: false }); window.location.hash = '/'; }); }}><LogOut size={16} /> Wyloguj</button>
+          <p className="muted">{authReady ? 'Zalogowano kontem Dogpilot. Po wylogowaniu wrócisz na stronę dogpilot.pl; zalogujesz się ponownie e-mailem i hasłem albo kontem Google.' : 'Tryb demo – dane są zapisane tylko w tej przeglądarce.'}{state.profile.email ? ` Konto: ${state.profile.email}.` : ''}</p>
+          <button className="btn secondary" onClick={() => { if (!confirm('Wylogować się?')) return; logout().then(k => { if (k === 'local') { setProfile({ onboarded: false }); window.location.hash = '/'; } }); }}><LogOut size={16} /> Wyloguj</button>
           {authReady && <a className="btn secondary" href="#/ustaw-haslo" style={{ marginLeft: 8 }}><Lock size={16} /> Ustaw / zmień hasło</a>}
         </Card>
         <Card title="Usuń konto" className="danger-zone">

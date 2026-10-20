@@ -118,7 +118,7 @@ export default function Onboarding() {
   // sesja z Supabase (po powrocie z Google) → od razu do danych hodowli
   useEffect(() => {
     if (!authReady) return;
-    const apply = (u: Awaited<ReturnType<typeof currentUser>>) => { if (!u) return; setEmail(u.email); if (u.name) setName(n => n || u.name); setProvider(u.provider === 'google' ? 'google' : 'email'); setStep('details'); };
+    const apply = (u: Awaited<ReturnType<typeof currentUser>>) => { if (!u) return; if (u.mode) setModule(u.mode); setEmail(u.email); if (u.name) setName(n => n || u.name); setProvider(u.provider === 'google' ? 'google' : 'email'); setStep('details'); };
     currentUser().then(apply); return onAuth(apply);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const google = async () => {
