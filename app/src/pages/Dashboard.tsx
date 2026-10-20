@@ -1,6 +1,7 @@
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Bell, Dog, PawPrint, Trophy, Wallet, QrCode, Heart, FileText, Flower2, ArrowRight, Scale, Stethoscope, Globe, Sparkles, ChevronRight, Baby, CalendarDays, LogOut } from 'lucide-react';
-import { signOut } from '../app/auth';
+import { signOut, authReady, currentUser } from '../app/auth';
 import { useStore } from '../app/store';
 import { addDays, daysBetween, fmtDate, fmtMoney, today } from '../app/format';
 import { heatStats } from '../app/heat';
@@ -12,6 +13,8 @@ const MONTHS = ['styczniu', 'lutym', 'marcu', 'kwietniu', 'maju', 'czerwcu', 'li
 
 export default function Dashboard() {
   const { state, setProfile } = useStore();
+  const [acct, setAcct] = useState<string>('');
+  useEffect(() => { if (authReady) currentUser().then(u => setAcct(u?.email ?? '')); }, []);
   const logout = () => { if (!confirm('Wylogować się? Dane zostaną na tym urządzeniu.')) return; signOut().then(() => { setProfile({ onboarded: false }); nav('/'); }); };
   const nav = useNavigate();
   const p = state.profile;
@@ -48,6 +51,7 @@ export default function Dashboard() {
           <div>
             <div className="muted" style={{ fontSize: 12, fontWeight: 800 }}>{greet}{p.breederName ? `, ${p.breederName}` : ''}</div>
             <div style={{ fontSize: 18, fontWeight: 900, lineHeight: 1.1 }}>{breeder && p.kennelName ? p.kennelName : 'Dogpilot'}</div>
+            {acct && <div className="muted" style={{ fontSize: 11, fontWeight: 700 }}>{acct}</div>}
           </div>
         </div>
         <div className="row" style={{ gap: 8 }}>

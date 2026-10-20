@@ -48,7 +48,7 @@ interface Ctx {
   remove: (coll: CollKey, id: string) => void;
   setProfile: (patch: Partial<Profile>) => void;
   replace: (state: AppState) => void;
-  toast: (msg: string) => void;
+  toast: (msg: string, ms?: number) => void;
   limits: { canAddDog: (sex: 'male' | 'female') => boolean; canAddShow: () => boolean; canAddChampionship: () => boolean; chartMonths: number; isPro: boolean };
 }
 
@@ -59,6 +59,7 @@ const readLang = (): Lang => { try { const v = localStorage.getItem('dogpilot.la
 export function StoreProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, undefined, load);
   const [toastMsg, setToast] = useState<string | null>(null);
+  const [toastMs, setToastMs] = useState(2500);
   setCurrency(state.profile.currency ?? 'PLN'); // przed renderem dzieci, żeby kwoty od razu miały właściwą walutę
   // język: profil, a przed ukończeniem konfiguracji – wybór z ekranu powitalnego
   const lang: Lang = state.profile.language ?? readLang();
@@ -80,7 +81,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     mq.addEventListener('change', apply);
     return () => mq.removeEventListener('change', apply);
   }, [themeMode, state.profile.darkMode]);
-  useEffect(() => { if (!toastMsg) return; const t = setTimeout(() => setToast(null), 2500); return () => clearTimeout(t); }, [toastMsg]);
+  useEffect(() => { if (!toastMsg) return; const t = setTimeout(() => setToast(null), toastMs); return () => clearTimeout(t); }, [toastMsg, toastMs]);
 
   const ctx = useMemo<Ctx>(() => {
     const isPro = state.profile.plan === 'pro';
@@ -90,7 +91,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       remove: (coll, id) => dispatch({ type: 'remove', coll, id }),
       setProfile: patch => dispatch({ type: 'profile', patch }),
       replace: st => dispatch({ type: 'replace', state: st }),
-      toast: msg => setToast(msg),
+      toast: (msg, ms) => { setToastMs(ms ?? 2500); setToast(msg); },
       limits: {
         isPro,
         canAddDog: sex => isPro || state.dogs.filter(d => d.sex === sex).length < (sex === 'female' ? FREE_LIMITS.females : FREE_LIMITS.males),

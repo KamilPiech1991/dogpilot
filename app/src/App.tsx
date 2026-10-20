@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { consumeAuthReturn } from './app/auth';
 import Layout from './components/Layout';
 import { useStore } from './app/store';
 import Onboarding from './pages/Onboarding';
@@ -22,8 +24,9 @@ import DogWizard from './pages/DogWizard';
 import Notifications from './pages/Notifications';
 
 export default function App() {
-  const { state } = useStore();
+  const { state, toast } = useStore();
   const loc = useLocation();
+  useEffect(() => { consumeAuthReturn().then(r => { if (r) toast(r.message, r.ok ? 5000 : 12000); }); }, []); // eslint-disable-line react-hooks/exhaustive-deps
   if (!state.profile.onboarded) return <Onboarding />;
   if (loc.pathname.startsWith('/portal/')) return <Routes><Route path="/portal/:id" element={<Portal />} /></Routes>;
   const breeder = state.profile.module === 'breeder';

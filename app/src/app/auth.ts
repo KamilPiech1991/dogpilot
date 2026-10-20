@@ -18,4 +18,20 @@ export function onAuth(cb: (u: AuthUser | null) => void) { if (!supabase) return
 export async function signInGoogle() { if (!supabase) return { error: 'demo' }; const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin + window.location.pathname } }); return { error: error?.message }; }
 export async function signInEmail(email: string, password: string) { if (!supabase) return { error: 'demo' }; const { error } = await supabase.auth.signInWithPassword({ email, password }); return { error: error?.message }; }
 export async function signUpEmail(email: string, password: string, name: string) { if (!supabase) return { error: 'demo', confirm: false }; const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { name } } }); return { error: error?.message, confirm: !data.session }; }
+/** Po powrocie z Google/e-maila: co jest w adresie i czy powstała sesja. Zwraca komunikat do pokazania (lub null, gdy nie było powrotu). */
+export async function consumeAuthReturn(): Promise<{ ok: boolean; message: string } | null> {
+  const q = new URLSearchParams(window.location.search);
+  const h = new URLSearchParams(window.location.hash.replace(/^#\/?\??/, '').replace(/^.*\?/, ''));
+  const err = q.get('error_description') || h.get('error_description') || q.get('error') || h.get('error');
+  if (err) { cleanUrl(); return { ok: false, message: `Logowanie nie powiodło się: ${decodeURIComponent(err.replace(/\+/g, ' '))}` }; }
+  if (!q.get('code')) return null;
+  if (!supabase) return { ok: false, message: 'Panel zbudowano bez kluczy Supabase – logowanie jest niedostępne.' };
+  const { data, error } = await supabase.auth.getSession();
+  cleanUrl();
+  if (error) return { ok: false, message: `Logowanie nie powiodło się: ${error.message}` };
+  if (!data.session) return { ok: false, message: 'Logowanie nie powiodło się: kod z Google nie dał sesji (otwórz logowanie i panel w tej samej przeglądarce, bez trybu prywatnego).' };
+  return { ok: true, message: `Zalogowano: ${data.session.user.email ?? 'konto Google'}` };
+}
+function cleanUrl() { try { const u = new URL(window.location.href); ['code', 'error', 'error_description', 'error_code'].forEach(k => u.searchParams.delete(k)); window.history.replaceState(window.history.state, '', u.toString()); } catch { /* ignoruj */ } }
+
 export async function signOut() { try { await supabase?.auth.signOut(); } catch { /* brak sesji */ } }

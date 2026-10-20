@@ -67,6 +67,8 @@ const c = t(lang).login; const login = mode === 'login';
   const APP = (import.meta.env.PUBLIC_APP_URL as string | undefined) ?? document.querySelector<HTMLMetaElement>('meta[name="app-base"]')?.content ?? '/app/';
   const appUrl = () => new URL(APP, location.href).href;
   const note = (box: Element | null, msg?: string) => { const el = box?.querySelector<HTMLElement>('.soon'); if (!el) return; if (msg) el.textContent = msg; el.removeAttribute('hidden'); };
+  // błąd zwrócony przez Supabase/Google w adresie (np. niedozwolony adres powrotu) – pokaż zamiast cicho zignorować
+  { const q = new URLSearchParams(location.search); const h = new URLSearchParams(location.hash.slice(1)); const err = q.get('error_description') || h.get('error_description') || q.get('error') || h.get('error'); if (err) note(document.querySelector('.box'), `Logowanie nie powiodło się: ${err.replace(/\+/g, ' ')}`); }
   // już zalogowany → prosto do panelu
   if (authReady) supabase!.auth.getSession().then(({ data }) => { if (data.session) location.replace(appUrl()); });
   document.querySelectorAll<HTMLButtonElement>('[data-provider]').forEach(b => b.addEventListener('click', async () => {
