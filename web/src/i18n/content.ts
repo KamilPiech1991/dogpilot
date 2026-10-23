@@ -24,7 +24,7 @@ const pl = {
   },
   nav: { features: 'Funkcje', pricing: 'Cennik', guide: 'Poradnik', faq: 'FAQ', contact: 'Kontakt', login: 'Zaloguj się', signup: 'Załóż darmowe konto', signupShort: 'Zacznij', menu: 'Menu' },
   hero: {
-    badge: 'Darmowy start bez karty · Android, iPhone i przeglądarka',
+    badge: 'Darmowe konto na Twojej przeglądarce a także w aplikacji Android lub iPhone',
     newsBadge: 'Nowość: kalendarz wystaw ZKwP 2026 w aplikacji',
     h1: 'Twój pies pod dobrą opieką, hodowla pod kontrolą – w jednej aplikacji',
     h1b: ['Hodowla, mioty i Twój pies', 'w jednej ', 'aplikacji', ''],
