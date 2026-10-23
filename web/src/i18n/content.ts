@@ -12,7 +12,7 @@ export const SITE = {
   formsEndpoint: '', // np. https://formspree.io/f/xxxx – do czasu ustawienia formularze pokazują potwierdzenie lokalnie
   analyticsDomain: '', // np. dogpilot.pl – włącza Plausible (statystyki bez ciasteczek)
   address: ['[ulica i numer]', '[kod] [miejscowość], Polska'],
-  pricing: { free: 0, proYear: 49, proMonth: 4.99, proYearEur: 11.99, proMonthEur: 1.19 },
+  pricing: { free: 0, proYear: 49, proMonth: 6.99, proYearEur: 11.99, proMonthEur: 1.69 },
   limits: { dogs: 1, shows: 3, championships: 6, chartMonths: 4 },
 };
 
@@ -100,11 +100,11 @@ const pl = {
     ],
   },
   pricing: {
-    kicker: 'Cennik', h2: 'Za darmo dla właściciela psa i małej hodowli. PRO, kiedy hodowla rośnie.', yearly: 'Rocznie', monthly: 'Miesięcznie', save: 'oszczędzasz 18%', period: 'Okres rozliczenia',
+    kicker: 'Cennik', h2: 'Za darmo dla właściciela psa i małej hodowli. PRO, kiedy hodowla rośnie.', yearly: 'Rocznie', monthly: 'Miesięcznie', save: 'oszczędzasz 42%', period: 'Okres rozliczenia',
     free: { name: 'Plan FREE', h3: 'Dla właściciela psa i początku hodowli', p: 'Najważniejsze funkcje bez limitu czasu i bez karty. Właścicielowi jednego czy dwóch psów wystarcza na stałe.', price: '0 zł', per: 'na zawsze', cta: 'Załóż darmowe konto',
       items: ['1 pies lub 1 suka', 'Raporty', 'Do 3 wystaw', 'Wydatki', 'Mioty, wagi szczeniąt i karta przekazania z QR', 'Kalendarz wystaw ZKwP i powiadomienia'] },
     pro: { name: 'Plan PRO', badge: 'Wybór hodowców', h3: 'Cała hodowla bez limitów', p: 'Wszystkie obecne i przyszłe funkcje, kopia w chmurze, zespół hodowli.',
-      priceYear: '49 zł', priceMonth: '4,99 zł', perYear: 'rocznie', perMonth: 'miesięcznie', anchorYear: 'To tylko 4,08 zł miesięcznie – mniej niż jeden przysmak.', anchorMonth: 'W planie rocznym zapłacisz 49 zł zamiast 59,88 zł – oszczędzasz 18%.', cta: 'Wypróbuj PRO',
+      priceYear: '49 zł', priceMonth: '6,99 zł', perYear: 'rocznie', perMonth: 'miesięcznie', anchorYear: 'To tylko 4,08 zł miesięcznie – mniej niż jeden przysmak.', anchorMonth: 'W planie rocznym zapłacisz 49 zł zamiast 83,88 zł – oszczędzasz 42%.', cta: 'Wypróbuj PRO',
       note: 'Płatność w sklepie Google Play / App Store albo kartą w aplikacji webowej. Anulujesz w każdej chwili.',
       items: ['Bez limitu psów, miotów, wystaw i championatów', 'Pełne wykresy, raporty i dokumenty PDF z logo hodowli', 'Kalendarz cieczek z prognozą, rodowód i COI', 'Zespół hodowli z rolami i strona dla nabywcy', 'Kopia w chmurze i synchronizacja telefon ↔ komputer', 'Publikacja miotów na Facebooku i Instagramie'] },
   },
@@ -204,11 +204,11 @@ const en: typeof pl = {
     ['[Breeder review from the beta programme – to be added after testing.]', '[Name]', '[Kennel] · [breed]'],
     ['[Dog owner review in “I have a dog” mode – to be added.]', '[Name]', 'owner · [breed]'],
   ] },
-  pricing: { kicker: 'Pricing', h2: 'Free for dog owners and small kennels. PRO when the kennel grows.', yearly: 'Yearly', monthly: 'Monthly', save: 'save 16%', period: 'Billing period',
+  pricing: { kicker: 'Pricing', h2: 'Free for dog owners and small kennels. PRO when the kennel grows.', yearly: 'Yearly', monthly: 'Monthly', save: 'save 41%', period: 'Billing period',
     free: { name: 'FREE plan', h3: 'For dog owners and kennels starting out', p: 'The essential features with no time limit and no card. Enough for an owner of one or two dogs, for good.', price: '€0', per: 'forever', cta: 'Create a free account',
       items: ['1 dog (male or female)', 'Reports', 'Up to 3 shows', 'Expenses', 'Litters, puppy weights and a QR handover card', 'Show calendar and notifications'] },
     pro: { name: 'PRO plan', badge: 'Breeders’ choice', h3: 'The whole kennel without limits', p: 'All current and future features, cloud backup, kennel team.',
-      priceYear: '€11.99', priceMonth: '€1.19', perYear: 'per year', perMonth: 'per month', anchorYear: 'That is just €1.00 a month – less than a single treat.', anchorMonth: 'On the yearly plan you pay €11.99 instead of €14.28 – you save 16%.', cta: 'Try PRO',
+      priceYear: '€11.99', priceMonth: '€1.69', perYear: 'per year', perMonth: 'per month', anchorYear: 'That is just €1.00 a month – less than a single treat.', anchorMonth: 'On the yearly plan you pay €11.99 instead of €20.28 – you save 41%.', cta: 'Try PRO',
       note: 'Pay in Google Play / App Store or by card in the web app. Cancel any time.',
       items: ['Unlimited dogs, litters, shows and championships', 'Full charts, reports and PDF documents with your logo', 'Heat calendar with forecast, pedigree and COI', 'Kennel team with roles and a buyer page', 'Cloud backup and phone ↔ computer sync', 'Litter posts on Facebook and Instagram'] } },
   faq: { kicker: 'FAQ', h2: 'The questions we hear most often', p: 'Can’t find your answer? Write to us – we reply on working days.', cta: 'Contact', items: [
