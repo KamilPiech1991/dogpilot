@@ -26,7 +26,7 @@ const pl = {
   hero: {
     badge: 'Darmowy start bez karty · Android, iPhone i przeglądarka',
     newsBadge: 'Nowość: kalendarz wystaw ZKwP 2026 w aplikacji',
-    h1: 'Hodowla pod kontrolą, pies pod dobrą opieką – w jednej aplikacji',
+    h1: 'Twój pies pod dobrą opieką, hodowla pod kontrolą – w jednej aplikacji',
     h1b: ['Hodowla, mioty i Twój pies', 'w jednej ', 'aplikacji', ''],
     lead: 'Hodowcę Dogpilot prowadzi od pierwszej cieczki do przekazania szczenięcia: mioty, wagi, wystawy ZKwP, finanse i dokumenty. Właścicielowi psa pilnuje szczepień, terminów, wydatków i historii pupila. Jedno konto, dwa tryby: „Prowadzę hodowlę” i „Mam psiaka”.',
     leadB: 'Dla hodowcy: rozród, mioty, wystawy, finanse i dokumenty. Dla właściciela psa: zdrowie, terminy i wydatki pupila. Na telefonie, tablecie i w przeglądarce – szczenię przekażesz nowemu domowi jednym kodem QR.',
