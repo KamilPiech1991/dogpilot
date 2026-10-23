@@ -41,7 +41,7 @@ const pl = {
     items: [
       ['Hodowla w jednym miejscu, nie w trzech zeszytach', 'Psy, rodowody, mioty, szczenięta i nabywcy – zamiast notesu, Excela i zdjęć w telefonie.'],
       ['Zdrowie i terminy każdego psa', 'Szczepienia, odrobaczenia, cieczki i ciąża z przypomnieniami, które sam ustawiasz – dla całej hodowli i dla jednego psa w domu.'],
-      ['Pieniądze policzone za Ciebie', 'Koszty, przychody ze sprzedaży i wynik każdego miotu liczą się same. Właściciel psa widzi, ile naprawdę kosztuje pupil.'],
+      ['Koszty i dochód policzone za Ciebie', 'Wydatki i przychody z każdego miotu liczą się same.'],
       ['Sezon wystawowy zaplanowany', 'Terminarz wystaw ZKwP na cały rok, plan startów, wyniki, certyfikaty i championaty w profilu każdego psa.'],
     ],
   },
