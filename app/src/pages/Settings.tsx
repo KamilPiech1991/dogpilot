@@ -109,7 +109,7 @@ export default function Settings() {
         <Card title="Plan" right={p.plan === 'pro' ? <ProBadge /> : <span className="badge gray">FREE</span>}>
           <div className="grid cols-2 stack-m">
             <div className="card soft"><b>FREE – 0 zł</b><ul className="muted" style={{ paddingLeft: 18 }}><li>{`${FREE_LIMITS.dogs} pies lub ${FREE_LIMITS.dogs} suka`}</li><li>raporty i wydatki</li><li>do {FREE_LIMITS.shows} wystaw</li><li>wykres wydatków: {FREE_LIMITS.chartMonths} z 6 miesięcy</li></ul></div>
-            <div className="card soft"><b>PRO – 29 zł/rok lub 3,99 zł/mies.</b><ul className="muted" style={{ paddingLeft: 18 }}><li>bez limitów psów, wystaw i championatów</li><li>pełne wykresy, raporty i dokumenty PDF</li><li>zespół hodowli, strona nabywcy, synchronizacja (w przygotowaniu)</li></ul></div>
+            <div className="card soft"><b>PRO – 49 zł/rok lub 4,99 zł/mies.</b><ul className="muted" style={{ paddingLeft: 18 }}><li>bez limitów psów, wystaw i championatów</li><li>pełne wykresy, raporty i dokumenty PDF</li><li>zespół hodowli, strona nabywcy, synchronizacja (w przygotowaniu)</li></ul></div>
           </div>
           <div className="row" style={{ marginTop: 10 }}>
             <button className="btn" onClick={() => { setProfile({ plan: p.plan === 'pro' ? 'free' : 'pro' }); toast(p.plan === 'pro' ? 'Przełączono na FREE' : 'Aktywowano PRO (tryb demo)'); }}>{p.plan === 'pro' ? 'Przełącz na FREE (demo)' : 'Aktywuj PRO (demo)'}</button>
