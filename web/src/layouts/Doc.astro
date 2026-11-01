@@ -11,6 +11,7 @@ const { title, description, lang = 'pl', path, kicker, schema } = Astro.props;
     <div class="prose"><slot /></div>
     <slot name="after" />
   </div></article>
+  <slot name="bottom" />
 </Layout>
 <style>
   .doc { padding: 56px 0 96px; } .narrow { max-width: 760px; } .dh { display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; } h1 { font-size: 44px; }

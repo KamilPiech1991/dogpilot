@@ -126,7 +126,7 @@ const pl = {
   guide: { kicker: 'Poradnik hodowcy i właściciela', h2: 'Wiedza, która przydaje się przy psach', all: 'Wszystkie artykuły', read: 'Czytaj', minutes: 'min czytania' },
   cta: { h2: 'Hodowca czy właściciel psa – zacznij dziś, za darmo', p: 'Konto zakładasz w minutę. Dane możesz wyeksportować lub usunąć w każdej chwili.', button: 'Załóż darmowe konto', qr: 'Zeskanuj telefonem, żeby pobrać aplikację', qrAlt: 'Kod QR – dogpilot.pl/pobierz' },
   footer: {
-    about: 'Dogpilot pomaga prowadzić hodowlę psów i opiekować się psem w domu. Projekt i rozwój: Qamitech.',
+    about: 'Dogpilot pomaga prowadzić hodowlę psów i opiekować się psem w domu.',
     product: 'Produkt', productLinks: [['Funkcje', '/#funkcje'], ['Cennik', '/#cennik'], ['Aplikacja webowa', SITE.appUrl], ['Android · Google Play', SITE.playUrl], ['iPhone · App Store', SITE.appStoreUrl], ['FAQ', '/#faq']],
     guide: 'Poradnik', legal: 'Firma i prawo',
     legalLinks: [['Kontakt', '/kontakt'], ['Polityka prywatności', '/polityka-prywatnosci'], ['Regulamin', '/regulamin'], ['Bezpieczeństwo danych', '/bezpieczenstwo-danych'], ['Usuń konto', '/usun-konto']],
@@ -225,7 +225,7 @@ const en: typeof pl = {
   ] },
   guide: { kicker: 'Guide for breeders and owners', h2: 'Knowledge that helps with the dogs', all: 'All articles', read: 'Read', minutes: 'min read' },
   cta: { h2: 'Breeder or dog owner – start today, for free', p: 'Create an account in a minute. Export or delete your data whenever you like.', button: 'Create a free account', qr: 'Scan with your phone to download the app', qrAlt: 'QR code – dogpilot.pl/pobierz' },
-  footer: { about: 'Dogpilot helps you run a dog kennel and care for a dog at home. Designed and built by Qamitech.', product: 'Product',
+  footer: { about: 'Dogpilot helps you run a dog kennel and care for a dog at home.', product: 'Product',
     productLinks: [['Features', '/en/#features'], ['Pricing', '/en/#pricing'], ['Web app', SITE.appUrl], ['Android · Google Play', SITE.playUrl], ['iPhone · App Store', SITE.appStoreUrl], ['FAQ', '/en/#faq']],
     guide: 'Guide', legal: 'Company and legal', legalLinks: [['Contact', '/kontakt'], ['Privacy policy', '/polityka-prywatnosci'], ['Terms of service', '/regulamin'], ['Data security', '/bezpieczenstwo-danych'], ['Delete account', '/usun-konto']],
     newsletter: 'Newsletter for breeders and owners', emailPh: 'Your e-mail', subscribe: 'Subscribe', rights: 'All rights reserved.' },

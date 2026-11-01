@@ -16,8 +16,8 @@ const schema = [{ '@context': 'https://schema.org', '@type': 'Article', headline
     {post.data.feature && <aside class="feat"><div class="phone"><img src={`/img/app/${post.data.image}.webp`} alt="" width="390" height="844" loading="lazy"></div><div><span class="kicker">Jak to działa w Dogpilot</span><p>{post.data.feature}</p><a href="/rejestracja" class="btn btn-p">Wypróbuj za darmo</a></div></aside>}
     <section class="more"><h2>Przeczytaj także</h2><ul>{others.map(o => <li><a href={`/poradnik/${o.id}`}>{o.data.title}</a><span class="muted"> · {o.data.minutes} min</span></li>)}</ul></section>
   </div>
+  <FinalCta slot="bottom" lang="pl" />
 </Doc>
-<FinalCta lang="pl" />
 <style>
   .meta { font-size: 14px; } .feat { margin: 48px 0; display: grid; grid-template-columns: 180px 1fr; gap: 28px; align-items: center; background: var(--soft); border-radius: 24px; padding: 28px; } .feat .phone { width: 180px; padding: 6px; border-radius: 26px; } .feat .phone img { border-radius: 20px; } .feat div:last-child { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
   .more h2 { font-size: 24px; margin-bottom: 12px; } .more ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; } .more a { font-weight: 800; }
