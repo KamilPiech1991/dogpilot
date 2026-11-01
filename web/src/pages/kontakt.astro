@@ -3,7 +3,7 @@ import Doc from '../layouts/Doc.astro';
 import { SITE } from '../i18n/content';
 ---
 <Doc title="Kontakt" description="Napisz do zespołu Dogpilot – pytania, pomoc, współpraca, program beta dla hodowli." path="/kontakt" kicker="Dogpilot">
-<h2>Zespół Dogpilot</h2><p>{SITE.company}<br>{SITE.address[0]}<br>{SITE.address[1]}</p><p>E-mail: <a href="/kontakt">{SITE.email}</a> · odpowiadamy w dni robocze, zwykle tego samego dnia.</p>
+<h2>Zespół Dogpilot</h2><p>{SITE.company}<br>{SITE.address[0]}<br>{SITE.address[1]}</p><p>E-mail: <a href={`mailto:${SITE.email}`}>{SITE.email}</a> · odpowiadamy w dni robocze, zwykle tego samego dnia.</p>
 <h2>Napisz do nas</h2>
 <form class="cf" method="post" data-form="contact" data-endpoint={SITE.formsEndpoint}>
   <div class="two"><label>Imię i nazwisko<input type="text" name="name" required autocomplete="name"></label><label>E-mail<input type="email" name="email" required autocomplete="email"></label></div>

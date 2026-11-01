@@ -8,7 +8,7 @@ export const SITE = {
   playUrl: 'https://play.google.com/store/apps/details?id=pl.dogpilot.app',
   appStoreUrl: 'https://apps.apple.com/app/dogpilot/id000000000',
   appUrl: '/app/',
-  email: '[e-mail kontaktowy]',
+  email: 'kontakt@dogpilot.pl',
   formsEndpoint: '', // np. https://formspree.io/f/xxxx – do czasu ustawienia formularze pokazują potwierdzenie lokalnie
   analyticsDomain: '', // np. dogpilot.pl – włącza Plausible (statystyki bez ciasteczek)
   address: ['[ulica i numer]', '[kod] [miejscowość], Polska'],
