@@ -1,17 +1,19 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { Home, Dog, PawPrint, Wallet, BarChart3, Settings, Bell, QrCode, Plus, Scale, Syringe, Receipt, AlarmClock, FileText, Search, Moon, Sun, Trophy, ExternalLink, CalendarDays, LogOut } from 'lucide-react';
+import { Home, Dog, PawPrint, Wallet, BarChart3, Settings, Bell, QrCode, Plus, Scale, Syringe, Receipt, AlarmClock, FileText, Search, Moon, Sun, Trophy, ExternalLink, CalendarDays, LogOut, Flower2 } from 'lucide-react';
 import { useStore } from '../app/store';
 import { Wordmark } from './ui';
 import { logout } from '../app/auth';
 import { collectNotifications, maybeSystemNotify } from '../app/notifications';
 import { today, daysBetween } from '../app/format';
 import { saveCloud } from '../app/cloud';
+import HeatQuickAdd from './HeatQuickAdd';
 
 export default function Layout() {
   const { state, setProfile } = useStore();
   const nav = useNavigate();
   const [sheet, setSheet] = useState(false);
+  const [heatOpen, setHeatOpen] = useState(false);
   const [q, setQ] = useState('');
   const breeder = state.profile.module === 'breeder';
   const latestLitter = [...state.litters].sort((a, b) => b.birthDate.localeCompare(a.birthDate))[0];
@@ -46,8 +48,11 @@ export default function Layout() {
     try { const info = saveCloud(state); setProfile({ lastCloudBackup: info.at }); } catch { /* brak miejsca */ }
   }, [state, setProfile]);
   const go = (to: string, external?: boolean) => { setSheet(false); if (external) { window.open(to, '_blank', 'noopener'); return; } nav(to); };
-  const actions = [
+  type Action = { label: string; sub: string; ico: ReactNode; to?: string; external?: boolean; run?: () => void };
+  const hasFemale = state.dogs.some(d => d.sex === 'female');
+  const actions: Action[] = [
     ...(breeder && latestLitter ? [{ label: 'Pomiar wagi szczeniąt', sub: latestLitter.name, ico: <Scale size={20} />, to: `/mioty/${latestLitter.id}?weigh=1` }] : []),
+    ...(breeder && hasFemale ? [{ label: 'Dodaj cieczkę', sub: 'do wybranej suczki', ico: <Flower2 size={20} />, run: () => setHeatOpen(true) }] : []),
     { label: 'Szczepienie lub odrobaczenie', sub: 'wpis zdrowotny', ico: <Syringe size={20} />, to: '/psy?health=1' },
     { label: 'Wydatek', sub: 'hodowla lub wystawa', ico: <Receipt size={20} />, to: '/finanse?add=1' },
     { label: 'Przypomnienie', sub: 'termin, wizyta, wydarzenie', ico: <AlarmClock size={20} />, to: '/przypomnienia?add=1' },
@@ -80,9 +85,11 @@ export default function Layout() {
         <div className="sheet" role="dialog" aria-label="Co chcesz dodać?">
           <div className="handle" />
           <h3 style={{ marginBottom: 10 }}>Co chcesz dodać?</h3>
-          {actions.map(a => <button key={a.label} className="action" onClick={() => go(a.to, 'external' in a && a.external)}><span className="ico">{a.ico}</span><span><div>{a.label}{'external' in a && a.external && <ExternalLink size={13} style={{ marginLeft: 6, verticalAlign: -1, opacity: .6 }} />}</div><small className="muted" style={{ fontWeight: 600 }}>{a.sub}</small></span></button>)}
+          {actions.map(a => <button key={a.label} className="action" onClick={() => { if (a.run) { setSheet(false); a.run(); } else go(a.to!, a.external); }}><span className="ico">{a.ico}</span><span><div>{a.label}{a.external && <ExternalLink size={13} style={{ marginLeft: 6, verticalAlign: -1, opacity: .6 }} />}</div><small className="muted" style={{ fontWeight: 600 }}>{a.sub}</small></span></button>)}
         </div>
       </>}
+
+      {heatOpen && <HeatQuickAdd onClose={() => setHeatOpen(false)} />}
 
       <nav className="bottomnav" aria-label="Nawigacja">
         {bottom.slice(0, 2).map(i => <NavLink key={i.to} to={i.to} end={i.to === '/'} className={({ isActive }) => (isActive ? 'active' : '')}>{i.ico}{i.label}</NavLink>)}
