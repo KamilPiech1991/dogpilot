@@ -67,6 +67,17 @@ const c = t(lang).login; const login = mode === 'login';
   // adres panelu: ze zmiennej, a gdy jej nie ma – z meta (na podglądzie GitHub Pages ma prefiks /dogpilot/)
   const APP = (import.meta.env.PUBLIC_APP_URL as string | undefined) ?? document.querySelector<HTMLMetaElement>('meta[name="app-base"]')?.content ?? '/app/';
   const appUrl = () => new URL(APP, location.href).href;
+  const friendly = (m?: string) => {
+    const s = (m ?? '').toLowerCase();
+    if (!s) return 'Coś poszło nie tak. Spróbuj ponownie.';
+    if (s.includes('failed to fetch') || s.includes('networkerror') || s.includes('load failed')) return 'Nie udało się połączyć z serwerem logowania. Sprawdź internet i spróbuj za chwilę. Jeśli problem wraca, napisz do nas.';
+    if (s.includes('already registered') || s.includes('already been registered')) return 'Konto z tym adresem e-mail już istnieje. Zaloguj się.';
+    if (s.includes('invalid login credentials')) return 'Nieprawidłowy e-mail lub hasło.';
+    if (s.includes('email not confirmed')) return 'Potwierdź adres e-mail – link wysłaliśmy w wiadomości.';
+    if (s.includes('rate limit') || s.includes('too many')) return 'Zbyt wiele prób. Odczekaj chwilę i spróbuj ponownie.';
+    if (s.includes('password should be') || s.includes('weak password')) return 'Hasło jest zbyt słabe – użyj co najmniej 8 znaków.';
+    return m as string;
+  };
   const note = (box: Element | null, msg?: string) => { const el = box?.querySelector<HTMLElement>('.soon'); if (!el) return; if (msg) el.textContent = msg; el.removeAttribute('hidden'); };
   // błąd zwrócony przez Supabase/Google w adresie (np. niedozwolony adres powrotu) – pokaż zamiast cicho zignorować
   { const q = new URLSearchParams(location.search); const h = new URLSearchParams(location.hash.slice(1)); const err = q.get('error_description') || h.get('error_description') || q.get('error') || h.get('error'); if (err) note(document.querySelector('.box'), `Logowanie nie powiodło się: ${err.replace(/\+/g, ' ')}`); }
@@ -89,7 +100,7 @@ const c = t(lang).login; const login = mode === 'login';
     if (!consent.ok) return note(box, form?.dataset.consentMsg);
     if (!authReady) return note(box);
     const { error } = await supabase!.auth.signInWithOAuth({ provider: b.dataset.provider as 'google' | 'apple', options: { redirectTo: appUrl() } });
-    if (error) note(box, error.message);
+    if (error) note(box, friendly(error.message));
   }));
   document.querySelectorAll<HTMLFormElement>('form[data-auth]').forEach(f => f.addEventListener('submit', async e => {
     e.preventDefault(); if (!f.reportValidity()) return;
@@ -103,7 +114,7 @@ const c = t(lang).login; const login = mode === 'login';
       ? await supabase!.auth.signUp({ email, password, options: { data: { full_name: fd.get('name'), mode: fd.get('mode'), language: document.documentElement.lang || 'pl', ...(consent.data ?? {}) }, emailRedirectTo: appUrl() } })
       : await supabase!.auth.signInWithPassword({ email, password });
     btn && (btn.disabled = false);
-    if (res.error) return note(box, res.error.message);
+    if (res.error) return note(box, friendly(res.error.message));
     if (f.dataset.auth === 'signup' && !res.data.session) return note(box, f.dataset.confirmMsg || 'Sprawdź skrzynkę – wysłaliśmy link potwierdzający.');
     location.href = appUrl();
   }));

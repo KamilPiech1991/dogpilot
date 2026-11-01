@@ -39,18 +39,29 @@ const toUser = (s: Session | null): AuthUser | null => {
 export async function currentUser(): Promise<AuthUser | null> { if (!supabase) return null; const { data } = await supabase.auth.getSession(); return toUser(data.session); }
 export function onAuth(cb: (u: AuthUser | null) => void) { if (!supabase) return () => {}; const { data } = supabase.auth.onAuthStateChange((_e, s) => cb(toUser(s))); return () => data.subscription.unsubscribe(); }
 
+export function friendlyAuthError(m?: string): string {
+  const s = (m ?? '').toLowerCase();
+  if (!s) return 'Coś poszło nie tak. Spróbuj ponownie.';
+  if (s.includes('failed to fetch') || s.includes('networkerror') || s.includes('load failed')) return 'Nie udało się połączyć z serwerem logowania. Sprawdź internet i spróbuj za chwilę. Jeśli problem wraca, napisz do nas.';
+  if (s.includes('already registered') || s.includes('already been registered')) return 'Konto z tym adresem e-mail już istnieje. Zaloguj się.';
+  if (s.includes('invalid login credentials')) return 'Nieprawidłowy e-mail lub hasło.';
+  if (s.includes('email not confirmed')) return 'Potwierdź adres e-mail – link wysłaliśmy w wiadomości.';
+  if (s.includes('rate limit') || s.includes('too many')) return 'Zbyt wiele prób. Odczekaj chwilę i spróbuj ponownie.';
+  if (s.includes('password should be') || s.includes('weak password')) return 'Hasło jest zbyt słabe – użyj co najmniej 8 znaków.';
+  return m as string;
+}
 const here = () => window.location.origin + window.location.pathname;
 
-export async function signInGoogle() { if (!supabase) return { error: 'demo' }; const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: here() } }); return { error: error?.message }; }
-export async function signInEmail(email: string, password: string) { if (!supabase) return { error: 'demo' }; const { error } = await supabase.auth.signInWithPassword({ email, password }); return { error: error?.message }; }
+export async function signInGoogle() { if (!supabase) return { error: 'demo' }; const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: here() } }); return { error: error ? friendlyAuthError(error.message) : undefined }; }
+export async function signInEmail(email: string, password: string) { if (!supabase) return { error: 'demo' }; const { error } = await supabase.auth.signInWithPassword({ email, password }); return { error: error ? friendlyAuthError(error.message) : undefined }; }
 /** Rejestracja e-mailem: zgoda i tryb trafiają do metadanych konta (trigger w bazie kopiuje je do customers). */
 export async function signUpEmail(email: string, password: string, extra: { name?: string; mode?: 'breeder' | 'owner'; language?: string; consent: Consent }) {
   if (!supabase) return { error: 'demo', confirm: false };
   const { data, error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: here(), data: { full_name: extra.name ?? '', mode: extra.mode, language: extra.language ?? 'pl', ...extra.consent } } });
-  return { error: error?.message, confirm: !data.session };
+  return { error: error ? friendlyAuthError(error.message) : undefined, confirm: !data.session };
 }
-export async function sendPasswordReset(email: string) { if (!supabase) return { error: 'demo' }; const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: here() + '#/ustaw-haslo' }); return { error: error?.message }; }
-export async function setPassword(password: string) { if (!supabase) return { error: 'demo' }; const { error } = await supabase.auth.updateUser({ password }); return { error: error?.message }; }
+export async function sendPasswordReset(email: string) { if (!supabase) return { error: 'demo' }; const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: here() + '#/ustaw-haslo' }); return { error: error ? friendlyAuthError(error.message) : undefined }; }
+export async function setPassword(password: string) { if (!supabase) return { error: 'demo' }; const { error } = await supabase.auth.updateUser({ password }); return { error: error ? friendlyAuthError(error.message) : undefined }; }
 
 /** Uzupełnia wiersz klienta (tylko własny – RLS) i metadane konta. Błędy nie blokują aplikacji. */
 export async function syncCustomer(patch: { full_name?: string; mode?: 'breeder' | 'owner'; kennel_name?: string; language?: string; marketing_consent?: boolean }) {
