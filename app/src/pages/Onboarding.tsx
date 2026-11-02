@@ -140,13 +140,13 @@ export default function Onboarding() {
       <div className="box">
         {step === 'module' ? (
           <picture>
-            <source media="(max-width: 640px)" srcSet={`${import.meta.env.BASE_URL}brand/header-mobile.webp`} />
-            <img className="brand-hero" src={`${import.meta.env.BASE_URL}brand/header-1600.webp`} srcSet={`${import.meta.env.BASE_URL}brand/header-800.webp 800w, ${import.meta.env.BASE_URL}brand/header-1600.webp 1600w`} sizes="(max-width: 800px) 100vw, 760px" alt="dogpilot – hodowla i psy w jednym miejscu" />
+            <source media="(max-width: 640px)" srcSet={`${import.meta.env.BASE_URL}brand/hero-mobile.webp`} />
+            <img className="brand-hero" src={`${import.meta.env.BASE_URL}brand/hero-2x1-1600.webp`} srcSet={`${import.meta.env.BASE_URL}brand/hero-2x1-800.webp 800w, ${import.meta.env.BASE_URL}brand/hero-2x1-1600.webp 1600w`} sizes="(max-width: 800px) 100vw, 760px" alt="dogpilot – hodowla i psy w jednym miejscu" />
           </picture>
         ) : (
           <picture>
-            <source media="(max-width: 640px)" srcSet={`${import.meta.env.BASE_URL}brand/header2-mobile.webp`} />
-            <img className="brand-hero short" src={`${import.meta.env.BASE_URL}brand/header2-1600.webp`} srcSet={`${import.meta.env.BASE_URL}brand/header2-800.webp 800w, ${import.meta.env.BASE_URL}brand/header2-1600.webp 1600w`} sizes="(max-width: 800px) 100vw, 760px" alt="dogpilot – hodowla i psy w jednym miejscu" />
+            <source media="(max-width: 640px)" srcSet={`${import.meta.env.BASE_URL}brand/hero-wide-800.webp`} />
+            <img className="brand-hero short" src={`${import.meta.env.BASE_URL}brand/hero-2x1-1600.webp`} srcSet={`${import.meta.env.BASE_URL}brand/hero-2x1-800.webp 800w, ${import.meta.env.BASE_URL}brand/hero-2x1-1600.webp 1600w`} sizes="(max-width: 800px) 100vw, 760px" alt="dogpilot – hodowla i psy w jednym miejscu" />
           </picture>
         )}
         <div className="row only-mobile" style={{ marginBottom: 16, gap: 10 }}><div className="avatar" style={{ width: 44, height: 44, background: 'var(--primary)', color: '#fff' }}><PawPrint size={24} className="wag" /></div><Wordmark height={30} /></div>

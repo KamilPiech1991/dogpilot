@@ -361,7 +361,7 @@ table.tbl td a { font-weight: 700; }
 @media print { .wordmark .wm-dark { display: none !important; } .wordmark .wm-light { display: block !important; } }
 
 /* ===== Logowanie / rejestracja ===== */
-.brand-hero.short { aspect-ratio: 3 / 1; object-position: 50% 42%; }
+.brand-hero.short { aspect-ratio: 3 / 1; object-position: 50% 12%; }
 @media (max-width: 640px) { .brand-hero.short { aspect-ratio: 16 / 9; object-position: center; } }
 .auth { display: flex; flex-direction: column; gap: 8px; max-width: 520px; margin: 0 auto; }
 .auth-tabs { display: flex; background: var(--surface-2); border-radius: 14px; padding: 4px; gap: 4px; margin-top: 4px; }

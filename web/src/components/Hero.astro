@@ -17,7 +17,7 @@ const c = t(lang);
       <div class="proof muted"><span><span class="stars" aria-hidden="true">★★★★★</span> <b>{c.hero.rating}</b></span><span>·</span><span>{c.hero.rodo}</span><span>·</span><span>{c.hero.offline}</span></div>
     </div>
     <div class="art">
-      <picture><source media="(max-width: 700px)" srcset="/brand/header-mobile.webp"><img src="/brand/header2-1600.webp" srcset="/brand/header2-800.webp 800w, /brand/header2-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 560px" alt={c.hero.imgAlt} width="1600" height="900" fetchpriority="high"></picture>
+      <picture><source media="(max-width: 900px)" srcset="/brand/hero-wide-800.webp 800w, /brand/hero-wide-1600.webp 1600w" sizes="100vw"><img src="/brand/hero-home-1120.webp" srcset="/brand/hero-home-560.webp 560w, /brand/hero-home-1120.webp 1120w" sizes="560px" alt={c.hero.imgAlt} width="1120" height="880" fetchpriority="high"></picture>
       <div class="phone ph"><img src="/img/app/m-start.webp" alt={c.hero.phoneAlt} width="390" height="844" loading="eager"></div>
       <div class="toast"><span class="ico"><Icon name="heart" size={18} stroke={2.2} /></span><div><b>{c.hero.toast[0]}</b><div class="muted small">{c.hero.toast[1]}</div></div></div>
     </div>
@@ -54,7 +54,7 @@ const c = t(lang);
   .proof { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; font-size: 14px; } .proof b { color: var(--text); } .stars { color: var(--warn); letter-spacing: 1px; }
   .art { position: relative; min-height: 560px; }
   .art picture img { width: 100%; height: 440px; object-fit: cover; border-radius: 32px; box-shadow: var(--shadow); }
-  .ph { position: absolute; left: 24px; bottom: -40px; width: 230px; }
+  .ph { position: absolute; left: -40px; bottom: -40px; width: 176px; }
   .toast { position: absolute; right: 18px; bottom: 36px; background: var(--surface); border-radius: 18px; padding: 12px 16px; box-shadow: 0 14px 30px rgba(27,42,34,.14); display: flex; align-items: center; gap: 12px; font-size: 14px; }
   .ico { width: 36px; height: 36px; border-radius: 12px; background: var(--soft); color: var(--primary-text); display: flex; align-items: center; justify-content: center; }
   .small { font-size: 12px; }
@@ -67,7 +67,7 @@ const c = t(lang);
   .ph2 { position: absolute; right: 56px; bottom: 0; width: 220px; }
   @media (max-width: 900px) {
     .hero { padding-top: 32px; } h1 { font-size: 38px; } .huge { font-size: 44px; letter-spacing: -1px; }
-    .art { min-height: 0; margin-bottom: 70px; } .art picture img { height: 240px; border-radius: 24px; } .ph { --bezel: 4px; --r: 20px; width: 118px; max-width: 32vw; bottom: -64px; left: auto; right: 10px; box-shadow: 0 16px 36px rgba(27,42,34,.28), inset 0 0 0 1px rgba(255,255,255,.08); } .toast { display: none; } .copy { max-width: none; } .ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } .ctas .big { grid-column: 1 / -1; } .ctas .store { min-height: 50px; padding: 0 12px; justify-content: center; }
+    .art { min-height: 0; margin-bottom: 70px; } .art picture img { height: auto; aspect-ratio: 8 / 5; max-height: 460px; border-radius: 24px; } .ph { --bezel: 4px; --r: 20px; width: 118px; max-width: 32vw; bottom: -64px; left: 10px; right: auto; box-shadow: 0 16px 36px rgba(27,42,34,.28), inset 0 0 0 1px rgba(255,255,255,.08); } .toast { display: none; } .copy { max-width: none; } .ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } .ctas .big { grid-column: 1 / -1; } .ctas .store { min-height: 50px; padding: 0 12px; justify-content: center; }
     .window > img { height: 300px; } .ph2 { display: none; } .center .lead { font-size: 17px; } .wave { margin-top: 24px; height: 50px; }
   }
 </style>
