@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Users, Download, Upload, Moon, Sun, MonitorSmartphone, Shield, Plus, CalendarDays, Bell, QrCode, FileText, Dog, Wallet, Cloud, CloudUpload, CloudDownload, Globe, Coins, BellRing, Mail, Trash2, Send, LayoutDashboard, Unlink, ExternalLink, AlertTriangle } from 'lucide-react';
 import { useStore } from '../app/store';
@@ -11,6 +11,7 @@ import { FREE_LIMITS, NOTIF_LABEL, type AppState, type Currency, type Member, ty
 import { fmtDate, fmtDateTime, fmtMoney, today, uid } from '../app/format';
 import { collectNotifications, notifySettings } from '../app/notifications';
 import { authReady, logout } from '../app/auth';
+import { getSyncStatus, onSyncStatus } from '../app/sync';
 import { cloudInfo, deleteCloud, fmtBytes, loadCloud, saveCloud } from '../app/cloud';
 import { ConnectModal, FacebookMark, InstagramMark, ShareComposer, NETWORK_LABEL, type Network } from '../components/Social';
 import { NotifIcon } from '../components/NotifIcon';
@@ -223,6 +224,7 @@ export default function Settings() {
         </Card>
         <Card title="Konto" icon={<LogOut size={18} />}>
           <p className="muted">{authReady ? 'Zalogowano kontem Dogpilot. Po wylogowaniu wrócisz na stronę dogpilot.pl; zalogujesz się ponownie e-mailem i hasłem albo kontem Google.' : 'Tryb demo – dane są zapisane tylko w tej przeglądarce.'}{state.profile.email ? ` Konto: ${state.profile.email}.` : ''}</p>
+          {authReady && <SyncLine />}
           <button className="btn secondary" onClick={() => { if (!confirm('Wylogować się?')) return; logout().then(k => { if (k === 'local') { setProfile({ onboarded: false }); window.location.hash = '/'; } }); }}><LogOut size={16} /> Wyloguj</button>
           {authReady && <a className="btn secondary" href="#/ustaw-haslo" style={{ marginLeft: 8 }}><Lock size={16} /> Ustaw / zmień hasło</a>}
         </Card>
@@ -248,4 +250,21 @@ export default function Settings() {
       </Modal>}
     </div>
   );
+}
+
+
+/** Stan zapisu danych hodowli na koncie. */
+function SyncLine() {
+  const [, force] = useState(0);
+  useEffect(() => onSyncStatus(() => force(n => n + 1)), []);
+  const { status, lastSavedAt } = getSyncStatus();
+  const at = lastSavedAt ? new Date(lastSavedAt).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' }) : '';
+  const text: Record<string, string> = {
+    saved: `Dane hodowli są zapisane na Twoim koncie${at ? ` (ostatni zapis ${at})` : ''} – zobaczysz je po zalogowaniu na każdym urządzeniu.`,
+    saving: 'Zapisywanie danych na koncie…', pending: 'Zmiany czekają na zapis na koncie…', loading: 'Wczytywanie danych z konta…',
+    missing: 'Zapis na koncie nie jest jeszcze włączony na serwerze – dane są na razie tylko w tej przeglądarce.',
+    error: 'Nie udało się zapisać danych na koncie. Spróbujemy ponownie przy następnej zmianie – sprawdź połączenie z internetem.',
+    off: '',
+  };
+  return text[status] ? <p className={status === 'error' || status === 'missing' ? 'badge danger' : 'muted'} style={{ whiteSpace: 'normal', marginTop: 6 }}>{text[status]}</p> : null;
 }

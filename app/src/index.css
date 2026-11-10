@@ -658,3 +658,5 @@ input::-webkit-datetime-edit { padding: 0; }
 [data-theme="dark"] .danger-zone { border-color: #F08A7A !important; }
 [data-theme="dark"] .wiz-actions { background: color-mix(in srgb, var(--bg) 90%, transparent); }
 [data-theme="dark"] input[type="date"], [data-theme="dark"] input[type="time"], [data-theme="dark"] input[type="datetime-local"] { color-scheme: dark; }
+
+.boot-loading { min-height: 100dvh; display: grid; place-items: center; font-weight: 800; color: var(--muted); }

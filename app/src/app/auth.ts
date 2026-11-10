@@ -10,6 +10,9 @@ export const WEB_PANEL = authReady;
 /** Strona WWW obok panelu: /dogpilot/app/ → /dogpilot/, /app/ → / */
 export const SITE_URL = new URL((import.meta.env.BASE_URL as string).replace(/app\/?$/, '') || '/', window.location.origin).href;
 let leaving = false;
+let beforeSignOut: (() => Promise<void>) | null = null;
+/** Moduł synchronizacji rejestruje tu zapis zaległych zmian przed wylogowaniem. */
+export function registerBeforeSignOut(fn: () => Promise<void>) { beforeSignOut = fn; }
 export const isLeaving = () => leaving;
 
 /** Wersje dokumentów, które klient akceptuje przy rejestracji (podbij przy zmianie treści). */
@@ -116,6 +119,7 @@ export async function signOut() { try { await supabase?.auth.signOut(); } catch 
 export async function logout(): Promise<'site' | 'local'> {
   if (!WEB_PANEL) return 'local';
   leaving = true;
+  try { await beforeSignOut?.(); } catch { /* wylogowanie i tak następuje */ }
   await signOut();
   window.location.href = SITE_URL;
   return 'site';

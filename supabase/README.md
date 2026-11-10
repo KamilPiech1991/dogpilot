@@ -7,6 +7,13 @@ Tworzy tabelę `public.customers` (jeden wiersz na konto), trigger kopiujący ka
 `privacy_version`, `terms_accepted_at`) oraz polityki RLS (klient widzi i edytuje tylko swój wiersz).
 Podgląd: **Table Editor → customers**.
 
+## 1b. Dane hodowli na koncie (jednorazowo) – WYMAGANE
+Supabase → **SQL Editor** → wklej i uruchom `migrations/20261110_kennel_data.sql`.
+Tworzy tabelę `public.kennel_data` (jeden wiersz na konto: profil hodowli, psy, mioty, zdrowie, finanse,
+ustawienia) z RLS – klient widzi i zmienia tylko swoje dane. Panel po zalogowaniu wczytuje z niej hodowlę
+i zapisuje każdą zmianę w tle (ok. 1 s po zmianie, przy wylogowaniu i przy zamykaniu karty).
+Bez tej tabeli dane zostają tylko w przeglądarce, a Ustawienia → Konto pokazują ostrzeżenie.
+
 ## 2. E-maile (Authentication → Email Templates)
 - **Confirm signup** – wklej `email-templates/confirm-signup.html`, temat:
   `Dziękujemy za rejestrację w Dogpilot – potwierdź adres e-mail`.

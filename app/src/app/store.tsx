@@ -4,6 +4,7 @@ import { FREE_LIMITS } from './types';
 import { emptyState } from './seed';
 import { setCurrency, setLocale } from './format';
 import { setLanguage, type Lang } from './i18n';
+import { onLocalChange } from './sync';
 
 const KEY = 'dogpilot.state.v1';
 const LEGACY_KEY = 'kennelo.state.v1';
@@ -33,10 +34,17 @@ function reducer(s: AppState, a: Action): AppState {
   }
 }
 
+/** Uzupełnia brakujące pola (starsze zapisy, dane z konta). */
+export function normalizeState(raw: Partial<AppState>): AppState {
+  const st = { ...emptyState(), ...raw, profile: { ...emptyState().profile, ...(raw.profile ?? {}) } } as AppState;
+  st.litters = st.litters.map(l => ({ ...l, birthDiary: l.birthDiary ?? [] }));
+  return st;
+}
+
 function load(): AppState {
   try {
     const raw = localStorage.getItem(KEY) ?? localStorage.getItem(LEGACY_KEY);
-    if (raw) { const st = { ...emptyState(), ...JSON.parse(raw) } as AppState; st.litters = st.litters.map(l => ({ ...l, birthDiary: l.birthDiary ?? [] })); return st; }
+    if (raw) return normalizeState(JSON.parse(raw));
   } catch { /* ignore */ }
   return emptyState();
 }
@@ -65,7 +73,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const lang: Lang = state.profile.language ?? readLang();
   setLocale(lang);
   useEffect(() => { setLanguage(lang); }, [lang]);
-  useEffect(() => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { /* quota */ } }, [state]);
+  useEffect(() => { const json = JSON.stringify(state); try { localStorage.setItem(KEY, json); } catch { /* quota */ } onLocalChange(json); }, [state]);
   // motyw: jasny / ciemny / systemowy (reaguje na zmianę ustawień systemu)
   const themeMode = state.profile.theme ?? (state.profile.darkMode ? 'dark' : 'light');
   useEffect(() => {

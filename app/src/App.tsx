@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { consumeAuthReturn, WEB_PANEL, currentUser, onAuth, goToLogin, isLeaving } from './app/auth';
 import Layout from './components/Layout';
-import { useStore } from './app/store';
+import { useStore, normalizeState } from './app/store';
+import { pullForUser, stopSync } from './app/sync';
+import { emptyState } from './app/seed';
 import Onboarding from './pages/Onboarding';
 import Dashboard from './pages/Dashboard';
 import Dogs from './pages/Dogs';
@@ -25,21 +27,37 @@ import Notifications from './pages/Notifications';
 import SetPassword from './pages/SetPassword';
 
 export default function App() {
-  const { state, toast } = useStore();
+  const { state, toast, replace } = useStore();
   const loc = useLocation();
   const [auth, setAuth] = useState<'loading' | 'in' | 'out'>(WEB_PANEL ? 'loading' : 'in');
+  const stateRef = useRef(state); stateRef.current = state;
+  const pulledFor = useRef<string | null>(null);
   useEffect(() => {
     consumeAuthReturn().then(r => { if (r) toast(r.message, r.ok ? 5000 : 12000); });
     if (!WEB_PANEL) return;
     let alive = true;
-    currentUser().then(u => { if (alive) setAuth(u ? 'in' : 'out'); });
-    const off = onAuth(u => { if (alive) setAuth(u ? 'in' : 'out'); });
+    // po zalogowaniu: najpierw dane hodowli z konta, dopiero potem panel (bez ponownego wypełniania profilu)
+    const handle = async (u: Awaited<ReturnType<typeof currentUser>>) => {
+      if (!alive) return;
+      if (!u) { pulledFor.current = null; stopSync(); setAuth('out'); return; }
+      if (pulledFor.current === u.id) { setAuth('in'); return; }
+      pulledFor.current = u.id;
+      const lang = stateRef.current.profile.language;
+      const fresh = () => { const s = emptyState(); s.profile = { ...s.profile, language: lang, email: u.email, breederName: u.name || '', module: u.mode ?? s.profile.module }; return s; };
+      try {
+        const next = await pullForUser(u.id, stateRef.current, fresh);
+        if (alive && next) replace(normalizeState(next));
+      } catch { /* brak sieci: zostają dane z tej przeglądarki */ }
+      if (alive) setAuth('in');
+    };
+    currentUser().then(handle);
+    const off = onAuth(u => { void handle(u); });
     return () => { alive = false; off(); };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   // strony publiczne: karta nabywcy (QR) i ustawianie hasła z linku w e-mailu
   if (loc.pathname.startsWith('/portal/')) return <Routes><Route path="/portal/:id" element={<Portal />} /></Routes>;
   if (loc.pathname === '/ustaw-haslo') return <SetPassword />;
-  if (auth === 'loading') return null; // splash z index.html zasłania ekran
+  if (auth === 'loading') return <div className="boot-loading" role="status">Wczytywanie danych hodowli…</div>;
   if (auth === 'out') { if (!isLeaving()) goToLogin(); return null; } // panel webowy bez sesji → strona logowania
   if (!state.profile.onboarded) return <Onboarding />;
   const breeder = state.profile.module === 'breeder';
