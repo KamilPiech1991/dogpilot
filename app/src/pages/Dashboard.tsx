@@ -48,14 +48,14 @@ export default function Dashboard() {
       <div className="dash-top">
         <div className="who">
           <div className="avatar-lg">{p.logo ? <img src={p.logo} alt="" /> : initials}</div>
-          <div>
-            <div className="muted" style={{ fontSize: 12, fontWeight: 800 }}>{greet}{p.breederName ? `, ${p.breederName}` : ''}</div>
-            <div style={{ fontSize: 18, fontWeight: 900, lineHeight: 1.1 }}>{breeder && p.kennelName ? p.kennelName : 'Dogpilot'}</div>
-            {acct && <div className="muted" style={{ fontSize: 11, fontWeight: 700 }}>{acct}</div>}
+          <div className="who-text">
+            <div className="muted line" style={{ fontSize: 12, fontWeight: 800 }}>{greet}{p.breederName ? `, ${p.breederName}` : ''}</div>
+            <div className="line name" style={{ fontSize: 18, fontWeight: 900, lineHeight: 1.15 }}>{breeder && p.kennelName ? p.kennelName : 'Dogpilot'} <span className={`badge plan-m ${p.plan === 'pro' ? 'pro' : ''}`}>{p.plan.toUpperCase()}</span></div>
+            {acct && <div className="muted line" style={{ fontSize: 11, fontWeight: 700 }}>{acct}</div>}
           </div>
         </div>
-        <div className="row" style={{ gap: 8 }}>
-          <span className={`badge ${p.plan === 'pro' ? 'pro' : ''}`}>{p.plan.toUpperCase()}</span>
+        <div className="dash-actions">
+          <span className={`badge plan-d ${p.plan === 'pro' ? 'pro' : ''}`}>{p.plan.toUpperCase()}</span>
           <button className="icon-btn bell-btn" aria-label={`Powiadomienia: ${upcoming.length}`} title="Powiadomienia" onClick={() => nav('/powiadomienia')}><Bell size={20} />{upcoming.length > 0 && <span className="dot">{upcoming.length > 9 ? '9+' : upcoming.length}</span>}</button>
           <button className="icon-btn" aria-label="Odbierz psa" title="Odbierz psa" onClick={() => nav('/skanuj')}><QrCode size={20} /></button>
           <button className="icon-btn" aria-label="Wyloguj" title="Wyloguj" onClick={doLogout}><LogOut size={20} /></button>

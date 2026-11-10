@@ -240,6 +240,15 @@ table.tbl th { background: var(--surface-2); font-weight: 800; }
 /* ===== Start (dashboard feed) ===== */
 .dash-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .dash-top .who { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.dash-top .who-text { min-width: 0; } .dash-top .who-text .line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dash-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; flex-wrap: nowrap; }
+.dash-top .plan-m { display: none; font-size: 10px; padding: 2px 7px; vertical-align: 3px; }
+@media (max-width: 560px) {
+  .dash-top { gap: 10px; } .dash-top .who { gap: 10px; } .avatar-lg { width: 42px; height: 42px; border-radius: 14px; font-size: 18px; }
+  .dash-actions { gap: 6px; } .dash-top .plan-d { display: none; } .dash-top .plan-m { display: inline-flex; }
+  .dash-top .icon-btn { min-width: 38px !important; min-height: 38px !important; width: 38px; height: 38px; border-radius: 12px !important; padding: 0; }
+  .dash-top .who-text .name { font-size: 17px !important; }
+}
 .dash-top .icon-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text); min-width: 42px; min-height: 42px; border-radius: 14px; }
 .avatar-lg { width: 48px; height: 48px; border-radius: 16px; background: linear-gradient(135deg, var(--primary), #1F5B43); color: #fff; display: grid; place-items: center; font-weight: 900; font-size: 20px; flex-shrink: 0; box-shadow: var(--shadow); }
 .chips-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; margin: -4px 0; }
