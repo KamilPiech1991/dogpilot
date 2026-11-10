@@ -95,7 +95,7 @@ export function ArtHeader({ tone = 'green', icon, photo, title, sub, actions, ba
   );
 }
 
-/** Wybór zdjęcia z podglądem; obraz jest zmniejszany w przeglądarce i zapisywany jako data URL. */
+/** Wybór zdjęcia z podglądem; obraz jest zmniejszany w przeglądarce, a po zalogowaniu wysyłany do R2 (app/media.ts). */
 export function PhotoPicker({ value, onChange, label = 'Dodaj zdjęcie' }: { value?: string; onChange: (v?: string) => void; label?: string }) {
   return (
     <div className="photo-picker">
@@ -103,7 +103,7 @@ export function PhotoPicker({ value, onChange, label = 'Dodaj zdjęcie' }: { val
       <div className="stack" style={{ gap: 6, alignItems: 'flex-start' }}>
         <label className="btn secondary sm"><ImagePlus size={16} /> {value ? 'Zmień zdjęcie' : label}<input type="file" accept="image/*" hidden onChange={async e => { const f = e.target.files?.[0]; if (f) { try { onChange(await readPhoto(f)); } catch { /* ignore */ } } e.target.value = ''; }} /></label>
         {value && <button className="btn ghost sm" onClick={() => onChange(undefined)}><Trash2 size={16} /> Usuń zdjęcie</button>}
-        <small className="muted">JPG lub PNG. Zmniejszamy do 640 px, zdjęcie zostaje w Twoich danych.</small>
+        <small className="muted">JPG lub PNG. Zmniejszamy do 640 px i zapisujemy na Twoim koncie.</small>
       </div>
     </div>
   );

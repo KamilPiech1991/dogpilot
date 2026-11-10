@@ -5,6 +5,7 @@ import { emptyState } from './seed';
 import { setCurrency, setLocale } from './format';
 import { setLanguage, type Lang } from './i18n';
 import { onLocalChange } from './sync';
+import { scheduleOffload, swapImages } from './media';
 
 const KEY = 'dogpilot.state.v1';
 const LEGACY_KEY = 'kennelo.state.v1';
@@ -73,7 +74,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const lang: Lang = state.profile.language ?? readLang();
   setLocale(lang);
   useEffect(() => { setLanguage(lang); }, [lang]);
-  useEffect(() => { const json = JSON.stringify(state); try { localStorage.setItem(KEY, json); } catch { /* quota */ } onLocalChange(json); }, [state]);
+  useEffect(() => { const json = JSON.stringify(state); try { localStorage.setItem(KEY, json); } catch { /* quota */ } onLocalChange(json); scheduleOffload(state, map => dispatch({ type: 'bulk', fn: s => swapImages(s, map) })); }, [state]);
   // motyw: jasny / ciemny / systemowy (reaguje na zmianę ustawień systemu)
   const themeMode = state.profile.theme ?? (state.profile.darkMode ? 'dark' : 'light');
   useEffect(() => {

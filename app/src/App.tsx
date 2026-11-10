@@ -4,6 +4,7 @@ import { consumeAuthReturn, WEB_PANEL, currentUser, onAuth, goToLogin, isLeaving
 import Layout from './components/Layout';
 import { useStore, normalizeState } from './app/store';
 import { pullForUser, stopSync } from './app/sync';
+import { setMediaUser } from './app/media';
 import { emptyState } from './app/seed';
 import Onboarding from './pages/Onboarding';
 import Dashboard from './pages/Dashboard';
@@ -39,15 +40,17 @@ export default function App() {
     // po zalogowaniu: najpierw dane hodowli z konta, dopiero potem panel (bez ponownego wypełniania profilu)
     const handle = async (u: Awaited<ReturnType<typeof currentUser>>) => {
       if (!alive) return;
-      if (!u) { pulledFor.current = null; stopSync(); setAuth('out'); return; }
+      if (!u) { pulledFor.current = null; stopSync(); setMediaUser(false); setAuth('out'); return; }
       if (pulledFor.current === u.id) { setAuth('in'); return; }
       pulledFor.current = u.id;
       const lang = stateRef.current.profile.language;
       const fresh = () => { const s = emptyState(); s.profile = { ...s.profile, language: lang, email: u.email, breederName: u.name || '', module: u.mode ?? s.profile.module }; return s; };
+      let replaced = false;
       try {
         const next = await pullForUser(u.id, stateRef.current, fresh);
-        if (alive && next) replace(normalizeState(next));
+        if (alive && next) { replace(normalizeState(next)); replaced = true; }
       } catch { /* brak sieci: zostają dane z tej przeglądarki */ }
+      setMediaUser(true, !replaced); // zdjęcia do R2 w tle (po podmianie danych wystartuje, gdy się wczytają)
       if (alive) setAuth('in');
     };
     currentUser().then(handle);

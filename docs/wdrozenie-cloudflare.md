@@ -38,7 +38,27 @@ z gałęzi `main` i serwuje je pod `dogpilot.pl`. Podgląd na github.io działa 
 - Supabase → Authentication → Email Templates: linki w e-mailach korzystają z Site URL, więc po tej zmianie
   prowadzą na dogpilot.pl.
 
-## 4. Sprawdzenie
+## 4. Zdjęcia w Cloudflare R2 (ok. 10 min)
+Zdjęcia psów, szczeniąt i logo hodowli trafiają do R2, a w danych hodowli zostaje tylko krótki adres.
+Wysyła je funkcja `functions/api/media/[[path]].ts` (Cloudflare Pages Functions). Panel sam przenosi też
+zdjęcia dodane wcześniej. Dopóki R2 nie jest podpięte, wszystko działa jak dotąd (zdjęcia zostają w danych).
+
+1. Cloudflare → **R2 Object Storage** → włącz R2. Cloudflare poprosi o kartę, ale do 10 GB miejsca
+   i milionów odczytów miesięcznie nic nie pobiera.
+2. **Create bucket** → nazwa `dogpilot-media` → Location: **Automatic** albo podpowiedź **Eastern Europe (EEUR)**.
+   *Nie* wybieraj „Specify jurisdiction”.
+3. **Workers & Pages** → projekt `dogpilot` → **Settings → Bindings → Add → R2 bucket**:
+   Variable name `MEDIA`, bucket `dogpilot-media` → **Save** (dla Production; Preview opcjonalnie).
+4. **Deployments** → przy ostatnim wdrożeniu **⋯ → Retry deployment**. Powiązanie działa od następnego wdrożenia.
+5. *(opcjonalnie, później)* bucket → **Settings → Custom Domains → Connect domain** → `media.dogpilot.pl`,
+   potem w projekcie Pages zmienna `MEDIA_PUBLIC_URL = https://media.dogpilot.pl` i ponowne wdrożenie.
+   Nowe zdjęcia będą wtedy serwowane wprost z R2 (bez funkcji). Starsze adresy `/api/media/...` działają dalej.
+
+Funkcja sprawdza sesję w Supabase (korzysta z `PUBLIC_SUPABASE_URL` i `PUBLIC_SUPABASE_ANON_KEY` z punktu 2),
+przyjmuje JPG, PNG i WebP do 3 MB i zapisuje je pod `u/<id użytkownika>/<losowa nazwa>`. Usuwać może tylko właściciel.
+Darmowy plan Pages Functions to 100 000 wywołań dziennie.
+
+## 5. Sprawdzenie
 - `https://dogpilot.pl` – strona, `https://dogpilot.pl/app/` – panel (bez sesji przekieruje na logowanie),
   `https://www.dogpilot.pl` – przekierowanie na domenę główną.
 - Logowanie Google ze strony → powrót do `https://dogpilot.pl/app/`.

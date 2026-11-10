@@ -19,7 +19,7 @@ export interface Dog {
   chip?: string;
   kennelName?: string;
   photo?: string;
-  gallery?: string[]; // galeria zdjęć psa, maks. GALLERY_MAX (data URL)
+  gallery?: string[]; // galeria zdjęć psa, maks. GALLERY_MAX (adres w R2 albo data URL przed wysłaniem)
   notes?: string;
   pawId?: string;
   fatherId?: string;
@@ -165,7 +165,7 @@ export interface Puppy {
   birthWeightG?: number;
   birthStatus: 'alive' | 'stillborn' | 'died';
   markerColor: string;
-  photo?: string; // data URL (JPEG, max 640 px)
+  photo?: string; // adres w R2 albo data URL (JPEG, max 640 px) przed wysłaniem
   pedigreeNo?: string;
   chip?: string;
   pawId: string;
@@ -241,7 +241,7 @@ export interface Profile {
   onboarded: boolean;
   darkMode?: boolean; // wynikowy tryb (dla zgodności); źródłem prawdy jest `theme`
   theme?: 'light' | 'dark' | 'system';
-  logo?: string; // logo hodowli (data URL)
+  logo?: string; // logo hodowli (adres w R2 albo data URL przed wysłaniem)
   authProvider?: 'email' | 'google'; // prototyp: logowanie symulowane
   plannedShows?: string[]; // id wystaw z kalendarza ZKwP, na które hodowca planuje start
   language?: 'pl' | 'en';
